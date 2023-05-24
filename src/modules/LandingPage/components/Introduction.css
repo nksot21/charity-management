@@ -1,0 +1,41 @@
+.intro-heading-1{
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #3C4048;
+    margin-bottom: 15px;
+    padding-left: 2px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.intro-heading-2{
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #3C4048;
+    margin-bottom: 15px;
+    padding-left: 2px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.intro-text{
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #3C4048;
+    margin-bottom: 15px;
+    padding-left: 2px;
+    padding: 0 200px 0 200px;
+}
+
+.intro-text-2{
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #3C4048;
+    margin-bottom: 15px;
+    padding-left: 2px;
+    padding: 0 15px 0 15px;
+}

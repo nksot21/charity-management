@@ -1,0 +1,24 @@
+.banner-text{
+    font-size: 24px;
+    letter-spacing: 2px;
+    border-spacing: 1px;
+    color: #424343;
+    font-weight:600;
+}
+
+.banner-heading{
+    font-size: 80px;
+    letter-spacing: 1px;
+    color: #075233;
+    margin-bottom: 15px;
+    padding-left: 2px;
+}
+
+.banner-button{
+    border-radius: 10px;
+    transition: border-radius 1s;
+}
+
+.banner-button:hover{
+    border-radius: 30px;
+}
