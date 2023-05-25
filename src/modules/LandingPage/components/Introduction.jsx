@@ -10,6 +10,7 @@ export default function Introduction() {
             <Row>
                 <Col style={{textAlign: 'center'}}>
                     <p className='intro-heading-1'>Giới thiệu chung</p>
+                    <div className='intro-line mx-auto' />
                     <p className='intro-text'>Tổ chức từ thiện aSheep cung cấp cho các nhà hảo tâm một nền tảng từ thiện minh bạch, thuận tiện, theo dõi và chia sẻ thông tin. aSheep được xây dựng với sứ mệnh mang đến cho các nhà hảo tâm một công cụ minh bạch, rõ ràng và thuận tiện nhất giúp các nhà hảo tâm yên tâm trong việc quyên góp cho các hoạt động từ thiện.</p>
                 </Col>
             </Row>

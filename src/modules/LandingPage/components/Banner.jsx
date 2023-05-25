@@ -5,7 +5,7 @@ import './Banner.css'
 
 export default function Banner() {
   return (
-    <div className='d-flex' style={{position: 'absolute', top:'120px', left:'140px'}}>
+    <div className='d-flex' style={{position: 'absolute', top:'200px', left:'140px'}}>
         <Container>
             <Row style={{ width: '1300px'}}>
                 <Col className='col-4'>
