@@ -77,21 +77,15 @@ const joinedEvents = [
     4000000000,
     340000000
   ),
-  createEvent(
-    "https://static.thiennguyen.app/public/donate-target/photo/2023/3/8/ce83ad23-bc2e-451f-b1c0-44806d810d9e.jpg",
-    "Ta thêm lòng tiếp sức, để bớt cuộc chia ly 5",
-    4300000000,
-    2340000000
-  ),
 ];
 
 function DonorDetailPage() {
   return (
-    <Stack paddingX={6} paddingY={7} spacing={5} direction="row">
-      <Stack paddingX={2} paddingY={3} width={"40%"}>
+    <Stack paddingX={1} paddingY={7} spacing={2} direction="row">
+      <Stack paddingX={2} paddingY={3} width={"38%"}>
         <DonorInfo />
       </Stack>
-      <Stack paddingX={2} paddingY={3} width={"60%"}>
+      <Stack paddingX={2} paddingY={3} width={"62%"}>
         <Statistics />
         <JoinedEvents events={joinedEvents} />
         <Transfers transfers={rowsData} />

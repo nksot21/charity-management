@@ -33,9 +33,9 @@ function JoinedEvents({ events }) {
           Xem tất cả
         </Button>
       </Stack>
-      <Grid container columnSpacing={2} rowSpacing={2} marginTop={1}>
+      <Grid container columnSpacing={2} rowSpacing={2} marginTop={1} padding={2}>
         {events.map((event) => (
-          <Grid item key={event.name} xs={4}>
+          <Grid item key={event.name} xs={6}>
             <Stack
               borderRadius={3}
               overflow="hidden"
@@ -45,8 +45,8 @@ function JoinedEvents({ events }) {
                 <img height="100%" src={event.image} />
                 <Stack
                   position="absolute"
-                  top={6}
-                  left={6}
+                  top={12}
+                  left={12}
                   style={{ backgroundColor: "#ffffffaa" }}
                   borderRadius={1}
                   paddingX={1}
@@ -59,8 +59,8 @@ function JoinedEvents({ events }) {
                 </Stack>
                 <Stack
                   position="absolute"
-                  top={34}
-                  left={6}
+                  top={40}
+                  left={12}
                   style={{ backgroundColor: "#ffffffaa" }}
                   borderRadius={1}
                   paddingX={1}
@@ -68,7 +68,7 @@ function JoinedEvents({ events }) {
                   Còn 67 ngày
                 </Stack>
               </Stack>
-              <Stack padding={1}>
+              <Stack padding={2}>
                 <Typography fontSize={17}>{event.name}</Typography>
                 <Stack
                   height={8}
