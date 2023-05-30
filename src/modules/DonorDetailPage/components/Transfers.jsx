@@ -42,16 +42,26 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function Transfers({ transfers }) {
   return (
-    <Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6" fontSize={26} fontWeight={200} marginTop={4}>
+    <Stack
+      marginTop={4}
+      boxShadow="0 0 10px #00000022"
+      paddingX={2}
+      paddingY={3}
+      borderRadius={2}
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h6" fontSize={26} fontWeight={200}>
           Giao dịch gần đây
         </Typography>
-        <Button variant="contained" size="medium">
+        <Button
+          variant="contained"
+          size="medium"
+          style={{ textTransform: "none", backgroundColor: "#2a9d8f" }}
+        >
           Xem tất cả
         </Button>
       </Stack>
-      <Stack marginTop={1}>
+      <Stack marginTop={2}>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>

@@ -25,21 +25,21 @@ const SidebarMenu =
                 "title": "Donor",
                 "name": "Nhà hảo tâm",
                 "icon": DonorIcon,
-                "route": "#"
+                "route": "donors"
             },
             {
                 "id": 3,
                 "title": "Donation",
                 "name": "Quyên góp",
                 "icon": DonationIcon,
-                "route": "#"
+                "route": "donations"
             },
             {
                 "id": 3,
                 "title": "Activity",
                 "name": "Hoạt động từ thiện",
                 "icon": ActivityIcon,
-                "route": "#",
+                "route": "events",
                 "isEnd": true,
             },
             {

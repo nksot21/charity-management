@@ -1,14 +1,13 @@
-import React from "react";
-import {
-  Stack,
-  Typography,
-} from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import { Button, Stack, Typography } from "@mui/material";
 import quote from "../../../assets/images/quote.png";
+import { Link } from "react-router-dom";
+import DonorInfoPage from "../screens/DonorInfoPage";
 
 function DonorInfo() {
+  const [isShowingInfo, setIsShowingInfo] = useState(false);
   return (
-    <>
+    <Stack position="sticky" top={100} left={0}>
       <Stack direction="row" spacing={4}>
         <Stack
           height={200}
@@ -32,6 +31,16 @@ function DonorInfo() {
           <Typography>@quyhanhphucchomoinguoi</Typography>
           <Typography marginTop={3}>Tham gia từ 2/2023</Typography>
           <Typography>Mã tài khoản: 06</Typography>
+          <Stack alignItems="end">
+            <Button
+              variant="contained"
+              size="small"
+              style={{ textTransform: "none" }}
+              onClick={() => setIsShowingInfo(true)}
+            >
+              Thông tin chi tiết
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
       <Stack
@@ -58,7 +67,10 @@ function DonorInfo() {
           nhân mắc bệnh hiểm nghèo có hoàn cảnh khó khăn.”
         </Typography>
       </Stack>
-    </>
+      {isShowingInfo && (
+        <DonorInfoPage onCloseModal={() => setIsShowingInfo(false)} />
+      )}
+    </Stack>
   );
 }
 

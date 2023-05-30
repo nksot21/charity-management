@@ -7,7 +7,12 @@ import { currencyFormatter } from "../../../utils/currencyFormatter";
 
 function Statistics() {
   return (
-    <Stack>
+    <Stack
+      boxShadow="0 0 10px #00000022"
+      paddingX={2}
+      paddingY={3}
+      borderRadius={2}
+    >
       <Typography variant="h6" fontSize={26} fontWeight={200}>
         Thống kê từ thiện
       </Typography>
