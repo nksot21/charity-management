@@ -61,7 +61,7 @@ const SidebarMenu =
                 "title": "ReceiverManagement",
                 "name": "Quản lý người nhận",
                 "icon": ReceiverManagementIcon,
-                "route": "#"
+                "route": "/nguoi-nhan"
             },
             {
                 "id": 6,
