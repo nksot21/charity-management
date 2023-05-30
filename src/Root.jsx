@@ -16,7 +16,7 @@ const Root = () => {
           <Outlet>  <LandingPage /> </Outlet>
         </Col>
       </Row>
-        {window.location.pathname === '/' && <Footer />}
+        {window.location.pathname === '/gioi-thieu' && <Footer />}
 
     </Container>
    
