@@ -1,21 +1,35 @@
-import {
-  Button,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import heart from "../../../assets/images/heart.png";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 
-function JoinedEvents({events}) {
+function JoinedEvents({ events }) {
   return (
-    <Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6" fontSize={26} fontWeight={200} marginTop={4}>
-          Những sự kiện đã/đang quyên góp:
-        </Typography>
-        <Button variant="contained" size="medium">
+    <Stack
+      marginTop={4}
+      boxShadow="0 0 10px #00000022"
+      paddingX={2}
+      paddingY={3}
+      borderRadius={2}
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack>
+          <Typography variant="h6" fontSize={26} fontWeight={200}>
+            Những sự kiện đã/đang quyên góp:
+          </Typography>
+          <Typography fontSize={18}>
+            Tổng số sự kiện:{" "}
+            <span style={{ fontWeight: "bold", color: "#2a9d8f" }}>
+              {events.length}
+            </span>
+          </Typography>
+        </Stack>
+
+        <Button
+          variant="contained"
+          size="medium"
+          style={{ textTransform: "none", backgroundColor: "#2a9d8f" }}
+        >
           Xem tất cả
         </Button>
       </Stack>
