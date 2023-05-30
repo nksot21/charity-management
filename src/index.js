@@ -1,10 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Root from './Root';
+import Root from "./Root";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
+import ErrorPage from "./modules/ErrorPage/ErrorPage";
+import LandingPage from "./modules/LandingPage/screens/LandingPage";
+import Homepage from "./modules/Homepage/screens/Homepage";
+import DonorsPage from "./modules/DonorsPage/screens/DonorsPage";
+import DonorDetailPage from "./modules/DonorDetailPage/screens/DonorDetailPage";
 import ErrorPage from './modules/ErrorPage/ErrorPage';
 import LandingPage from './modules/LandingPage/screens/LandingPage';
 import HomepageRoot from './modules/Homepage/screens/HomepageRoot';
@@ -36,14 +41,21 @@ const router = createBrowserRouter([
           },
         ]
       },
-      
-
+      {
+        path: "donors",
+        children: [
+          {
+            index: true,
+            element: <DonorsPage />,
+          },
+          {
+            path: ":donorId",
+            element: <DonorDetailPage />,
+          },
+        ],
+      },
     ],
   },
 ]);
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <RouterProvider router={router}/>
-);
-
-
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<RouterProvider router={router} />);
