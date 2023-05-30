@@ -10,8 +10,8 @@ function DonorInfo() {
     <Stack position="sticky" top={100} left={0}>
       <Stack direction="row" spacing={4}>
         <Stack
-          height={200}
-          width={200}
+          height={180}
+          width={180}
           justifyContent="center"
           borderRadius="200px"
           overflow="hidden"
@@ -31,7 +31,7 @@ function DonorInfo() {
           <Typography>@quyhanhphucchomoinguoi</Typography>
           <Typography marginTop={3}>Tham gia từ 2/2023</Typography>
           <Typography>Mã tài khoản: 06</Typography>
-          <Stack alignItems="end">
+          <Stack alignItems="end" marginTop={2}>
             <Button
               variant="contained"
               size="small"
