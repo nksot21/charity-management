@@ -29,7 +29,7 @@ export default function Sidebar() {
             position: "fixed",
             zIndex: "1",
             top: "70px",
-            left: "5px",}}>
+            left: "0px",}}>
         
         <div>
         {
@@ -44,7 +44,7 @@ export default function Sidebar() {
                 return (
                     <div className=''>
                         
-                        <div className='row sitebar-menu-item' style={{marginTop: '7px'}}
+                        <div className='row sitebar-menu-item' style={{margin: '7px 0 0 0'}}
                             key={index}
                             onMouseEnter={ () => {
                                 if(item.title === "Dashboard"){
@@ -95,12 +95,11 @@ export default function Sidebar() {
                             <a href={item.route} >
                                 <div className='col-3'
                                     style={{
-                                        height: "20px",
+                                        height: "55px",
                                         position: "relative",
                                         padding: "0px",
-                                        lineHeight: "20px",
+                                        lineHeight: "55px",
                                         paddingLeft: "25px",
-                                        paddingTop: "5px"
                                     }}                            
                                     
                                 >   
@@ -141,6 +140,6 @@ export default function Sidebar() {
             })
         }
         </div>
-        <p style={{marginBottom: '75px', marginLeft: '25px', fontWeight: "500", fontSize: "15px",}}> aSheep Charity Management</p>
+        <p style={{marginBottom: '70px', marginLeft: '20px', fontWeight: "500", fontSize: "15px",}}> aSheep Charity Management</p>
     </div>
 }

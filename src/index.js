@@ -7,7 +7,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import ErrorPage from './modules/ErrorPage/ErrorPage';
 import LandingPage from './modules/LandingPage/screens/LandingPage';
-import Homepage from './modules/Homepage/screens/Homepage';
+import HomepageRoot from './modules/Homepage/screens/HomepageRoot';
+import Receiver from './modules/ReceiverPage/screens/Receiver';
+import AddReceiver from './modules/ReceiverPage/screens/AddReceiver';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,15 +17,27 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
+        path: "/gioi-thieu",
         element: <LandingPage />,
         errorElement: <ErrorPage />,
       },
       {
-        path: "trang-chu",
-        element: <Homepage />,
+        path: "/",
+        element: <HomepageRoot />,
         errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "nguoi-nhan",
+            element: <Receiver />,
+          },
+          {
+            path: "nguoi-nhan/them",
+            element: <AddReceiver />,
+          },
+        ]
       },
+      
+
     ],
   },
 ]);
