@@ -1,11 +1,18 @@
 import { Circle, MoreHoriz } from "@mui/icons-material";
 import { IconButton, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import format from "date-fns/format";
 import styles from "./DonationItem.module.css";
+import DonorPopup from "./DonorPopup";
+import EventPopup from "./EventPopup";
+import TransferPopup from "./TransferPopup";
 
 function DonationItem({ donation }) {
+  const [isOpenDonorPopup, setIsOpenDonorPopup] = useState(false);
+  const [isOpenEventPopup, setIsOpenEventPopup] = useState(false);
+  const [isOpenTransferPopup, setIsOpenTransferPopup] = useState(false);
+
   return (
     <Stack
       direction="row"
@@ -15,7 +22,6 @@ function DonationItem({ donation }) {
       spacing={1}
       justifyContent={"space-between"}
       overflow={"hidden"}
-      onClick={() => console.log(100)}
     >
       <Stack
         direction="row"
@@ -25,6 +31,7 @@ function DonationItem({ donation }) {
         className={styles.hover}
         padding={1}
         paddingRight={2}
+        onClick={() => setIsOpenDonorPopup(true)}
       >
         <Stack
           height={60}
@@ -44,14 +51,6 @@ function DonationItem({ donation }) {
           </Typography>
           <Typography>{donation.donor.username}</Typography>
         </Stack>
-        {/* <Stack position={"absolute"} right={"-30px"} top={"-15px"}>
-          <IconButton style={{ backgroundColor: "#298483", padding: 0 }}>
-            <MoreHoriz
-              fontSize="10px"
-              style={{ color: "white", transform: "scale(0.7)" }}
-            />
-          </IconButton>
-        </Stack> */}
       </Stack>
       <Circle fontSize="10" style={{ color: "#aaa", alignSelf: "center" }} />
       <Stack
@@ -59,6 +58,7 @@ function DonationItem({ donation }) {
         className={styles.hover}
         paddingX={3}
         justifyContent={"center"}
+        onClick={() => setIsOpenTransferPopup(true)}
       >
         <Typography>
           Đã quyên góp{" "}
@@ -81,9 +81,11 @@ function DonationItem({ donation }) {
         maxWidth={"30%"}
         padding={1}
         className={styles.hover}
+        onClick={() => setIsOpenEventPopup(true)}
       >
         <Stack>
-          <Typography>{donation.event.name}</Typography>
+          <Typography textAlign={"end"}>Sự kiện</Typography>
+          <Typography textAlign={"end"}>{donation.event.name}</Typography>
         </Stack>
         <Stack
           height={60}
@@ -98,6 +100,18 @@ function DonationItem({ donation }) {
           <img height="100%" width="100%" src={donation.event.image}></img>
         </Stack>
       </Stack>
+      {isOpenDonorPopup && (
+        <DonorPopup
+          onCloseModal={() => setIsOpenDonorPopup(false)}
+          onDonation={true}
+        />
+      )}
+      {isOpenEventPopup && (
+        <EventPopup onCloseModal={() => setIsOpenEventPopup(false)} />
+      )}
+      {isOpenTransferPopup && (
+        <TransferPopup onCloseModal={() => setIsOpenTransferPopup(false)} />
+      )}
     </Stack>
   );
 }
