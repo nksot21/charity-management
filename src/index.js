@@ -12,6 +12,8 @@ import HomepageRoot from './modules/Homepage/screens/HomepageRoot';
 import Receiver from './modules/ReceiverPage/screens/Receiver';
 import AddReceiver from './modules/ReceiverPage/screens/AddReceiver';
 import DonationPage from "./modules/DonationPage/screens/DonationPage";
+import EventsPage from "./modules/EventsPage/screens/EventsPage";
+import EventDetailPage from "./modules/EventDetailPage/screens/EventDetailPage";
 const router = createBrowserRouter([
   {
     path: "",
@@ -48,6 +50,19 @@ const router = createBrowserRouter([
             path: "donations",
             element: <DonationPage />,
           },
+          {
+            path: "events",
+            children: [
+              {
+                index: true,
+                element: <EventsPage/>
+              }, 
+              {
+                path: ":eventId",
+                element: <EventDetailPage/>
+              }
+            ]
+          }
         ],
       },
       {
