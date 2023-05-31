@@ -9,6 +9,7 @@ import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import {ReceiverService} from "../../../services"
 // import { storage } from "../../../firebase";
 import axios from "axios";
+import { Alert, Snackbar } from '@mui/material';
 // import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
 export default function AddReceiver() {
     const fullname = useRef("");
@@ -23,17 +24,17 @@ export default function AddReceiver() {
     const description = useRef("");
     const scoreDesire = useRef("");
     const receiverType = useRef("");
+    const [successMessOpen, setSuccessMessOpen] = useState(false);
+    const [failedMessOpen, setFailedMessOpen] = useState(false);
+    const [failedMess, setFailedMess] = useState("Thêm thất bại! Vui lòng thử lại");
     const [imageUpload, setImageUpload] = useState(null);
-    const [gender, setGender] = useState({
-        'gender-0': false,
-        'gender-1': false
-      });
+    const [gender, setGender] = useState(null)
     const [show, setShow] = useState(false);
     const [classList, setClassList] = useState([]);
     const [choosenClass, setChoosenClass] = useState();
     const [recInfo, setRecInfo] = useState({});
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [isLoading, setLoading] = useState("true");
+    const [typeDb, setTypeDb] = useState([])
     var radios = document.getElementsByName('group');
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState(null);
@@ -56,11 +57,23 @@ export default function AddReceiver() {
     //       });
     // };
 
-    const handleChange = (event) => {
-        setGender({
-          ...gender,
-          [event.target.id]: event.target
+    useEffect(() => {
+        retrieveReceiverType();
+        setLoading(false)
+    }, []);
+    const retrieveReceiverType = () => {
+        ReceiverService.getAllReceiverType()
+        .then(response => {
+            console.log(response.data.data)
+            setTypeDb(response.data.data);
+        })
+        .catch(e => {
+            console.log('Error: ',e);
         });
+    }
+
+    const handleChangeGender = (event) => {
+        setGender( event.target.value)
       };
 
     const sleep = async (milliseconds) => {
@@ -74,7 +87,7 @@ export default function AddReceiver() {
         try {
             const recInfo = {
                 name: fullname.current.value,
-                // gender: gender,
+                gender: gender,
                 receiver_type_id: receiverType.current.value,
                 phone: phoneNumber.current.value,
                 address: address.current.value,
@@ -88,12 +101,49 @@ export default function AddReceiver() {
             setRecInfo(recInfo)
             console.log('Receiver Info: ',recInfo);
             ReceiverService.createReceiver(recInfo)
+            .then(response => {
+                resetTextField()
+                setSuccessMessOpen(true)
+            }).catch(err => {
+                console.log(err.response.data.message)
+                setFailedMess(err.response.data.message)
+                setFailedMessOpen(true)
+            })
+            
         } catch (e) {
             console.log('Error: ',e);
         }
     }
 
+    const cancelHandler = (e) => {
 
+        fullname.current.value= ''
+        district.current.value= ''
+        address.current.value= ''
+        city.current.value= ''
+        country.current.value= ''
+        phoneNumber.current.value= ''
+        dob.current.value= ''
+        docId.current.value= ''
+        description.current.value= ''
+    }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setSuccessMessOpen(false);
+      };
+
+      const handleFailedClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setFailedMessOpen(false);
+      };
+
+
+    if(!isLoading)
   return (
     
     <div style={{padding: "0 0 0 15px"}}>
@@ -146,7 +196,7 @@ export default function AddReceiver() {
                                     label="Nam"
                                     name="gender"
                                     value={0}
-                                    onChange={handleChange}
+                                    onChange={handleChangeGender}
                                 />
                                 <Form.Check
                                     inline
@@ -156,7 +206,7 @@ export default function AddReceiver() {
                                     label="Nữ"
                                     name="gender"
                                     value={1}
-                                    onChange={handleChange}
+                                    onChange={handleChangeGender}
                                 />
                             </Form.Group>
                         </div>
@@ -166,15 +216,14 @@ export default function AddReceiver() {
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Tổ chức</Form.Label>
                                 <Form.Select defaultValue="Type" placeholder="Type" style={{fontSize: "14px", marginTop:"4px"}} ref={receiverType}>
-                                            <option value="1">Cá nhân</option>
-                                            <option value="2">Phường xã</option>
-                                            <option value="3">Tỉnh thành phố</option>
-                                            <option value="4">Khác</option>
+                                            {
+                                                typeDb.map(type => <option value={type.id}>{type.name}</option>)
+                                            }
                                         </Form.Select>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                     <Form.Label style={{fontWeight:"500"}}>Số liên hệ</Form.Label>
-                                    <Form.Control type="tel" placeholder="Phone number" style={{fontSize: "14px", marginTop:"4px"}} ref={phoneNumber}/>
+                                    <Form.Control type="tel" placeholder="Số liên hệ" style={{fontSize: "14px", marginTop:"4px"}} ref={phoneNumber}/>
                             </Form.Group>
                         </div>
                     </Row>
@@ -229,6 +278,13 @@ export default function AddReceiver() {
                 </Form>
                 <div className={`${styled['div_save']}`}>
                         <Button
+                            onClick={cancelHandler}
+                            style={{fontSize: "14px", fontWeight: "bold", paddingInline: "16px", width: "100px", marginRight: "20px"}}
+                            variant="secondary" >
+                            Hủy
+                            
+                        </Button>
+                        <Button
                             onClick={saveHandler}
                             style={{fontSize: "14px", fontWeight: "bold", paddingInline: "16px", width: "100px"}}
                             variant="success" >
@@ -236,7 +292,21 @@ export default function AddReceiver() {
                             
                         </Button>
                 </div>
+                <Snackbar style={{position: "fixed", top: '920px', left: "1000px"}} open={successMessOpen} autoHideDuration={3000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        Thêm thành công
+                    </Alert>
+                </Snackbar>
+                <Snackbar style={{position: "fixed", top: '920px', left: "900px"}} open={failedMessOpen} autoHideDuration={3000} onClose={handleFailedClose}>
+                    <Alert onClose={handleFailedClose} severity="error" sx={{ width: '100%' }}>
+                        {failedMess}
+                    </Alert>
+                </Snackbar>
             </div>
-    </div>
+        </div>
   )
+}
+
+function resetTextField() {
+
 }

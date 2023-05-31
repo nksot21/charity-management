@@ -30,12 +30,12 @@ export default function Header() {
                 {/* Account Info */}
                 <Col className='col-2 justify-content-around d-flex header-menu-item'>
                     <div style={{lineHeight: '46px', height: '46px'}}>
-                        <a href='/' style={{fontWeight: "500", fontSize: "18px", letterSpacing: "1px"}}>
+                        <a href='/gioi-thieu' style={{fontWeight: "500", fontSize: "18px", letterSpacing: "1px"}}>
                             Giới thiệu
                         </a>
                     </div>
                     <div style={{lineHeight: '46px', height: '46px'}}>
-                        <a href='/trang-chu' style={{fontWeight: "500", fontSize: "18px",  letterSpacing: "1px"}}>
+                        <a href='/' style={{fontWeight: "500", fontSize: "18px",  letterSpacing: "1px"}}>
                             Trang chủ
                         </a>
                     </div>
