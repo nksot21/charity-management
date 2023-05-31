@@ -1,28 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Root from './Root';
+import Root from "./Root";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Provider } from "react-redux";
+import DonorsPage from "./modules/DonorsPage/screens/DonorsPage";
+import DonorDetailPage from "./modules/DonorDetailPage/screens/DonorDetailPage";
 import ErrorPage from './modules/ErrorPage/ErrorPage';
 import LandingPage from './modules/LandingPage/screens/LandingPage';
 import HomepageRoot from './modules/Homepage/screens/HomepageRoot';
 import Receiver from './modules/ReceiverPage/screens/Receiver';
 import AddReceiver from './modules/ReceiverPage/screens/AddReceiver';
+import DonationPage from "./modules/DonationPage/screens/DonationPage";
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/gioi-thieu",
-        element: <LandingPage />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: "/",
+        path: "",
         element: <HomepageRoot />,
         errorElement: <ErrorPage />,
         children: [
@@ -34,16 +31,32 @@ const router = createBrowserRouter([
             path: "nguoi-nhan/them",
             element: <AddReceiver />,
           },
-        ]
+          {
+            path: "donors",
+            children: [
+              {
+                index: true,
+                element: <DonorsPage />,
+              },
+              {
+                path: ":donorId",
+                element: <DonorDetailPage />,
+              },
+            ],
+          },
+          {
+            path: "donations",
+            element: <DonationPage />,
+          },
+        ],
       },
-      
-
+      {
+        path: "/gioi-thieu",
+        element: <LandingPage />,
+        errorElement: <ErrorPage />,
+      },
     ],
   },
 ]);
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <RouterProvider router={router}/>
-);
-
-
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<RouterProvider router={router} />);
