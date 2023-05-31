@@ -46,7 +46,7 @@ function DonationItem({ donation }) {
           <img height="100%" width="100%" src={donation.donor.image}></img>
         </Stack>
         <Stack>
-          <Typography fontSize={18} fontWeight={"bold"}>
+          <Typography fontSize={18} fontWeight={"bold"} whiteSpace={"nowrap"}>
             {donation.donor.name}
           </Typography>
           <Typography>{donation.donor.username}</Typography>
@@ -85,7 +85,9 @@ function DonationItem({ donation }) {
       >
         <Stack>
           <Typography textAlign={"end"}>Sự kiện</Typography>
-          <Typography textAlign={"end"}>{donation.event.name}</Typography>
+          <Typography textAlign={"end"} fontWeight={"bold"}>
+            {donation.event.name}
+          </Typography>
         </Stack>
         <Stack
           height={60}

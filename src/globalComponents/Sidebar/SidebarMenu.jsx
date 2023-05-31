@@ -37,7 +37,7 @@ const SidebarMenu =
             {
                 "id": 3,
                 "title": "Activity",
-                "name": "Hoạt động từ thiện",
+                "name": "Sự kiện từ thiện",
                 "icon": ActivityIcon,
                 "route": "/events",
                 "isEnd": true,
