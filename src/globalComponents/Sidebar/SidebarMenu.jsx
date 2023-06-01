@@ -37,7 +37,7 @@ const SidebarMenu =
             {
                 "id": 3,
                 "title": "Activity",
-                "name": "Hoạt động từ thiện",
+                "name": "Sự kiện từ thiện",
                 "icon": ActivityIcon,
                 "route": "/events",
                 "isEnd": true,
@@ -52,26 +52,40 @@ const SidebarMenu =
             {
                 "id": 5,
                 "title": "CharityManagement",
+                "name": "Quản lý nhà hảo tâm",
+                "icon": CharityManagementIcon,
+                "route": "/admin/manage/donors"
+            },
+            {
+                "id": 6,
+                "title": "CharityManagement",
+                "name": "Quản lý sự kiện",
+                "icon": CharityManagementIcon,
+                "route": "/admin/manage/events"
+            },
+            {
+                "id": 7,
+                "title": "CharityManagement",
                 "name": "Quản lý tài trợ",
                 "icon": CharityManagementIcon,
                 "route": "#"
             },
             {
-                "id": 6,
+                "id": 8,
                 "title": "ReceiverManagement",
                 "name": "Quản lý người nhận",
                 "icon": ReceiverManagementIcon,
                 "route": "/nguoi-nhan"
             },
             {
-                "id": 6,
+                "id": 9,
                 "title": "TaskManagement",
                 "name": "Quản lý hoạt động",
                 "icon": TaskManagementIcon,
                 "route": "#"
             },
             {
-                "id": 6,
+                "id": 10,
                 "title": "PostManagement",
                 "name": "Kêu gọi",
                 "route": "#"
