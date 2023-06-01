@@ -180,8 +180,8 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-    const { numSelected } = props;
-    const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  const { numSelected } = props;
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
 
   return (
     <Toolbar
@@ -209,12 +209,17 @@ function EnhancedTableToolbar(props) {
       {numSelected > 0 ? (
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           {numSelected === 1 && (
-            <Button variant="outlined" style={{ whiteSpace: "nowrap" }}>
+            <Button
+              variant="outlined"
+              style={{ whiteSpace: "nowrap" }}
+              size="small"
+            >
               Xem chi tiết
             </Button>
           )}
           <Button
             variant="contained"
+            size="small"
             color="error"
             onClick={() => setOpenDeleteDialog(true)}
           >
@@ -361,7 +366,12 @@ export default function DonorsTable() {
                     <TableCell align="right">{row.name}</TableCell>
                     <TableCell align="right">{row.username}</TableCell>
                     <TableCell align="right">{row.phone}</TableCell>
-                    <TableCell align="right">{row.score}</TableCell>
+                    <TableCell
+                      align="right"
+                      style={{ fontWeight: 600, color: "#2AC48A" }}
+                    >
+                      {row.score}
+                    </TableCell>
                     <TableCell align="right">{row.join_date}</TableCell>
                     <TableCell align="right">{row.email}</TableCell>
                     <TableCell align="right">{row.address}</TableCell>
