@@ -12,6 +12,7 @@ import HomepageRoot from './modules/Homepage/screens/HomepageRoot';
 import Receiver from './modules/ReceiverPage/screens/Receiver';
 import AddReceiver from './modules/ReceiverPage/screens/AddReceiver';
 import DonationPage from "./modules/DonationPage/screens/DonationPage";
+import ReceiverDetail from "./modules/ReceiverPage/screens/ReceiverDetail";
 const router = createBrowserRouter([
   {
     path: "",
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
           {
             path: "nguoi-nhan/them",
             element: <AddReceiver />,
+          },
+          {
+            path: ":nguoi-nhan/:id",
+            element: <ReceiverDetail />,
           },
           {
             path: "donors",

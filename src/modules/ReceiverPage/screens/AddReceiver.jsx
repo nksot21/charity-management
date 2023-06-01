@@ -7,9 +7,11 @@ import { Col, Form, Row, Image, Modal} from 'react-bootstrap'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import {ReceiverService} from "../../../services"
+import {storage} from '../../../firebaseSetup'
 // import { storage } from "../../../firebase";
 import axios from "axios";
 import { Alert, Snackbar } from '@mui/material';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 // import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
 export default function AddReceiver() {
     const fullname = useRef("");
@@ -39,23 +41,23 @@ export default function AddReceiver() {
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState(null);
 
-    // const uploadImage = () => {
-    //     // const imageRef = ref(storage, `${imageUpload.name}`);
-    //     uploadBytes(imageRef, imageUpload)
-    //       .then(() => {
-    //         getDownloadURL(imageRef)
-    //           .then((url) => {
-    //             setUrl(url);
-    //           })
-    //           .catch((error) => {
-    //             console.log(error.message, "error getting the image url");
-    //           });
-    //         setImage(null);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error.message);
-    //       });
-    // };
+    const uploadImage = () => {
+        const imageRef = ref(storage, `${imageUpload.name}`);
+        uploadBytes(imageRef, imageUpload)
+          .then(() => {
+            getDownloadURL(imageRef)
+              .then((url) => {
+                setUrl(url);
+              })
+              .catch((error) => {
+                console.log(error.message, "error getting the image url");
+              });
+            setImage(null);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+    };
 
     useEffect(() => {
         retrieveReceiverType();
@@ -76,14 +78,18 @@ export default function AddReceiver() {
         setGender( event.target.value)
       };
 
+    
     const sleep = async (milliseconds) => {
         await new Promise(resolve => {
             return setTimeout(resolve, milliseconds)
         });
     };
     
-    
     const saveHandler = async () => {
+        uploadImage();
+        while (url==null) {await sleep(1000);}
+        console.log("url image")
+        console.log(url)
         try {
             const recInfo = {
                 name: fullname.current.value,
@@ -97,7 +103,16 @@ export default function AddReceiver() {
                 birthday: dob.current.value,
                 docId: docId.current.value,
                 description: description.current.value,
+                photo: url,
             };
+           
+            // Check requiment
+            if( !receiverType.current.value || !phoneNumber.current.value || !docId.current.value ){
+                setFailedMess("Thông tin Tổ chức, Số liên hệ, Căn cước công dân còn thiếu!")
+                setFailedMessOpen(true)
+                return 
+            }
+            
             setRecInfo(recInfo)
             console.log('Receiver Info: ',recInfo);
             ReceiverService.createReceiver(recInfo)
@@ -146,7 +161,7 @@ export default function AddReceiver() {
     if(!isLoading)
   return (
     
-    <div style={{padding: "0 0 0 15px"}}>
+    <div style={{padding: "0 0 0 50px"}}>
 
         <Stack direction="horizontal" gap={2} className="mt-3">
             <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Trang chủ</Link>
@@ -161,7 +176,7 @@ export default function AddReceiver() {
                     style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
             <Link key="Home" to="/nguoi-nhan/them" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Thêm</Link>
         </Stack>
-        <h3 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Thêm người nhận mới</b></h3>
+        <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Thêm người nhận mới</b></h4>
 
         <div className={`${styled['form']}`}>
                 <Form className={`${styled['inside']}`}>
@@ -214,16 +229,16 @@ export default function AddReceiver() {
                     <Row>
                         <div  className={`${styled['name-gender']}`}>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
-                                <Form.Label style={{fontWeight:"500"}}>Tổ chức</Form.Label>
-                                <Form.Select defaultValue="Type" placeholder="Type" style={{fontSize: "14px", marginTop:"4px"}} ref={receiverType}>
+                                <Form.Label style={{fontWeight:"500"}}>Tổ chức <span style={{color:'red'}}> *</span></Form.Label>
+                                <Form.Select defaultValue="Type" placeholder="Type" style={{fontSize: "14px", marginTop:"4px"}} ref={receiverType} required>
                                             {
                                                 typeDb.map(type => <option value={type.id}>{type.name}</option>)
                                             }
                                         </Form.Select>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
-                                    <Form.Label style={{fontWeight:"500"}}>Số liên hệ</Form.Label>
-                                    <Form.Control type="tel" placeholder="Số liên hệ" style={{fontSize: "14px", marginTop:"4px"}} ref={phoneNumber}/>
+                                    <Form.Label style={{fontWeight:"500"}}>Số liên hệ <span style={{color:'red'}}> *</span></Form.Label>
+                                    <Form.Control type="tel" placeholder="Số liên hệ" style={{fontSize: "14px", marginTop:"4px"}} ref={phoneNumber} />
                             </Form.Group>
                         </div>
                     </Row>
@@ -260,8 +275,8 @@ export default function AddReceiver() {
                                 <Form.Control type="date" style={{fontSize: "14px", marginTop:"4px"}} ref={dob}/>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
-                                <Form.Label style={{fontWeight:"500"}}>Căn cước công dân</Form.Label>
-                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={docId}/>
+                                <Form.Label style={{fontWeight:"500"}}>Căn cước công dân <span style={{color:'red'}}> *</span></Form.Label>
+                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={docId} required/>
                             </Form.Group>
                         </div>
                     </Row>

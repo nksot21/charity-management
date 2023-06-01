@@ -40,7 +40,7 @@ export default function Header() {
           <Col className="col-4 justify-content-around d-flex header-menu-item">
             <div style={{ lineHeight: "46px", height: "46px" }}>
               <Link
-                to="/"
+                to="/gioi-thieu"
                 style={{
                   fontWeight: "500",
                   fontSize: "18px",
@@ -52,7 +52,7 @@ export default function Header() {
             </div>
             <div style={{ lineHeight: "46px", height: "46px" }}>
               <Link
-                to="/trang-chu"
+                to="/"
                 style={{
                   fontWeight: "500",
                   fontSize: "18px",

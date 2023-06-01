@@ -11,6 +11,7 @@ import ActivityIcon from './SidebarIcon/ActivityIcon.jsx'
 import ReceiverIcon from './SidebarIcon/ReceiverIcon'
 import TaskManagementIcon from './SidebarIcon/TaskManagementIcon'
 import PostIcon from './SidebarIcon/PostIcon'
+import { Link } from 'react-router-dom'
 
 export default function Sidebar() {
     
@@ -22,14 +23,15 @@ export default function Sidebar() {
     const [charityColor, setCharityColor] = useState("black");
     const [receiverColor, setReceiverColor] = useState("black");
     const [taskColor, setTaskColor] = useState("black");
-    const [postColor, setPostColor] = useState("black");
-    return <div className='d-flex flex-column justify-content-between sidebar-disable-copy' 
+    const [postColor, setPostColor] = useState("black");    
+    return <div className='d-flex flex-column justify-content-between sidebar-disable-copy ' 
         style={{  height: '100%',
-            width: "calc(100% / 6 - 20px)",
+            width: "calc(100% / 6 + 10px   )",
             position: "fixed",
             zIndex: "1",
             top: "70px",
-            left: "0px",}}>
+            left: "0px",
+            borderRight: "1px solid #E5E7EB"}}>
         
         <div>
         {
@@ -92,7 +94,7 @@ export default function Sidebar() {
                                 }
                             } }
                         >
-                            <a href={item.route} >
+                            <Link to={`${item.route}`} >
                                 <div className='col-3'
                                     style={{
                                         height: "55px",
@@ -130,7 +132,7 @@ export default function Sidebar() {
                                 >
                                     <p > {item.name} </p>
                                 </div>
-                                </a>
+                                </Link>
         
                                 {item.isEnd && item.isEnd === true && <hr style={{marginTop: "10px"}}></hr>}
                             </div>
