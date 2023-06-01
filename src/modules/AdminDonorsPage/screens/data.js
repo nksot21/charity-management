@@ -29,26 +29,26 @@ function createDonor(
 function createEvent(
   ID,
   title,
-  date_begin,
-  date_end,
-  amount_needed,
-  amount_got,
+  dateBegin,
+  dateEnd,
+  amountNeeded,
+  amountGot,
   address,
   category,
-  amount_distributed,
-  is_donating
+  amountDistributed,
+  isDonating
 ) {
   return {
     ID,
     title,
-    date_begin,
-    date_end,
-    amount_needed,
-    amount_got,
+    dateBegin,
+    dateEnd,
+    amountNeeded,
+    amountGot,
     address,
     category,
-    amount_distributed,
-    is_donating,
+    amountDistributed,
+    isDonating,
   };
 }
 
@@ -67,8 +67,8 @@ export const donors = [
   ),
   createDonor(
     2,
-    "Lê Văn Thiện",
-    "thienlv1812",
+    "Nguyễn Hùng Thịnh",
+    "nguyenhungthinh3829",
     "048928349",
     230,
     format(new Date(), "dd/MM/yyyy"),
@@ -79,8 +79,8 @@ export const donors = [
   ),
   createDonor(
     3,
-    "Lê Văn Thiện",
-    "thienlv1812",
+    "Nguyễn Đỗ Nhã Khuyên",
+    "nhakhuyencute123",
     "048928349",
     230,
     format(new Date(), "dd/MM/yyyy"),
@@ -91,8 +91,8 @@ export const donors = [
   ),
   createDonor(
     4,
-    "Lê Văn Thiện",
-    "thienlv1812",
+    "Nguyễn Lê Thái Hoàng",
+    "anhhoangdeptrai124",
     "048928349",
     230,
     format(new Date(), "dd/MM/yyyy"),
@@ -103,8 +103,8 @@ export const donors = [
   ),
   createDonor(
     5,
-    "Lê Văn Thiện",
-    "thienlv1812",
+    "Nguyễn Đình Khôi",
+    "khoinguyen9837",
     "048928349",
     230,
     format(new Date(), "dd/MM/yyyy"),
@@ -115,8 +115,8 @@ export const donors = [
   ),
   createDonor(
     6,
-    "Lê Văn Thiện",
-    "thienlv1812",
+    "Ngô Thùy Duyên",
+    "duyenthuyngohappy",
     "048928349",
     230,
     format(new Date(), "dd/MM/yyyy"),
@@ -127,8 +127,8 @@ export const donors = [
   ),
   createDonor(
     7,
-    "Lê Văn Thiện",
-    "thienlv1812",
+    "Đoàn Quốc Bảo",
+    "baoDepTrai56",
     "048928349",
     230,
     format(new Date(), "dd/MM/yyyy"),
@@ -139,8 +139,8 @@ export const donors = [
   ),
   createDonor(
     8,
-    "Lê Văn Thiện",
-    "thienlv1812",
+    "Nguyễn Thị Diệu Nhi",
+    "dieunhidethuong673",
     "048928349",
     230,
     format(new Date(), "dd/MM/yyyy"),
@@ -151,8 +151,8 @@ export const donors = [
   ),
   createDonor(
     9,
-    "Lê Văn Thiện",
-    "thienlv1812",
+    "Trần Thị Thu Hà",
+    "hatran@hehe",
     "048928349",
     230,
     format(new Date(), "dd/MM/yyyy"),

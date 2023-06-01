@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Stack, Typography } from "@mui/material";
 import quote from "../../../assets/images/quote.png";
 import { Link } from "react-router-dom";
 import DonorInfoPage from "../screens/DonorInfoPage";
@@ -8,22 +8,13 @@ function DonorInfo({ onDonation = false }) {
   const [isShowingInfo, setIsShowingInfo] = useState(false);
   return (
     <Stack position="sticky" top={100} left={0}>
-      <Stack direction="row" spacing={4}>
-        <Stack
-          height={180}
-          width={180}
-          justifyContent="center"
-          borderRadius="200px"
-          overflow="hidden"
-          style={{ boxShadow: "0 0 10px #00000022" }}
-          flexShrink={0}
-        >
-          <img
-            height="100%"
-            width="100%"
-            src="https://static.thiennguyen.app/public/user/profile/2023/2/24/649fb301-da9c-4d4b-be74-bca32ece39ae.jpg"
-          ></img>
-        </Stack>
+      <Stack direction="row" spacing={4} alignItems={"center"}>
+        <Avatar
+          sx={{ width: 170, height: 170, boxShadow: "0 0 10px #00000022" }}
+          src={
+            "https://static.thiennguyen.app/public/user/profile/2023/2/24/649fb301-da9c-4d4b-be74-bca32ece39ae.jpg"
+          }
+        />
         <Stack paddingTop={3} flexGrow={1}>
           <Typography variant="h5" fontWeight={600}>
             Quỹ Hạnh Phúc Cho Mọi Người

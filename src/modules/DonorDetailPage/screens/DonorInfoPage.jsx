@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Avatar,
   Button,
   Container,
   FormControl,
@@ -36,21 +37,12 @@ function DonorInfoPage({ onCloseModal }) {
       </Stack>
       <Stack direction="row" spacing={4} padding={2} marginTop={2}>
         <Stack>
-          <Stack
-            height={200}
-            width={200}
-            justifyContent="center"
-            borderRadius="200px"
-            overflow="hidden"
-            style={{ boxShadow: "0 0 10px #00000022" }}
-            flexShrink={0}
-          >
-            <img
-              height="100%"
-              width="100%"
-              src="https://static.thiennguyen.app/public/user/profile/2023/2/24/649fb301-da9c-4d4b-be74-bca32ece39ae.jpg"
-            ></img>
-          </Stack>
+          <Avatar
+            sx={{ width: 190, height: 190, boxShadow: "0 0 10px #00000022" }}
+            src={
+              "https://static.thiennguyen.app/public/user/profile/2023/2/24/649fb301-da9c-4d4b-be74-bca32ece39ae.jpg"
+            }
+          />
           <Stack marginTop={3} alignItems={"center"}>
             <MuiFileInput
               label="Chọn ảnh"
