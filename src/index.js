@@ -6,14 +6,16 @@ import Root from "./Root";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import DonorsPage from "./modules/DonorsPage/screens/DonorsPage";
 import DonorDetailPage from "./modules/DonorDetailPage/screens/DonorDetailPage";
-import ErrorPage from './modules/ErrorPage/ErrorPage';
-import LandingPage from './modules/LandingPage/screens/LandingPage';
-import HomepageRoot from './modules/Homepage/screens/HomepageRoot';
-import Receiver from './modules/ReceiverPage/screens/Receiver';
-import AddReceiver from './modules/ReceiverPage/screens/AddReceiver';
+import ErrorPage from "./modules/ErrorPage/ErrorPage";
+import LandingPage from "./modules/LandingPage/screens/LandingPage";
+import HomepageRoot from "./modules/Homepage/screens/HomepageRoot";
+import Receiver from "./modules/ReceiverPage/screens/Receiver";
+import AddReceiver from "./modules/ReceiverPage/screens/AddReceiver";
 import DonationPage from "./modules/DonationPage/screens/DonationPage";
 import EventsPage from "./modules/EventsPage/screens/EventsPage";
 import EventDetailPage from "./modules/EventDetailPage/screens/EventDetailPage";
+import AdminDonorsPage from "./modules/AdminDonorsPage/screens/AdminDonorsPage";
+import AdminEventsPage from "./modules/AdminEventsPage/screens/AdminEventsPage";
 const router = createBrowserRouter([
   {
     path: "",
@@ -55,14 +57,32 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <EventsPage/>
-              }, 
+                element: <EventsPage />,
+              },
               {
                 path: ":eventId",
-                element: <EventDetailPage/>
-              }
-            ]
-          }
+                element: <EventDetailPage />,
+              },
+            ],
+          },
+          {
+            path: "admin",
+            children: [
+              {
+                path: "manage",
+                children: [
+                  {
+                    path: "donors",
+                    element: <AdminDonorsPage />,
+                  },
+                  {
+                    path: "events",
+                    element: <AdminEventsPage />,
+                  },
+                ],
+              },
+            ],
+          },
         ],
       },
       {
