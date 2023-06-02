@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <div className="sticky-top header-disable-copy">
+    <div className="sticky-top header-disable-copy" style={{zIndex: 10}}>
       <Container
         fluid
         style={{
