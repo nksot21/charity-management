@@ -61,10 +61,9 @@ function DonorInfo({ onDonation = false, donor }) {
             variant="contained"
             size="small"
             style={{ textTransform: "none" }}
-            onClick={() => setIsShowingInfo(true)}
           >
             <Link
-              to={"/donors/123"}
+              to={"/donors/" + donor.id}
               style={{ color: "white", textDecoration: "none" }}
             >
               Xem trang chi tiết

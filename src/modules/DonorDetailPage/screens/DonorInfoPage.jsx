@@ -29,7 +29,7 @@ function DonorInfoPage({ onCloseModal, donor }) {
   const [address, setaddress] = useState(donor.address);
   const [slogan, setslogan] = useState(donor.slogan);
   const [username, setusername] = useState(donor.username);
-  const [password, setPassword] = useState(donor.password);
+  const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState([]);
@@ -45,20 +45,75 @@ function DonorInfoPage({ onCloseModal, donor }) {
   };
   const imageChooseHandler = (fileChosen) => {
     setFile(fileChosen);
-    const extension = fileChosen.name.split(".").pop();
+    if (fileChosen) {
+      const extension = fileChosen.name.split(".").pop();
 
-    if (extension !== "jpg" && extension !== "png") {
-      setErrors((prev) => {
-        if (prev.findIndex((error) => error.includes("Định dạng")) === -1) {
-          return [...prev, "Định dạng ảnh không hợp lệ!"];
-        }
-        return prev;
-      });
-    } else {
-      setErrors((prev) =>
-        [...prev].filter((error) => error.includes("Định dạng") === false)
-      );
+      if (extension !== "jpg" && extension !== "png") {
+        setErrors((prev) => {
+          if (prev.findIndex((error) => error.includes("Định dạng")) === -1) {
+            return [...prev, "Định dạng ảnh không hợp lệ!"];
+          }
+          return prev;
+        });
+      } else {
+        setErrors((prev) =>
+          [...prev].filter((error) => error.includes("Định dạng") === false)
+        );
+      }
     }
+  };
+
+  const addDonorHandler = () => {
+    let haveError = false;
+    setErrors([]);
+    if (
+      name.length === 0 ||
+      phone.length === 0 ||
+      email.length === 0 ||
+      slogan.length === 0 ||
+      username.length === 0
+    ) {
+      haveError = true;
+      setErrors((prev) => [...prev, "Vui lòng điền đầy đủ các thông tin!"]);
+    }
+
+    if (new Date(birthday).getTime() > new Date().getTime) {
+      haveError = true;
+      setErrors((prev) => [...prev, "Ngày sinh không hợp lệ"]);
+    }
+
+    // upload to firebase then get url
+    const photoURL = "url/to/firebase/image"
+
+    let donorBody = {
+      name,
+      phone,
+      birthday,
+      photo: photoURL,
+      email,
+      address,
+      slogan,
+      username
+    };
+
+    if (isChangingPassword) {
+      if (password !== donor.password) {
+        haveError = true;
+        setErrors((prev) => [...prev, "Mật khẩu không đúng"]);
+      }
+      if (password.length === 0 && newPassword.length === 0) {
+        haveError = true;
+        setErrors((prev) => [
+          ...prev,
+          "Vui lòng điện mật khẩu hoặc/và mật khẩu mới",
+        ]);
+      }
+      donorBody = { ...donorBody, password };
+    }
+
+    console.log(donorBody)
+
+    if (!haveError && errors.length === 0) onCloseModal();
   };
 
   return (
@@ -67,8 +122,8 @@ function DonorInfoPage({ onCloseModal, donor }) {
         <Stack>
           <Typography fontSize={24}>Thông tin cá nhân</Typography>
         </Stack>
-        <Stack direction="row" spacing={4} padding={2} marginTop={2}>
-          <Stack>
+        <Stack direction="row" spacing={3} paddingX={2} paddingTop={2} marginTop={2}>
+          <Stack width={250}>
             <Avatar
               sx={{ width: 250, height: 250, boxShadow: "0 0 10px #00000022" }}
               src={photo}
@@ -77,9 +132,10 @@ function DonorInfoPage({ onCloseModal, donor }) {
               <MuiFileInput
                 label="Chọn ảnh"
                 size="small"
-                style={{ width: "120px" }}
+                style={{ width: "100%", whiteSpace: "nowrap" }}
                 onChange={imageChooseHandler}
                 value={file}
+                hideSizeText
               />
               <Typography
                 fontSize={13}
@@ -97,6 +153,7 @@ function DonorInfoPage({ onCloseModal, donor }) {
                 width={"100%"}
                 border={"1px solid red"}
                 padding={1}
+                borderRadius={1}
               >
                 {errors.map((error) => (
                   <Typography
@@ -109,6 +166,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
                 ))}
               </Stack>
             )}
+            <Stack flexGrow={1} justifyContent={"end"}>
+              <Button variant="outlined" onClick={() => onCloseModal()}>Hủy</Button>
+            </Stack>
           </Stack>
 
           <Stack spacing={2} width={400}>
@@ -244,7 +304,7 @@ function DonorInfoPage({ onCloseModal, donor }) {
               </Button>
             </Stack>
             <Stack>
-              <Button variant="contained">Cập nhật</Button>
+              <Button variant="contained" onClick={addDonorHandler}>Cập nhật</Button>
             </Stack>
           </Stack>
         </Stack>

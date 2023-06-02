@@ -4,6 +4,8 @@ import {
   Button,
   Checkbox,
   FormControl,
+  Input,
+  InputAdornment,
   InputLabel,
   List,
   ListItem,
@@ -11,6 +13,7 @@ import {
   ListItemButton,
   ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   Stack,
   TextField,
@@ -25,8 +28,10 @@ function AddDonationPopup({ onCloseModal, event }) {
   const [account, setAccount] = useState("");
   const [amount, setAmount] = useState("");
   const [content, setContent] = useState("");
+  const [errors, setErrors] = useState([]);
 
   const [donorsResult, setDonorsResult] = useState([]);
+  const [donorChosen, setDonorChosen] = React.useState(null);
 
   const banks = [
     "Vietcombank",
@@ -45,15 +50,15 @@ function AddDonationPopup({ onCloseModal, event }) {
     "OCB",
   ];
 
-  const donorIdChangeHandler = (event) => {
-    const value = event.target.value;
+  const donorIdChangeHandler = (e) => {
+    const value = e.target.value;
     setDonorId(value);
     if (value.length > 0) {
       setDonorsResult(
         donors.filter(
           (donor) =>
-            donor.ID.toString() === event.target.value ||
-            donor.username.includes(event.target.value)
+            donor.ID.toString() === e.target.value ||
+            donor.username.includes(e.target.value)
         )
       );
     } else {
@@ -61,21 +66,57 @@ function AddDonationPopup({ onCloseModal, event }) {
     }
   };
 
-  const [donorChosen, setDonorChosen] = React.useState({});
-
   const handleToggle = (value) => () => {
     setDonorChosen(value);
   };
 
   const addDonationHandler = () => {
-    console.log({
-      donor: donorChosen,
-      event,
-      bank,
-      account,
-      amount,
-      content,
-    });
+    setErrors([]);
+    if (donorChosen === null) {
+      setErrors((prev) => [...prev, "Vui lòng chọn nhà hảo tâm!"]);
+    }
+    if (
+      event.category.name === "Tiền" &&
+      (bank === "" || account === "" || amount === "" || content === "")
+    ) {
+      setErrors((prev) => [...prev, "Vui lòng điền đầy đủ thông tin!"]);
+    }
+    if (event.category.name !== "Tiền" && amount === "") {
+      setErrors((prev) => [...prev, "Vui lòng điền đầy đủ thông tin!"]);
+    }
+    if (event.category.name === "Tiền") {
+      let transferFrom = {
+        bank,
+        account,
+        amount,
+        content,
+        time: new Date().toISOString(),
+      };
+      // save transferFrom to database
+      transferFrom = { ...transferFrom, id: 10 };
+
+      const newDonation = {
+        donor: donorChosen,
+        event: event,
+        transfer: transferFrom,
+      };
+      console.log(newDonation);
+    } else {
+      let itemFrom = {
+        amount,
+        time: new Date().toISOString(),
+      };
+
+      // save itemFrom to database
+      itemFrom = { ...itemFrom, id: 10 };
+      const newDonation = {
+        donor: donorChosen,
+        event: event,
+        item: itemFrom,
+      };
+
+      console.log(newDonation);
+    }
   };
 
   return (
@@ -95,7 +136,7 @@ function AddDonationPopup({ onCloseModal, event }) {
         />
         {donorsResult.length > 0 && (
           <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
-            {donorsResult.map((donor) => {
+            {donorsResult.slice(0, 4).map((donor) => {
               const labelId = `checkbox-list-secondary-label-${donor.ID}`;
               return (
                 <ListItem
@@ -104,6 +145,9 @@ function AddDonationPopup({ onCloseModal, event }) {
                     <Checkbox
                       edge="end"
                       onChange={handleToggle(donor)}
+                      checked={
+                        donorChosen ? donor.ID === donorChosen.ID : false
+                      }
                       inputProps={{ "aria-labelledby": labelId }}
                     />
                   }
@@ -128,49 +172,78 @@ function AddDonationPopup({ onCloseModal, event }) {
             Không tìm thấy nhà hảo tâm
           </Typography>
         )}
-        <FormControl fullWidth size="small">
-          <InputLabel id="category">Chọn ngân hàng</InputLabel>
-          <Select
-            labelId="category"
-            id="demo-simple-select"
-            value={bank}
-            label="Chọn ngân hàng"
-            onChange={(event) => setBank(event.target.value)}
-          >
-            {banks.map((b) => (
-              <MenuItem value={b} key={Math.random()}>
-                {b}
-              </MenuItem>
-            ))}
-          </Select>
+        {event.category.name === "Tiền" && (
+          <>
+            <FormControl fullWidth size="small">
+              <InputLabel id="category">Chọn ngân hàng</InputLabel>
+              <Select
+                labelId="category"
+                id="demo-simple-select"
+                value={bank}
+                label="Chọn ngân hàng"
+                onChange={(event) => setBank(event.target.value)}
+              >
+                {banks.map((b) => (
+                  <MenuItem value={b} key={Math.random()}>
+                    {b}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              size="small"
+              fullWidth
+              label="Số tài khoản"
+              type="text"
+              value={account}
+              required
+              onChange={(event) => setAccount(event.target.value)}
+            />
+            <TextField
+              size="small"
+              fullWidth
+              label="Nội dung"
+              type="text"
+              value={content}
+              multiline
+              rows={2}
+              required
+              onChange={(event) => setContent(event.target.value)}
+            />
+          </>
+        )}
+        <FormControl variant="outlined" fullWidth size="small">
+          <InputLabel htmlFor="amount">Số lượng</InputLabel>
+          <OutlinedInput
+            id="amount"
+            type="text"
+            value={amount}
+            label="Số lượng"
+            required
+            endAdornment={
+              <InputAdornment position="end">
+                {event.category.unit}
+              </InputAdornment>
+            }
+            onChange={(event) => setAmount(event.target.value)}
+          />
         </FormControl>
-        <TextField
-          size="small"
-          fullWidth
-          label="Số tài khoản"
-          type="text"
-          value={account}
-          required
-          onChange={(event) => setAccount(event.target.value)}
-        />
-        <TextField
-          size="small"
-          fullWidth
-          label="Số tiền chuyển"
-          type="text"
-          value={amount}
-          required
-          onChange={(event) => setAmount(event.target.value)}
-        />
-        <TextField
-          size="small"
-          fullWidth
-          label="Nội dung"
-          type="text"
-          value={content}
-          required
-          onChange={(event) => setContent(event.target.value)}
-        />
+        {errors.length > 0 && (
+          <Stack
+            marginTop={2}
+            alignItems={"start"}
+            width={"100%"}
+            border={"1px solid red"}
+            padding={1}
+            borderRadius={1}
+          >
+            {errors.map((error) => (
+              <Typography fontSize={14} fontStyle={"italic"} color={"error"}>
+                {"- " + error}
+              </Typography>
+            ))}
+          </Stack>
+        )}
         <Stack direction={"row"} spacing={2}>
           <Button
             variant="outlined"

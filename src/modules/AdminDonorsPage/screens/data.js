@@ -205,9 +205,9 @@ export const events = [
     136000000,
     "An Lão, Bình Định",
     {
-      id: 3,
-      name: "Tiền",
-      unit: "VNĐ",
+      id: 4,
+      name: "Gạo",
+      unit: "tấn",
     },
     0,
     true
