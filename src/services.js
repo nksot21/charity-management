@@ -11,6 +11,10 @@ export class ReceiverService{
         return axios.get(url + 'receiver')
     }
 
+    static getReceiverById(id){
+        return axios.get(url + 'receiver/' + id)
+    }
+
     static getAllReceiverType(){
         return axios.get(url + 'receiver/types')
     }

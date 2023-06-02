@@ -8,7 +8,8 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { Col, Container, Row } from 'react-bootstrap';
 
-export default function ContentCard() {
+export default function ContentCard(props) {
+    const receiver = props.data
     return (
       <Card sx={{ maxWidth: 700, padding:"0 20px 0 20px" }}>
       <CardActionArea>
@@ -20,7 +21,7 @@ export default function ContentCard() {
                             Tên đơn vị:
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px", height: '50px', lineHeight: '50px'}}>
-                            Ngô Thị Thu Hà
+                            {receiver.name}
                         </Typography>
                     </Col>
                     <Col>
@@ -28,7 +29,7 @@ export default function ContentCard() {
                             Số liên hệ: 
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px", height: '50px', lineHeight: '50px'}}>
-                            091335724
+                            {receiver.phone}
                         </Typography>
                     </Col>
                 </Row>
@@ -38,7 +39,7 @@ export default function ContentCard() {
                             Ngày sinh:
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px", height: '50px', lineHeight: '50px'}}>
-                            30/04/1994
+                            {receiver.birthday}
                         </Typography>
                     </Col>
                     <Col>
@@ -46,7 +47,7 @@ export default function ContentCard() {
                             CCCD:
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px", height: '50px', lineHeight: '50px'}}>
-                            DOC20186673424
+                            {receiver.docId}
                         </Typography>
                     </Col>
                 </Row>
@@ -56,7 +57,7 @@ export default function ContentCard() {
                             Địa chỉ:
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px", height: '50px', lineHeight: '50px'}}>
-                            1346 Bình Hưng, xã Địa Hòa, tỉnh Lâm Đồng, Việt Nam
+                            {receiver.address + ", " + receiver.district + ", " + receiver.cityprovince + ", " + receiver.country}
                         </Typography>
                     </Col>
                 
@@ -67,7 +68,7 @@ export default function ContentCard() {
                             Loại đơn vị:  
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px",  height: '50px', lineHeight: '50px'}}>
-                            Cá nhân
+                            {receiver.receiverType?.name}
                         </Typography>
                     </Col>
                 </Row>
@@ -77,7 +78,7 @@ export default function ContentCard() {
                             Số tài khoản:  
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px",  height: '50px', lineHeight: '50px'}}>
-                            557335367432
+                            {receiver.bankNumber}
                         </Typography>
                     </Col>
                     <Col>
@@ -85,7 +86,7 @@ export default function ContentCard() {
                             Ngân hàng: 
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px",  height: '50px', lineHeight: '50px'}}>
-                            VietCombank
+                            {receiver.bankName}
                         </Typography>
                     </Col>
                 </Row>

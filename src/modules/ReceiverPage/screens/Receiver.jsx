@@ -7,9 +7,6 @@ import { ReceiverService } from '../../../services';
 import DataTable from '../components/DataTable';
 import ReceiverTable from '../components/DataTable'
 
-
-
-
 export default function Receiver() {
   const [receiverList, setReceiverList] = useState([]);
   const [isLoading, setLoading] = useState("true");
@@ -21,8 +18,8 @@ export default function Receiver() {
   const retrieveReceivers = () => {
       ReceiverService.getAllReceivers()
       .then(response => {
-          console.log(response.data.data.content)
-          const receivers = response.data.data.content
+          console.log(response.data.data)
+          const receivers = response.data.data
           let tempList = []
           receivers.map(rec => {
             let temp = {
