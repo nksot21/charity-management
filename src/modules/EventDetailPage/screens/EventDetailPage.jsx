@@ -65,7 +65,7 @@ function EventDetailPage() {
   return (
     <Stack paddingX={3} paddingY={4}>
       <Typography fontSize={28} fontWeight={600}>
-        {event.name}
+        {event.title}
       </Typography>
       <Stack marginTop={3} direction={"row"} spacing={3}>
         <Stack width={"60%"}>

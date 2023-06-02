@@ -1,16 +1,52 @@
-import { Stack } from "@mui/material";
-import React from "react";
+import { Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 import DonationItem from "../components/DonationItem";
 import DonationFilter from "../components/DonationFilter";
 
 function DonationPage() {
+  const [viewedDonations, setViewedDonations] = useState(donations);
+
+  const searchHandler = (searchDonor, searchEvent) => {
+    if (searchDonor.length > 0 && searchEvent.length > 0) {
+      return setViewedDonations(
+        donations.filter(
+          (donation) =>
+            (donation.donor.name.toLowerCase().includes(searchDonor) ||
+              donation.donor.username.toLowerCase().includes(searchDonor)) &&
+            donation.event.title.toLowerCase().includes(searchEvent)
+        )
+      );
+    }
+    if (searchDonor.length > 0) {
+      return setViewedDonations(
+        donations.filter(
+          (donation) =>
+            donation.donor.name.toLowerCase().includes(searchDonor) ||
+            donation.donor.username.toLowerCase().includes(searchDonor)
+        )
+      );
+    }
+    if (searchEvent.length > 0) {
+      return setViewedDonations(
+        donations.filter((donation) =>
+          donation.event.title.toLowerCase().includes(searchEvent)
+        )
+      );
+    }
+  };
+
   return (
     <Stack paddingY={4} paddingX={3}>
-      <DonationFilter />
+      <DonationFilter onSearch={searchHandler} />
       <Stack marginTop={2} spacing={2}>
-        {donations.map((donation) => (
+        {viewedDonations.map((donation) => (
           <DonationItem donation={donation} key={Math.round()} />
         ))}
+        {viewedDonations.length === 0 && (
+          <Typography marginTop={3} fontSize={18} textAlign={"center"}>
+            Không có kết quả để hiển thị
+          </Typography>
+        )}
       </Stack>
     </Stack>
   );
@@ -27,7 +63,7 @@ const donations = [
     },
     event: {
       id: 232,
-      name: "Ủng hộ trẻ em vùng lũ lụt miền Trung",
+      title: "Ủng hộ trẻ em vùng lũ lụt miền Trung",
       image:
         "https://static.thiennguyen.app/public/donate-target/photo/2023/5/26/66e9c123-cc1b-4f9d-9f02-ccfeb23c9324.jpg",
     },
@@ -47,7 +83,7 @@ const donations = [
     },
     event: {
       id: 232,
-      name: "Ủng hộ trẻ em vùng lũ lụt miền Trung",
+      title: "Ủng hộ trẻ em vùng lũ lụt miền Trung",
       image:
         "https://static.thiennguyen.app/public/donate-target/photo/2023/5/26/66e9c123-cc1b-4f9d-9f02-ccfeb23c9324.jpg",
     },

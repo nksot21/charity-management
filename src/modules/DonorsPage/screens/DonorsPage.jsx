@@ -12,13 +12,20 @@ import DonorCard from "../../LandingPage/components/DonorCard";
 function DonorsPage() {
   const [count, setCount] = React.useState(9);
   const [search, setSearch] = React.useState("");
-  const [donors, setDonors] = React.useState(userArray)
+  const [viewedDonors, setViewedDonors] = React.useState(userArray);
   const seeMoreHandler = () => {
     setCount((prev) => prev + 9);
   };
   const searchHandler = () => {
-    
-  }
+    setViewedDonors(
+      userArray.filter(
+        (donor) =>
+          donor.name.toLowerCase().includes(search) ||
+          donor.username.toLowerCase().includes(search) ||
+          donor.id.toString().toLowerCase().includes(search)
+      )
+    );
+  };
   return (
     <Container>
       <Typography marginTop={8} textAlign="center" variant="h3">
@@ -57,13 +64,13 @@ function DonorsPage() {
         </Button>
       </Stack>
       <Stack marginTop={6}>
-        <Grid container rowSpacing={2}>
-          {donors.slice(0, count).map((user) => (
+        <Grid container rowSpacing={3} columnSpacing={3}>
+          {viewedDonors.slice(0, count).map((user) => (
             <Grid item xs={4}>
               <DonorCard
                 id={user.id}
                 name={user.name}
-                email={user.email}
+                username={user.username}
                 date={user.date}
               />
             </Grid>
@@ -91,97 +98,97 @@ const userArray = [
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
+    date: "07/2022",
+  },
+  {
+    id: "00723",
+    name: "Nguyễn Thị Mỹ Châu",
+    username: "@JennieRubyJane",
+    date: "07/2022",
+  },
+  {
+    id: "00723",
+    name: "Kim Jisoo",
+    username: "@JennieRubyJane",
+    date: "07/2022",
+  },
+  {
+    id: "00723",
+    name: "Lê Văn Thiện",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
   {
     id: "00723",
     name: "Jennie Kim",
-    email: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    email: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    email: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    email: "@JennieRubyJane",
+    username: "@JennieRubyJane",
     date: "07/2022",
   },
 ];

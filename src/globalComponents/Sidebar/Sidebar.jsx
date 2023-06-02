@@ -24,7 +24,7 @@ export default function Sidebar() {
           </>
         ))}
       </Stack>
-      <Typography padding={2}>aSheep Charity Management</Typography>
+      <Typography padding={2} marginTop={20} fontSize={14} textAlign={"center"}>aSheep Charity Management</Typography>
     </Stack>
   );
 }
