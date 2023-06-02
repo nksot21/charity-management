@@ -1,64 +1,69 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import UserImg from "../../../assets/images/landingpage/jennie.png";
 import "./DonorCard.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Avatar,
+  Button,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 export default function DonorCard(props) {
   const navigate = useNavigate();
   return (
-    <Container
-      style={{
-        height: "255px",
-        width: "335px",
-        backgroundColor: "#FCFCFD",
-        padding: "28px",
-        borderRadius: "12px",
-        border: "solid 3px #F1F1F3",
-      }}
-    >
-      <Row
+    <Stack boxShadow={"0 0 10px #00000033"} padding={2} borderRadius={3}>
+      <Stack
         onClick={() => {
           navigate("/donors/" + props.id);
         }}
         style={{
           cursor: "pointer",
         }}
+        direction={"row"}
+        spacing={2}
+        paddingBottom={1}
+        borderBottom={"1px solid #060"}
       >
-        <Col className="col-4">
-          <img
-            style={{
-              width: "70px",
-              height: "70px",
-              objectFit: "cover",
-              border: "2px solid #075233",
-              borderRadius: "40px",
-            }}
-            src={UserImg}
-          />
-        </Col>
-        <Col className="col-8 d-flex" style={{ flexDirection: "column" }}>
-          <p className="card-heading-1">{props?.name}</p>
-          <p className="card-heading-2" style={{ marginBottom: "28px" }}>
-            {props?.email}
-          </p>
-        </Col>
+        <Avatar
+          sx={{ width: 70, height: 70 }}
+          src={UserImg}
+          style={{ border: "2px solid #060" }}
+        />
+        <Stack justifyContent={"center"}>
+          <Typography fontSize={18} fontWeight={"bold"}>
+            {props?.name}
+          </Typography>
+          <Typography>{props?.username}</Typography>
+        </Stack>
         <div className="card-line" />
-      </Row>
-      <Row>
-        <Col>
-          <p className="card-heading-2" style={{ marginBottom: "5px" }}>
-            Tài khoản từ thiện số: <span>{props?.id}</span>
-          </p>
-          <p className="card-heading-2" style={{ marginBottom: "18px" }}>
-            Tham gia từ: {props?.date}
-          </p>
-          <a className="card-heading-2" href="#">
-            {" "}
+      </Stack>
+      <Stack marginTop={2}>
+        <Typography>
+          Tài khoản từ thiện số:{" "}
+          <span
+            style={{
+              backgroundColor: "#ddd",
+              padding: "3px 18px",
+              fontWeight: "bold",
+              borderRadius: "15px",
+            }}
+          >
+            {props?.id}
+          </span>
+        </Typography>
+        <Typography marginTop={1}>
+          Tham gia từ:
+          <span style={{ fontWeight: "bold" }}> {props?.date}</span>{" "}
+        </Typography>
+        <Button style={{ marginTop: "16px" }}>
+          <Link to={"/donors/" + props.id} style={{ textDecoration: "none" }}>
             Xem sao kê
-          </a>
-        </Col>
-      </Row>
-    </Container>
+          </Link>
+        </Button>
+      </Stack>
+    </Stack>
   );
 }

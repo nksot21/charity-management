@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -40,6 +40,17 @@ function AddEventPopup({ onCloseModal, event }) {
   const [category, setCategory] = useState(
     event?.category.id || categories[0].id
   );
+
+  useEffect(() => {
+    if (!file) {
+      setImage(event?.image);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(file);
+    setImage(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   const addEventHandler = () => {
     let haveError = false;
@@ -84,7 +95,6 @@ function AddEventPopup({ onCloseModal, event }) {
   };
 
   const imageChooseHandler = (fileChosen) => {
-    setFile(fileChosen);
     const extension = fileChosen.name.split(".").pop();
 
     if (extension !== "jpg" && extension !== "png") {
@@ -95,6 +105,7 @@ function AddEventPopup({ onCloseModal, event }) {
         return prev;
       });
     } else {
+      setFile(fileChosen);
       setErrors((prev) =>
         [...prev].filter((error) => error.includes("Định dạng") === false)
       );
@@ -110,7 +121,7 @@ function AddEventPopup({ onCloseModal, event }) {
       </Stack>
       <Stack
         direction="row"
-        spacing={4}
+        spacing={3}
         paddingX={2}
         paddingTop={2}
         marginTop={2}
@@ -125,9 +136,10 @@ function AddEventPopup({ onCloseModal, event }) {
             <MuiFileInput
               label="Chọn ảnh"
               size="small"
-              style={{ width: "120px" }}
+              style={{ width: "100%", whiteSpace: "nowrap" }}
               onChange={imageChooseHandler}
               value={file}
+              hideSizeText
             />
             <Typography
               fontSize={13}

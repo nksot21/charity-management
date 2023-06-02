@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -44,7 +44,6 @@ function DonorInfoPage({ onCloseModal, donor }) {
     event.preventDefault();
   };
   const imageChooseHandler = (fileChosen) => {
-    setFile(fileChosen);
     if (fileChosen) {
       const extension = fileChosen.name.split(".").pop();
 
@@ -56,12 +55,24 @@ function DonorInfoPage({ onCloseModal, donor }) {
           return prev;
         });
       } else {
+        setFile(fileChosen);
         setErrors((prev) =>
           [...prev].filter((error) => error.includes("Định dạng") === false)
         );
       }
     }
   };
+
+  useEffect(() => {
+    if (!file) {
+      setphoto(donor.photo);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(file);
+    setphoto(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   const addDonorHandler = () => {
     let haveError = false;
@@ -83,7 +94,7 @@ function DonorInfoPage({ onCloseModal, donor }) {
     }
 
     // upload to firebase then get url
-    const photoURL = "url/to/firebase/image"
+    const photoURL = "url/to/firebase/image";
 
     let donorBody = {
       name,
@@ -93,7 +104,7 @@ function DonorInfoPage({ onCloseModal, donor }) {
       email,
       address,
       slogan,
-      username
+      username,
     };
 
     if (isChangingPassword) {
@@ -111,7 +122,7 @@ function DonorInfoPage({ onCloseModal, donor }) {
       donorBody = { ...donorBody, password };
     }
 
-    console.log(donorBody)
+    console.log(donorBody);
 
     if (!haveError && errors.length === 0) onCloseModal();
   };
@@ -122,7 +133,13 @@ function DonorInfoPage({ onCloseModal, donor }) {
         <Stack>
           <Typography fontSize={24}>Thông tin cá nhân</Typography>
         </Stack>
-        <Stack direction="row" spacing={3} paddingX={2} paddingTop={2} marginTop={2}>
+        <Stack
+          direction="row"
+          spacing={3}
+          paddingX={2}
+          paddingTop={2}
+          marginTop={2}
+        >
           <Stack width={250}>
             <Avatar
               sx={{ width: 250, height: 250, boxShadow: "0 0 10px #00000022" }}
@@ -167,7 +184,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               </Stack>
             )}
             <Stack flexGrow={1} justifyContent={"end"}>
-              <Button variant="outlined" onClick={() => onCloseModal()}>Hủy</Button>
+              <Button variant="outlined" onClick={() => onCloseModal()}>
+                Hủy
+              </Button>
             </Stack>
           </Stack>
 
@@ -304,7 +323,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               </Button>
             </Stack>
             <Stack>
-              <Button variant="contained" onClick={addDonorHandler}>Cập nhật</Button>
+              <Button variant="contained" onClick={addDonorHandler}>
+                Cập nhật
+              </Button>
             </Stack>
           </Stack>
         </Stack>
