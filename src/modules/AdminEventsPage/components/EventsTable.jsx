@@ -20,10 +20,13 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import { events } from "../../AdminDonorsPage/screens/data";
-import { Stack } from "@mui/material";
+import { Input, Stack, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
 import MyDialog from "../../../globalComponents/Dialog/MyDialog";
+import AddEventPopup from "./AddEventPopup";
+import { useNavigate } from "react-router-dom";
+import AddDonationPopup from "./AddDonationPopup";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -67,25 +70,25 @@ const headCells = [
     label: "Tiêu đề",
   },
   {
-    id: "date_begin",
+    id: "dateBegin",
     numeric: false,
     disablePadding: false,
     label: "Ngày bắt đầu",
   },
   {
-    id: "date_end",
+    id: "dateEnd",
     numeric: false,
     disablePadding: false,
     label: "Ngày kết thúc",
   },
   {
-    id: "amount_needed",
+    id: "amountNeeded",
     numeric: true,
     disablePadding: false,
     label: "Số tiền cần",
   },
   {
-    id: "amount_got",
+    id: "amountGot",
     numeric: true,
     disablePadding: false,
     label: "Số tiền nhận được",
@@ -103,13 +106,13 @@ const headCells = [
     label: "Loại",
   },
   {
-    id: "amount_distributed",
+    id: "amountDistributed",
     numeric: true,
     disablePadding: false,
     label: "Số tiền phân phát",
   },
   {
-    id: "is_donating",
+    id: "isDonating",
     numeric: false,
     disablePadding: false,
     label: "Đang hoạt động",
@@ -180,15 +183,25 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, selected } = props;
+  const { numSelected, selected, onSearchChange } = props;
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [isDeletable, setIsDeleteTable] = React.useState(false);
+  const [isUpdating, setIsUpdating] = React.useState(false);
+  const [isAddingDonation, setIsAddingDonation] = React.useState(false);
+  const navigate = useNavigate();
+
+  const [search, setSearch] = React.useState("");
+
+  const searchChangeHandler = (event) => {
+    setSearch(event.target.value);
+    onSearchChange(event.target.value);
+  };
 
   React.useEffect(() => {
     if (
       selected.findIndex((eventId) => {
         const event = events.find((e) => e.ID === eventId);
-        return event.amount_got !== event.amount_distributed;
+        return event.amountGot !== event.amountDistributed;
       }) > -1
     ) {
       setIsDeleteTable(false);
@@ -220,24 +233,61 @@ function EnhancedTableToolbar(props) {
         {numSelected} đã chọn
       </Typography>
 
+      <Input
+        placeholder="Tìm kiếm"
+        size="small"
+        value={search}
+        onChange={searchChangeHandler}
+        style={{ marginRight: "16px", minWidth: "200px", fontSize: 14 }}
+      />
+
       {numSelected > 0 ? (
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           {numSelected === 1 && (
             <>
-              <Button variant="outlined" style={{ whiteSpace: "nowrap" }}>
+              <Button
+                variant="outlined"
+                size="small"
+                style={{ whiteSpace: "nowrap" }}
+                onClick={() => navigate("/events/" + selected[0])}
+              >
                 Xem chi tiết
               </Button>
-              <Button variant="outlined" style={{ whiteSpace: "nowrap" }}>
-                Thêm giao dịch
-              </Button>
-              <Button variant="outlined" style={{ whiteSpace: "nowrap" }}>
+              <Button
+                variant="outlined"
+                size="small"
+                style={{ whiteSpace: "nowrap" }}
+                onClick={() => setIsUpdating(true)}
+              >
                 Cập nhật
               </Button>
+              <Button
+                variant="contained"
+                size="small"
+                style={{ whiteSpace: "nowrap", backgroundColor: "#2AC48A" }}
+                onClick={() => setIsAddingDonation(true)}
+              >
+                Thêm quyên góp
+              </Button>
+              {isAddingDonation && (
+                <AddDonationPopup
+                  onCloseModal={() => setIsAddingDonation(false)}
+                  event={events.find((e) => e.ID === selected[0])}
+                />
+              )}
+
+              {isUpdating && (
+                <AddEventPopup
+                  onCloseModal={() => setIsUpdating(false)}
+                  event={events.find((e) => e.ID === selected[0])}
+                />
+              )}
             </>
           )}
 
           <Button
             variant="contained"
+            size="small"
             color="error"
             onClick={() => setOpenDeleteDialog(true)}
           >
@@ -277,6 +327,7 @@ export default function EventsTable() {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [viewedEvents, setViewedEvents] = React.useState(events);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -330,12 +381,16 @@ export default function EventsTable() {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(events, getComparator(order, orderBy)).slice(
+      stableSort(viewedEvents, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, viewedEvents]
   );
+
+  const searchChangeHandler = (search) => {
+    setViewedEvents(events.filter((event) => event.title.includes(search)));
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -343,6 +398,7 @@ export default function EventsTable() {
         <EnhancedTableToolbar
           numSelected={selected.length}
           selected={selected}
+          onSearchChange={searchChangeHandler}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -394,23 +450,23 @@ export default function EventsTable() {
                         : row.title}
                     </TableCell>
                     <TableCell align="right">
-                      {format(new Date(row.date_begin), "dd/MM/yyyy")}
+                      {format(new Date(row.dateBegin), "dd/MM/yyyy")}
                     </TableCell>
                     <TableCell align="right">
-                      {format(new Date(row.date_end), "dd/MM/yyyy")}
+                      {format(new Date(row.dateEnd), "dd/MM/yyyy")}
                     </TableCell>
                     <TableCell
                       align="right"
                       style={{ fontWeight: 600, color: "#2AC48A" }}
                     >
-                      {currencyFormatter.format(row.amount_needed)}
+                      {currencyFormatter.format(row.amountNeeded)}
                     </TableCell>
                     <TableCell align="right">
                       <Typography
                         fontSize={"inherit"}
                         style={{ fontWeight: 600, color: "#2AC48A" }}
                       >
-                        {currencyFormatter.format(row.amount_got)}
+                        {currencyFormatter.format(row.amountGot)}
                       </Typography>
                       <Stack
                         height={4}
@@ -420,7 +476,7 @@ export default function EventsTable() {
                       >
                         <Stack
                           height={4}
-                          width={row.amount_got / row.amount_needed}
+                          width={row.amountGot / row.amountNeeded}
                           style={{ backgroundColor: "orange" }}
                           borderRadius={2}
                         ></Stack>
@@ -428,13 +484,16 @@ export default function EventsTable() {
                     </TableCell>
                     <TableCell align="right">{row.address}</TableCell>
                     <TableCell align="right">{row.category.name}</TableCell>
-                    <TableCell align="right">
-                      {currencyFormatter.format(row.amount_distributed)}
+                    <TableCell
+                      align="right"
+                      style={{ fontWeight: 600, color: "#2AC48A" }}
+                    >
+                      {currencyFormatter.format(row.amountDistributed)}
                     </TableCell>
                     <TableCell align="right">
                       <Checkbox
                         color="primary"
-                        checked={row.is_donating}
+                        checked={row.isDonating}
                         disabled
                       />
                     </TableCell>

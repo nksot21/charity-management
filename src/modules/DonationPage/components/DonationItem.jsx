@@ -1,5 +1,5 @@
 import { Circle, MoreHoriz } from "@mui/icons-material";
-import { IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, IconButton, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import format from "date-fns/format";
@@ -33,18 +33,7 @@ function DonationItem({ donation }) {
         paddingRight={2}
         onClick={() => setIsOpenDonorPopup(true)}
       >
-        <Stack
-          height={60}
-          width={60}
-          justifyContent="center"
-          borderRadius="200px"
-          overflow="hidden"
-          style={{ boxShadow: "0 0 10px #00000022" }}
-          flexShrink={0}
-          border={"2px solid #ddd"}
-        >
-          <img height="100%" width="100%" src={donation.donor.image}></img>
-        </Stack>
+        <Avatar sx={{ width: 60, height: 60 }} src={donation.donor.image} />
         <Stack>
           <Typography fontSize={18} fontWeight={"bold"} whiteSpace={"nowrap"}>
             {donation.donor.name}
@@ -89,30 +78,20 @@ function DonationItem({ donation }) {
             {donation.event.name}
           </Typography>
         </Stack>
-        <Stack
-          height={60}
-          width={60}
-          justifyContent="center"
-          borderRadius="200px"
-          overflow="hidden"
-          style={{ boxShadow: "0 0 10px #00000022" }}
-          flexShrink={0}
-          border={"2px solid #ddd"}
-        >
-          <img height="100%" width="100%" src={donation.event.image}></img>
-        </Stack>
+        <Avatar sx={{ width: 60, height: 60 }} src={donation.event.image} />
       </Stack>
       {isOpenDonorPopup && (
         <DonorPopup
           onCloseModal={() => setIsOpenDonorPopup(false)}
           onDonation={true}
+          donorId={donation.donor.id}
         />
       )}
       {isOpenEventPopup && (
-        <EventPopup onCloseModal={() => setIsOpenEventPopup(false)} />
+        <EventPopup onCloseModal={() => setIsOpenEventPopup(false)} eventId={donation.event.id} />
       )}
       {isOpenTransferPopup && (
-        <TransferPopup onCloseModal={() => setIsOpenTransferPopup(false)} />
+        <TransferPopup onCloseModal={() => setIsOpenTransferPopup(false)} transferId={donation.transfer.id} />
       )}
     </Stack>
   );

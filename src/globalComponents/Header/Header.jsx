@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <div className="sticky-top header-disable-copy">
+    <div className="sticky-top header-disable-copy" style={{zIndex: 10}}>
       <Container
         fluid
         style={{
@@ -44,7 +44,6 @@ export default function Header() {
                 style={{
                   fontWeight: "500",
                   fontSize: "18px",
-                  letterSpacing: "1px",
                 }}
               >
                 Giới thiệu
@@ -56,7 +55,6 @@ export default function Header() {
                 style={{
                   fontWeight: "500",
                   fontSize: "18px",
-                  letterSpacing: "1px",
                 }}
               >
                 Trang chủ
@@ -68,7 +66,6 @@ export default function Header() {
                 style={{
                   fontWeight: "500",
                   fontSize: "18px",
-                  letterSpacing: "1px",
                 }}
               >
                 Sự kiện
@@ -80,7 +77,6 @@ export default function Header() {
                 style={{
                   fontWeight: "500",
                   fontSize: "18px",
-                  letterSpacing: "1px",
                 }}
               >
                 Nhà hảo tâm

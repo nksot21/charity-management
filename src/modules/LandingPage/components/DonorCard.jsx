@@ -28,11 +28,11 @@ export default function DonorCard(props) {
         <Col className="col-4">
           <img
             style={{
-              width: "60px",
-              height: "60px",
+              width: "70px",
+              height: "70px",
               objectFit: "cover",
               border: "2px solid #075233",
-              borderRadius: "30px",
+              borderRadius: "40px",
             }}
             src={UserImg}
           />

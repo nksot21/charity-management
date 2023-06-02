@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import React, { useState } from 'react'
 import SidebarMenu from './SidebarMenu'
@@ -144,4 +145,35 @@ export default function Sidebar() {
         </div>
         <p style={{marginBottom: '70px', marginLeft: '20px', fontWeight: "500", fontSize: "15px",}}> aSheep Charity Management</p>
     </div>
+=======
+import React from "react";
+import { sidebarMenu } from "./SidebarMenu";
+import { Divider, Stack, Typography } from "@mui/material";
+import SidebarItem from "./SidebarItem";
+
+export default function Sidebar() {
+  return (
+    <Stack position={"sticky"} top={70} left={0}>
+      <Stack marginTop={2} width={"100%"}>
+        {sidebarMenu.map((item, index) => (
+          <>
+            <SidebarItem key={item.id} item={item} />
+            {index === 3 && (
+              <Divider
+                style={{
+                  alignSelf: "center",
+                  width: "90%",
+                  backgroundColor: "#666",
+                  marginTop: "4px",
+                  marginBottom: "4px",
+                }}
+              />
+            )}
+          </>
+        ))}
+      </Stack>
+      <Typography padding={2}>aSheep Charity Management</Typography>
+    </Stack>
+  );
+>>>>>>> dev
 }
