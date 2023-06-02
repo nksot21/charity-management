@@ -21,10 +21,11 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import { donors } from "../screens/data";
-import { Stack } from "@mui/material";
+import { Input, Stack, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import MyDialog from "../../../globalComponents/Dialog/MyDialog";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -181,8 +182,15 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const { numSelected, selected, onSearchChange } = props;
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  const [search, setSearch] = React.useState("");
+  const navigate = useNavigate()
+
+  const searchChangeHandler = (event) => {
+    setSearch(event.target.value);
+    onSearchChange(event.target.value);
+  };
 
   return (
     <Toolbar
@@ -207,6 +215,14 @@ function EnhancedTableToolbar(props) {
         {numSelected} đã chọn
       </Typography>
 
+      <Input
+        placeholder="Tìm kiếm"
+        size="small"
+        value={search}
+        onChange={searchChangeHandler}
+        style={{ marginRight: "20px", minWidth: "200px", fontSize: 14 }}
+      />
+
       {numSelected > 0 ? (
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           {numSelected === 1 && (
@@ -214,6 +230,7 @@ function EnhancedTableToolbar(props) {
               variant="outlined"
               style={{ whiteSpace: "nowrap" }}
               size="small"
+              onClick={() => navigate("/donors/" + selected[0])}
             >
               Xem chi tiết
             </Button>
@@ -256,6 +273,7 @@ export default function DonorsTable() {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [viewedDonors, setViewedDonors] = React.useState(donors);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -309,17 +327,34 @@ export default function DonorsTable() {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(donors, getComparator(order, orderBy)).slice(
+      stableSort(viewedDonors, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, viewedDonors]
   );
+
+  const searchChangeHandler = (search) => {
+    console.log(search);
+    setViewedDonors(
+      donors.filter(
+        (donor) =>
+          donor.name.includes(search) ||
+          donor.username.includes(search) ||
+          donor.email.includes(search) ||
+          donor.phone.includes(search)
+      )
+    );
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          selected={selected}
+          onSearchChange={searchChangeHandler}
+        />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead

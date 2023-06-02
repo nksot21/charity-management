@@ -108,7 +108,13 @@ function AddEventPopup({ onCloseModal, event }) {
           {!event ? "Thêm sự kiện" : "Chỉnh sửa sự kiện"}
         </Typography>
       </Stack>
-      <Stack direction="row" spacing={4} padding={2} marginTop={2}>
+      <Stack
+        direction="row"
+        spacing={4}
+        paddingX={2}
+        paddingTop={2}
+        marginTop={2}
+      >
         <Stack width={290}>
           <Avatar
             sx={{ width: 290, height: 290, boxShadow: "0 0 10px #00000022" }}
@@ -138,6 +144,7 @@ function AddEventPopup({ onCloseModal, event }) {
                 width={"100%"}
                 border={"1px solid red"}
                 padding={1}
+                borderRadius={1}
               >
                 {errors.map((error) => (
                   <Typography
@@ -229,8 +236,11 @@ function AddEventPopup({ onCloseModal, event }) {
             onChange={(event) => setAddress(event.target.value)}
           />
 
-          <Stack alignItems={"center"}>
-            <Button variant="contained" onClick={addEventHandler}>
+          <Stack justifyContent={"center"} direction={"row"} spacing={2}>
+            <Button variant="outlined" onClick={() => onCloseModal()} fullWidth>
+              Hủy
+            </Button>
+            <Button variant="contained" onClick={addEventHandler} fullWidth>
               {event ? "Cập nhập" : "Thêm sự kiện"}
             </Button>
           </Stack>

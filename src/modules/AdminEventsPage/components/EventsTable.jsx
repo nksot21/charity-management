@@ -20,7 +20,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import { events } from "../../AdminDonorsPage/screens/data";
-import { Stack } from "@mui/material";
+import { Input, Stack, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
 import MyDialog from "../../../globalComponents/Dialog/MyDialog";
@@ -183,12 +183,19 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, selected } = props;
+  const { numSelected, selected, onSearchChange } = props;
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [isDeletable, setIsDeleteTable] = React.useState(false);
   const [isUpdating, setIsUpdating] = React.useState(false);
   const [isAddingDonation, setIsAddingDonation] = React.useState(false);
   const navigate = useNavigate();
+
+  const [search, setSearch] = React.useState("");
+
+  const searchChangeHandler = (event) => {
+    setSearch(event.target.value);
+    onSearchChange(event.target.value);
+  };
 
   React.useEffect(() => {
     if (
@@ -225,6 +232,14 @@ function EnhancedTableToolbar(props) {
       >
         {numSelected} đã chọn
       </Typography>
+
+      <Input
+        placeholder="Tìm kiếm"
+        size="small"
+        value={search}
+        onChange={searchChangeHandler}
+        style={{ marginRight: "16px", minWidth: "200px", fontSize: 14 }}
+      />
 
       {numSelected > 0 ? (
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
@@ -312,6 +327,7 @@ export default function EventsTable() {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [viewedEvents, setViewedEvents] = React.useState(events);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -365,12 +381,16 @@ export default function EventsTable() {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(events, getComparator(order, orderBy)).slice(
+      stableSort(viewedEvents, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, viewedEvents]
   );
+
+  const searchChangeHandler = (search) => {
+    setViewedEvents(events.filter((event) => event.title.includes(search)));
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -378,6 +398,7 @@ export default function EventsTable() {
         <EnhancedTableToolbar
           numSelected={selected.length}
           selected={selected}
+          onSearchChange={searchChangeHandler}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">

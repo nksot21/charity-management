@@ -5,7 +5,9 @@ import heart from "../../../assets/images/heart.png";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import { Link } from "react-router-dom";
 
-function EventPopup({ onCloseModal }) {
+function EventPopup({ onCloseModal, eventId }) {
+  // Get event from database base on event ID
+
   return (
     <Modal onCloseModal={onCloseModal}>
       <Stack

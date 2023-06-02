@@ -84,13 +84,14 @@ function DonationItem({ donation }) {
         <DonorPopup
           onCloseModal={() => setIsOpenDonorPopup(false)}
           onDonation={true}
+          donorId={donation.donor.id}
         />
       )}
       {isOpenEventPopup && (
-        <EventPopup onCloseModal={() => setIsOpenEventPopup(false)} />
+        <EventPopup onCloseModal={() => setIsOpenEventPopup(false)} eventId={donation.event.id} />
       )}
       {isOpenTransferPopup && (
-        <TransferPopup onCloseModal={() => setIsOpenTransferPopup(false)} />
+        <TransferPopup onCloseModal={() => setIsOpenTransferPopup(false)} transferId={donation.transfer.id} />
       )}
     </Stack>
   );

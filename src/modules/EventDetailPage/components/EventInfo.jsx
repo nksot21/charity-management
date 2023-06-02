@@ -1,28 +1,29 @@
-import React from 'react'
-import { Avatar, Button, Typography } from "@mui/material";
+import React from "react";
+import { Avatar, Button, Chip, Typography } from "@mui/material";
 import { Stack } from "@mui/material";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 
-function EventInfo({event}) {
+function EventInfo({ event }) {
   return (
     <Stack
       width={"40%"}
       padding={3}
       boxShadow={"0 0 10px #00000022"}
       borderRadius={3}
-          height={"fit-content"}
-          position={"sticky"}
-          top={100}
-          right={0}
+      height={"fit-content"}
+      position={"sticky"}
+      top={100}
+      right={0}
     >
       <Stack
         direction={"row"}
         spacing={2}
         style={{ backgroundColor: "#ffa62933" }}
         borderRadius={"50px"}
+        padding={1}
       >
         <Avatar
-          alt={event.name}
+          alt={event.title}
           src={event.image}
           sx={{ width: 65, height: 65, border: "2px solid orange" }}
         />
@@ -33,15 +34,27 @@ function EventInfo({event}) {
           </Typography>
         </Stack>
       </Stack>
+      <Stack direction={"row"} alignItems={"center"} marginTop={2} spacing={1}>
+        <Typography fontSize={17}>Còn </Typography>
+        <Chip
+          size="large"
+          style={{fontSize: 17}}
+          label={
+            (new Date(event.dateEnd) - new Date(event.dateBegin)) /
+              (1000 * 60 * 60 * 24) +
+            " ngày"
+          }
+        />
+      </Stack>
       <Stack direction={"row"} justifyContent={"space-between"} marginTop={4}>
-        <Typography fontSize={20}>
+        <Typography fontSize={18}>
           Đã quyên góp được{" "}
           <span style={{ fontWeight: "600", color: "#fb8500" }}>
-            {currencyFormatter.format(43000000)}
+            {currencyFormatter.format(event.amountGot)}
           </span>
         </Typography>
         <Typography fontWeight={600} fontSize={19}>
-          66%
+          {(event.amountGot / event.amountNeeded) * 100 + "%"}
         </Typography>
       </Stack>
       <Stack
@@ -60,7 +73,7 @@ function EventInfo({event}) {
       <Typography marginTop={1} textAlign={"end"}>
         Còn{" "}
         <span style={{ fontWeight: "600", color: "#fb8500" }}>
-          {currencyFormatter.format(13000000)}
+          {currencyFormatter.format(event.amountNeeded - event.amountGot)}
         </span>
       </Typography>
       <Stack marginTop={3} alignItems={"center"} style={{}}>
@@ -80,4 +93,4 @@ function EventInfo({event}) {
   );
 }
 
-export default EventInfo
+export default EventInfo;

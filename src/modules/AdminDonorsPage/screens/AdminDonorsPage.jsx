@@ -10,7 +10,6 @@ function AdminDonorsPage() {
           Danh sách nhà hảo tâm
         </Typography>
       </Stack>
-
       <DonorsTable />
     </Stack>
   );
