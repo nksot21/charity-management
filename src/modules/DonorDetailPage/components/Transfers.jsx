@@ -17,15 +17,15 @@ import { styled } from "@mui/material/styles";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&:last-child`]: {
     color: "#29bf12",
-    fontSize: "18px",
+    fontSize: 18,
   },
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#2a9d8f",
     color: theme.palette.common.white,
-    fontSize: 17,
+    fontSize: 15,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 17,
+    fontSize: 15,
   },
 }));
 

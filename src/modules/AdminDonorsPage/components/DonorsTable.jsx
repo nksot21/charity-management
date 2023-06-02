@@ -24,6 +24,7 @@ import { donors } from "../screens/data";
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
 import MyDialog from "../../../globalComponents/Dialog/MyDialog";
+import { format } from "date-fns";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -372,7 +373,9 @@ export default function DonorsTable() {
                     >
                       {row.score}
                     </TableCell>
-                    <TableCell align="right">{row.join_date}</TableCell>
+                    <TableCell align="right">
+                      {format(new Date(row.join_date), "dd/MM/yyyy")}
+                    </TableCell>
                     <TableCell align="right">{row.email}</TableCell>
                     <TableCell align="right">{row.address}</TableCell>
                     <TableCell align="right" style={{ fontWeight: 600 }}>
