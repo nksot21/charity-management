@@ -14,6 +14,7 @@ import PostIcon from './SidebarIcon/PostIcon'
 import { Link } from 'react-router-dom'
 
 export default function Sidebar() {
+
     
     const [dashboardColor, setDashboardColor] = useState("black");
     const [donorColor, setDonorColor] = useState("black");
@@ -103,7 +104,6 @@ export default function Sidebar() {
                                         lineHeight: "55px",
                                         paddingLeft: "25px",
                                     }}                            
-                                    
                                 >   
                                     {<div>
                                         {item.title === "Dashboard" && <ChartPieIcon id="Dashboard" className="menu-icon" color={dashboardColor}/>}
