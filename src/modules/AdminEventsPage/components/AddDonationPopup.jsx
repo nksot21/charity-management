@@ -122,7 +122,10 @@ function AddDonationPopup({ onCloseModal, event }) {
   return (
     <Modal onCloseModal={onCloseModal}>
       <Stack>
-        <Typography fontSize={20}>Thêm quyên góp (chuyển khoản)</Typography>
+        <Typography fontSize={20}>
+          Thêm quyên góp ({" "}
+          {event.category.name === "Tiền" ? "chuyển khoản" : "hàng hóa"})
+        </Typography>
       </Stack>
       <Stack spacing={2} marginTop={2}>
         <TextField
@@ -222,7 +225,13 @@ function AddDonationPopup({ onCloseModal, event }) {
             required
             endAdornment={
               <InputAdornment position="end">
-                {event.category.unit}
+                {event.category.name === "Tiền"
+                  ? event.category.unit
+                  : (
+                      event.category.unit +
+                      " " +
+                      event.category.name
+                    ).toLowerCase()}
               </InputAdornment>
             }
             onChange={(event) => setAmount(event.target.value)}

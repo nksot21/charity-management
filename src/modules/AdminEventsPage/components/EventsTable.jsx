@@ -459,14 +459,18 @@ export default function EventsTable() {
                       align="right"
                       style={{ fontWeight: 600, color: "#2AC48A" }}
                     >
-                      {currencyFormatter.format(row.amountNeeded)}
+                      {row.category.name === "Tiền"
+                        ? currencyFormatter.format(row.amountNeeded)
+                        : row.amountNeeded + " " + row.category.unit}
                     </TableCell>
                     <TableCell align="right">
                       <Typography
                         fontSize={"inherit"}
                         style={{ fontWeight: 600, color: "#2AC48A" }}
                       >
-                        {currencyFormatter.format(row.amountGot)}
+                        {row.category.name === "Tiền"
+                          ? currencyFormatter.format(row.amountGot)
+                          : row.amountGot + " " + row.category.unit}
                       </Typography>
                       <Stack
                         height={4}

@@ -75,7 +75,7 @@ function DonationItem({ donation }) {
         <Stack>
           <Typography textAlign={"end"}>Sự kiện</Typography>
           <Typography textAlign={"end"} fontWeight={"bold"}>
-            {donation.event.name}
+            {donation.event.title}
           </Typography>
         </Stack>
         <Avatar sx={{ width: 60, height: 60 }} src={donation.event.image} />
