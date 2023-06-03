@@ -7,25 +7,32 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import DonorCard from "../../LandingPage/components/DonorCard";
 import EventCard from "../components/EventCard";
+import NoResult from "../../../globalComponents/NoResult/NoResult";
 
 function EventsPage() {
   const [count, setCount] = React.useState(9);
   const [search, setSearch] = React.useState("");
-  const [events, setEvents] = React.useState(eventsSample);
+  const [viewedEvents, setViewedEvents] = React.useState(eventsSample);
 
   const seeMoreHandler = () => {
     setCount((prev) => prev + 9);
   };
-  const searchHandler = () => {};
+
+  const searchHandler = () => {
+    setViewedEvents(
+      eventsSample.filter((event) =>
+        event.title.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  };
   return (
     <Container>
-      <Typography marginTop={8} textAlign="center" variant="h3">
+      <Typography marginTop={8} textAlign="center" variant="h4">
         Những chiến dịch nhận được nhiều sự quan tâm
       </Typography>
       <Stack
-        marginTop={8}
+        marginTop={4}
         padding={2}
         direction="row"
         justifyContent="space-between"
@@ -56,35 +63,42 @@ function EventsPage() {
           Tìm kiếm
         </Button>
       </Stack>
-      <Stack marginTop={6}>
-        <Grid container rowSpacing={3} columnSpacing={3}>
-          {events.slice(0, count).map((event) => (
-            <Grid item xs={4} key={event.id}>
-              <EventCard event={event} />
+      {viewedEvents.length > 0 && (
+        <>
+          <Stack Stack marginTop={6}>
+            <Grid container rowSpacing={3} columnSpacing={3}>
+              {viewedEvents.slice(0, count).map((event) => (
+                <Grid item xs={4} key={event.id}>
+                  <EventCard event={event} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-        <Stack alignItems="center" marginTop={3}>
-          <Button
-            style={{
-              backgroundColor: "orange",
-              color: "white",
-              padding: "8px 32px",
-            }}
-            size="large"
-            onClick={seeMoreHandler}
-          >
-            Xem thêm
-          </Button>
-        </Stack>
-      </Stack>
+            {(Math.floor(eventsSample.length / 9) + 1) * 9 - count > 0 && (
+              <Stack alignItems="center" marginTop={3}>
+                <Button
+                  style={{
+                    backgroundColor: "orange",
+                    color: "white",
+                    padding: "8px 32px",
+                  }}
+                  size="large"
+                  onClick={seeMoreHandler}
+                >
+                  Xem thêm
+                </Button>
+              </Stack>
+            )}
+          </Stack>
+        </>
+      )}
+      {viewedEvents.length === 0 && <NoResult />}
     </Container>
   );
 }
 
-function createEvent(image, name, amountNeeded, amountGot) {
+function createEvent(image, title, amountNeeded, amountGot) {
   const id = Math.round(Math.random() * 1000);
-  return { id, image, name, amountNeeded, amountGot };
+  return { id, image, title, amountNeeded, amountGot };
 }
 
 const eventsSample = [
