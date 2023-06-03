@@ -20,7 +20,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
-import { donors } from "../screens/data";
 import { Input, Stack, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import MyDialog from "../../../globalComponents/Dialog/MyDialog";
@@ -57,7 +56,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "ID",
+    id: "id",
     numeric: true,
     disablePadding: true,
     label: "ID",
@@ -87,7 +86,7 @@ const headCells = [
     label: "Điểm",
   },
   {
-    id: "join_date",
+    id: "joinDate",
     numeric: false,
     disablePadding: false,
     label: "Ngày tham gia",
@@ -105,13 +104,13 @@ const headCells = [
     label: "Địa chỉ",
   },
   {
-    id: "events_quantity",
+    id: "eventQuantity",
     numeric: true,
     disablePadding: false,
     label: "Số sự kiện tham gia",
   },
   {
-    id: "total_donates",
+    id: "totalTransferAmount",
     numeric: true,
     disablePadding: false,
     label: "Tổng số tiền quyên góp",
@@ -185,7 +184,7 @@ function EnhancedTableToolbar(props) {
   const { numSelected, selected, onSearchChange } = props;
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [search, setSearch] = React.useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const searchChangeHandler = (event) => {
     setSearch(event.target.value);
@@ -267,7 +266,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function DonorsTable() {
+export default function DonorsTable({ donors }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("ID");
   const [selected, setSelected] = React.useState([]);
@@ -283,7 +282,7 @@ export default function DonorsTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = donors.map((n) => n.ID);
+      const newSelected = donors.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -367,17 +366,17 @@ export default function DonorsTable() {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.ID);
+                const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.ID)}
+                    onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.ID}
+                    key={row.id}
                     selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >
@@ -397,7 +396,7 @@ export default function DonorsTable() {
                       padding="none"
                       align="center"
                     >
-                      {row.ID}
+                      {row.id}
                     </TableCell>
                     <TableCell align="right">{row.name}</TableCell>
                     <TableCell align="right">{row.username}</TableCell>
@@ -409,18 +408,18 @@ export default function DonorsTable() {
                       {row.score}
                     </TableCell>
                     <TableCell align="right">
-                      {format(new Date(row.join_date), "dd/MM/yyyy")}
+                      {format(new Date(row.joinDate), "dd/MM/yyyy")}
                     </TableCell>
                     <TableCell align="right">{row.email}</TableCell>
                     <TableCell align="right">{row.address}</TableCell>
                     <TableCell align="right" style={{ fontWeight: 600 }}>
-                      {row.events_quantity}
+                      {row.eventQuantity}
                     </TableCell>
                     <TableCell
                       align="right"
                       style={{ fontWeight: 600, color: "#2AC48A" }}
                     >
-                      {currencyFormatter.format(row.total_donates)}
+                      {currencyFormatter.format(row.totalTransferAmount)}
                     </TableCell>
                   </TableRow>
                 );

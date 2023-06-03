@@ -13,7 +13,7 @@ export const sidebarMenu = [
     title: "Dashboard",
     name: "Trang chủ",
     icon: faHouse,
-    route: "/",
+    route: "/trang-chu",
   },
   {
     id: 2,

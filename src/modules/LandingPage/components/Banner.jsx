@@ -1,39 +1,53 @@
-import React from 'react'
-import { Container, Row, Col, Button } from "react-bootstrap";
-import LogoImg from '../../../assets/images/global/logo.png'
-import './Banner.css'
+import React from "react";
+import LogoImg from "../../../assets/images/global/logo.png";
+import "./Banner.css";
+import { Button, Stack, Typography } from "@mui/material";
 
 export default function Banner() {
   return (
-    <div className='d-flex' style={{position: 'absolute', top:'200px', left:'140px'}}>
-        <Container>
-            <Row style={{ width: '1300px'}}>
-                <Col className='col-4'>
-                    <img src={LogoImg} className='mx-auto d-block' style={{height:'400px', objectFit: 'contain'}}/>
-                </Col>
-                <Col className='col-8' style={{paddingTop: '70px', paddingBottom: '70px', paddingLeft: "150px"}}>
-                    <Container>
-                        <Row>
-                            <Col>
-                                <h1 className='banner-heading'> ASHEEP CHARITY ORGANIZATION</h1>
-                                <p className='banner-text'>aSheep đồng hành cùng cộng đồng từ thiện minh bạch </p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className='col-6 d-flex mt-3'>
-                                <a href='/trang-chu'><Button className='banner-button ' variant="success" size="lg" >Tham gia ngay</Button></a>
-                                <Button className='banner-button mx-auto' variant="secondary" size="lg">
-                                Liên hệ
-                            </Button>
-                            </Col>
-                            <Col className='col-6'>
-                            
-                            </Col>
-                        </Row>
-                    </Container>
-                </Col>
-            </Row>
-        </Container>
-    </div>
-  )
+    <Stack className="banner" height={500} padding={2}>
+      <Stack direction={"row"} spacing={10} alignItems={"center"} height={"100%"}>
+        <Stack>
+          <img
+            src={LogoImg}
+            className="mx-auto d-block"
+            style={{ height: "300px", objectFit: "contain" }}
+          />
+        </Stack>
+        <Stack marginTop={4}>
+          <Stack>
+            <Typography color={"#075234"} variant="h1" fontSize={80}>
+              ASHEEP CHARITY ORGANIZATION
+            </Typography>
+            <Typography fontSize={30} marginTop={1}>
+              aSheep đồng hành cùng cộng đồng từ thiện minh bạch{" "}
+            </Typography>
+          </Stack>
+        </Stack>
+      </Stack>
+      <Stack direction={"row"} spacing={3} marginTop={6} justifyContent={"center"}>
+        <Button
+          variant="contained"
+          size="large"
+          color="success"
+          style={{ fontWeight: "bold", width: 200 }}
+        >
+          Tham gia ngay
+        </Button>
+        <Button
+          size="large"
+          color="success"
+          variant="outlined"
+          style={{
+            fontWeight: "bold",
+            borderWidth: "2px",
+            width: 200,
+            backgroundColor: "#ffffff66",
+          }}
+        >
+          Liên hệ
+        </Button>
+      </Stack>
+    </Stack>
+  );
 }

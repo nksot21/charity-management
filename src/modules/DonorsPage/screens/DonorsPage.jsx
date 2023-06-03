@@ -9,17 +9,27 @@ import {
 } from "@mui/material";
 import DonorCard from "../../LandingPage/components/DonorCard";
 import NoResult from "../../../globalComponents/NoResult/NoResult";
+import { DonorService } from "../../../services";
 
 function DonorsPage() {
   const [count, setCount] = React.useState(9);
   const [search, setSearch] = React.useState("");
-  const [viewedDonors, setViewedDonors] = React.useState(donorsSample);
+  const [donors, setDonors] = React.useState([]);
+  const [viewedDonors, setViewedDonors] = React.useState([]);
   const seeMoreHandler = () => {
     setCount((prev) => prev + 9);
   };
+
+  React.useEffect(() => {
+    DonorService.getAllDonors().then((fetchedDonors) => {
+      setDonors(fetchedDonors.data);
+      setViewedDonors(fetchedDonors.data);
+    });
+  }, []);
+
   const searchHandler = () => {
     setViewedDonors(
-      donorsSample.filter(
+      donors.filter(
         (donor) =>
           donor.name.toLowerCase().includes(search) ||
           donor.username.toLowerCase().includes(search) ||
@@ -68,18 +78,13 @@ function DonorsPage() {
         <>
           <Stack marginTop={6}>
             <Grid container rowSpacing={3} columnSpacing={3}>
-              {viewedDonors.slice(0, count).map((user) => (
+              {viewedDonors.slice(0, count).map((donor) => (
                 <Grid item xs={4}>
-                  <DonorCard
-                    id={user.id}
-                    name={user.name}
-                    username={user.username}
-                    date={user.date}
-                  />
+                  <DonorCard donor={donor} />
                 </Grid>
               ))}
             </Grid>
-            {(Math.floor(donorsSample.length / 9) + 1) * 9 - count > 0 && (
+            {(Math.floor(donors.length / 9) + 1) * 9 - count > 0 && (
               <Stack alignItems="center" marginTop={3}>
                 <Button
                   style={{
@@ -102,103 +107,103 @@ function DonorsPage() {
   );
 }
 
-const donorsSample = [
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Nguyễn Thị Mỹ Châu",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Kim Jisoo",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Lê Văn Thiện",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-  {
-    id: "00723",
-    name: "Jennie Kim",
-    username: "@JennieRubyJane",
-    date: "07/2022",
-  },
-];
+// const donorsSample = [
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Nguyễn Thị Mỹ Châu",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Kim Jisoo",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Lê Văn Thiện",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+//   {
+//     id: "00723",
+//     name: "Jennie Kim",
+//     username: "@JennieRubyJane",
+//     date: "07/2022",
+//   },
+// ];
 
 export default DonorsPage;
