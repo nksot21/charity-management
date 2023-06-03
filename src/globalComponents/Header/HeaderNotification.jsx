@@ -1,28 +1,13 @@
-import React from 'react'
-import BellSVG from '../../assets/images/global/bell.svg'
+import React from "react";
+import { IconButton, Stack } from "@mui/material";
+import { Notifications } from "@mui/icons-material";
 
 export default function HeaderNotification() {
   return (
-    <div >
-        <div className="dropdown">
-            <a className="me-3 hidden-arrow" href="#" id="navbarDropdownMenuLink"
-            role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                <img src={BellSVG} alt="bell"
-                    style={{lineHeight: '42px', height: '42px', padding: '12px'}}/>
-                {/* <span class="badge rounded-pill badge-notification bg-danger">1</span> */}
-            </a>
-            <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li>
-                    <p className="dropdown-item">Some news</p>
-                </li>
-                <li>
-                    <p className="dropdown-item">Some news</p>
-                </li>
-                <li>
-                    <p className="dropdown-item">Some news</p>
-                </li>
-            </ul>
-        </div>
-    </div>
-  )
+    <Stack>
+      <IconButton style={{ color: "black" }}>
+        <Notifications />
+      </IconButton>
+    </Stack>
+  );
 }

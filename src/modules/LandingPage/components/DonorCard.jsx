@@ -1,23 +1,21 @@
 import React from "react";
-import UserImg from "../../../assets/images/landingpage/jennie.png";
 import "./DonorCard.css";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Avatar,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Avatar, Button, Stack, Typography } from "@mui/material";
+import { format } from "date-fns";
 
-export default function DonorCard(props) {
+export default function DonorCard({ donor }) {
   const navigate = useNavigate();
   return (
-    <Stack boxShadow={"0 0 10px #00000033"} padding={2} borderRadius={3}>
+    <Stack
+      boxShadow={"0 0 10px #00000033"}
+      padding={2}
+      borderRadius={3}
+      style={{ backgroundColor: "white" }}
+    >
       <Stack
         onClick={() => {
-          navigate("/donors/" + props.id);
+          navigate("/donors/" + donor.id);
         }}
         style={{
           cursor: "pointer",
@@ -29,14 +27,14 @@ export default function DonorCard(props) {
       >
         <Avatar
           sx={{ width: 70, height: 70 }}
-          src={UserImg}
+          src={donor.photo}
           style={{ border: "2px solid #060" }}
         />
         <Stack justifyContent={"center"}>
           <Typography fontSize={18} fontWeight={"bold"}>
-            {props?.name}
+            {donor?.name}
           </Typography>
-          <Typography>{props?.username}</Typography>
+          <Typography>{donor?.username}</Typography>
         </Stack>
         <div className="card-line" />
       </Stack>
@@ -51,15 +49,15 @@ export default function DonorCard(props) {
               borderRadius: "15px",
             }}
           >
-            {props?.id}
+            {donor?.id}
           </span>
         </Typography>
         <Typography marginTop={1}>
           Tham gia từ:
-          <span style={{ fontWeight: "bold" }}> {props?.date}</span>{" "}
+          <span style={{ fontWeight: "bold" }}> {format(new Date(donor?.joinDate), 'dd/MM/yyyy') }</span>{" "}
         </Typography>
         <Button style={{ marginTop: "16px" }}>
-          <Link to={"/donors/" + props.id} style={{ textDecoration: "none" }}>
+          <Link to={"/donors/" + donor.id} style={{ textDecoration: "none" }}>
             Xem sao kê
           </Link>
         </Button>

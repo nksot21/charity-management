@@ -12,7 +12,7 @@ function DonorInfo({ onDonation = false, donor }) {
       <Stack direction="row" spacing={4} alignItems={"center"}>
         <Avatar
           sx={{ width: 170, height: 170, boxShadow: "0 0 10px #00000022" }}
-          src={donor.image}
+          src={donor.photo}
         />
         <Stack paddingTop={3} flexGrow={1}>
           <Typography variant="h5" fontWeight={600}>

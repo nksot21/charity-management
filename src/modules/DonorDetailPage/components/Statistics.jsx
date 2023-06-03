@@ -1,11 +1,8 @@
-import {
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import React from "react";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 
-function Statistics() {
+function Statistics({ donor }) {
   return (
     <Stack
       boxShadow="0 0 10px #00000022"
@@ -22,11 +19,11 @@ function Statistics() {
           borderLeft="3px solid #38a3a5"
           paddingX={3}
           paddingY={1}
-          flexGrow={1}
+          width={"50%"}
         >
           <Typography>Tổng quyên góp</Typography>
           <Typography variant="h5" fontWeight="600" color="#38a3a5">
-            {currencyFormatter.format(20500000)}
+            {currencyFormatter.format(donor.totalTransferAmount)}
           </Typography>
         </Stack>
         <Stack
@@ -34,11 +31,11 @@ function Statistics() {
           borderLeft="3px solid #0077b6"
           paddingX={3}
           paddingY={1}
-          flexGrow={1}
+          width={"50%"}
         >
-          <Typography>Quyên góp trong tuần</Typography>
+          <Typography>Tổng vật phẩm quyên góp</Typography>
           <Typography variant="h5" fontWeight="600" color="#38a3a5">
-            {currencyFormatter.format(20500000)}
+            {donor.totalItemAmount}
           </Typography>
         </Stack>
       </Stack>

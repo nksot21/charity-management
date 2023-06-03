@@ -1,21 +1,18 @@
-import React from 'react'
-import { Container , Col, Row} from 'react-bootstrap'
-import { Outlet } from 'react-router-dom'
-import Header from '../../../globalComponents/Header/Header'
-import Sidebar from '../../../globalComponents/Sidebar/Sidebar'
+import React from "react";
+import { Container, Col, Row } from "react-bootstrap";
+import { Outlet } from "react-router-dom";
+import Sidebar from "../../../globalComponents/Sidebar/Sidebar";
+import { Stack } from "@mui/material";
 
 export default function Homepage() {
-    return (
-        <Container fluid style={{padding: '0px'}}>
-          {/* <Header /> */}
-          <Row className='d-flex' style={{height: '100%', padding: "0px", margin: "0px"}}>
-            <Col xs={2} style={{borderRight: "1px solid #E5E7EB", padding: 0}}>
-                <Sidebar/>
-            </Col>
-            <Col xs={10}>
-                <Outlet />
-            </Col>
-          </Row>
-        </Container>
-    )
+  return (
+    <Stack direction={"row"}>
+      <Stack>
+        <Sidebar />
+      </Stack>
+      <Stack padding={1} flexGrow={1}>
+        <Outlet />
+      </Stack>
+    </Stack>
+  );
 }

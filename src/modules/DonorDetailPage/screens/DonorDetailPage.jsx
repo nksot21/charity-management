@@ -1,10 +1,12 @@
 import { Stack } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import DonorInfo from "../components/DonorInfo";
 import Statistics from "../components/Statistics";
 import JoinedEvents from "../components/JoinedEvents";
 import Transfers from "../components/Transfers";
+import { useParams } from "react-router-dom";
+import { DonorService } from "../../../services";
 
 function createData(time, bank, donor, content, amount) {
   return { time, bank, donor, content, amount };
@@ -80,29 +82,24 @@ const joinedEvents = [
 ];
 
 function DonorDetailPage() {
-  const donor = {
-    id: 10,
-    name: "Nguyễn Quỳnh Châu",
-    phone: "0234093284",
-    birthday: "2003-06-01T05:53:56.642Z",
-    photo: "",
-    email: "chaubui@gmail.com",
-    address: "Quy nhon, Binh dinh",
-    score: 0,
-    joinDate: "2023-06-01T05:53:56.642Z",
-    slogan:
-      "Tôi là Thái Thuỳ Linh, người đã lao vào tâm dịch ngày 19/07/2021 khi Sài Gòn bắt đầu chạm mốc 2.000 ca F0 một ngày. Tôi tình nguyện làm thuê với mức lương 0đ cho đồng bào khó khăn, trong chiến dịch tình nguyện Người Việt thương nhau ✊❤️",
-    username: "@quynhdethuong298",
-    password: null,
-  };
+  const params = useParams();
+  const [donor, setDonor] = useState(null);
+
+  useEffect(() => {
+    DonorService.getDonor(params.donorId)
+      .then((fetchedDonor) => {
+        setDonor(fetchedDonor.data);
+      })
+      .catch((e) => console.log(e));
+  }, []);
 
   return (
     <Stack paddingX={1} paddingY={7} spacing={2} direction="row">
       <Stack paddingX={2} paddingY={3} width={"38%"}>
-        <DonorInfo donor={donor} />
+        {donor && <DonorInfo donor={donor} />}
       </Stack>
       <Stack paddingX={2} paddingY={3} width={"62%"}>
-        <Statistics />
+        {donor && <Statistics donor={donor} />}
         <JoinedEvents events={joinedEvents} />
         <Transfers transfers={rowsData} />
       </Stack>

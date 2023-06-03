@@ -16,6 +16,9 @@ import EventsPage from "./modules/EventsPage/screens/EventsPage";
 import EventDetailPage from "./modules/EventDetailPage/screens/EventDetailPage";
 import AdminDonorsPage from "./modules/AdminDonorsPage/screens/AdminDonorsPage";
 import AdminEventsPage from "./modules/AdminEventsPage/screens/AdminEventsPage";
+import { Provider } from "react-redux";
+import store from "./store/store";
+
 const router = createBrowserRouter([
   {
     path: "",
@@ -27,6 +30,10 @@ const router = createBrowserRouter([
         element: <HomepageRoot />,
         errorElement: <ErrorPage />,
         children: [
+          {
+            path: "trang-chu",
+            element: <LandingPage />,
+          },
           {
             path: "nguoi-nhan",
             element: <Receiver />,
@@ -94,4 +101,8 @@ const router = createBrowserRouter([
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
+);
