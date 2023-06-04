@@ -1,10 +1,19 @@
 import { Button, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EventsTable from "../components/EventsTable";
 import AddEventPopup from "../components/AddEventPopup";
+import { EventService } from "../../../services";
 
 function AdminEventsPage() {
   const [isAddingEvent, setIsAddingEvent] = useState(false);
+  const [events, setEvents] = React.useState(null);
+
+  useEffect(() => {
+    EventService.getAllEvents().then((fetchedEvents) => {
+      setEvents(fetchedEvents.data);
+    });
+  }, []);
+
   return (
     <Stack marginTop={3}>
       <Stack
@@ -23,7 +32,7 @@ function AdminEventsPage() {
           <AddEventPopup onCloseModal={() => setIsAddingEvent(false)} />
         )}
       </Stack>
-      <EventsTable />
+      {events && <EventsTable events={events} />}
     </Stack>
   );
 }

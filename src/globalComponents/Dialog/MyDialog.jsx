@@ -24,7 +24,7 @@ function MyDialog({ title = "Thông báo", message, handleClose, handleAccept })
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Hủy</Button>
-        <Button onClick={handleClose} autoFocus>
+        <Button onClick={handleAccept} autoFocus>
           OK
         </Button>
       </DialogActions>

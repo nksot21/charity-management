@@ -19,7 +19,6 @@ import Tooltip from "@mui/material/Tooltip";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
-import { events } from "../../AdminDonorsPage/screens/data";
 import { Input, Stack, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
@@ -27,6 +26,8 @@ import MyDialog from "../../../globalComponents/Dialog/MyDialog";
 import AddEventPopup from "./AddEventPopup";
 import { useNavigate } from "react-router-dom";
 import AddDonationPopup from "./AddDonationPopup";
+import { EventService } from "../../../services";
+import { async } from "q";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -58,7 +59,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "ID",
+    id: "id",
     numeric: true,
     disablePadding: true,
     label: "ID",
@@ -200,7 +201,7 @@ function EnhancedTableToolbar(props) {
   React.useEffect(() => {
     if (
       selected.findIndex((eventId) => {
-        const event = events.find((e) => e.ID === eventId);
+        const event = props.events.find((e) => e.id === eventId);
         return event.amountGot !== event.amountDistributed;
       }) > -1
     ) {
@@ -209,6 +210,17 @@ function EnhancedTableToolbar(props) {
       setIsDeleteTable(true);
     }
   }, [selected]);
+
+  const acceptDeleteHandler = async () => {
+    console.log(selected);
+    await Promise.all(
+      selected.map(async (e) => {
+        await EventService.deleteEvent(e);
+      })
+    );
+
+    setOpenDeleteDialog(false);
+  };
 
   return (
     <Toolbar
@@ -272,14 +284,14 @@ function EnhancedTableToolbar(props) {
               {isAddingDonation && (
                 <AddDonationPopup
                   onCloseModal={() => setIsAddingDonation(false)}
-                  event={events.find((e) => e.ID === selected[0])}
+                  event={props.events.find((e) => e.id === selected[0])}
                 />
               )}
 
               {isUpdating && (
                 <AddEventPopup
                   onCloseModal={() => setIsUpdating(false)}
-                  event={events.find((e) => e.ID === selected[0])}
+                  event={props.events.find((e) => e.id === selected[0])}
                 />
               )}
             </>
@@ -302,7 +314,7 @@ function EnhancedTableToolbar(props) {
                   : "Bạn có chắc chắn muốn xóa event này? Thao tác này không thể hoàn tác."
               }
               handleClose={() => setOpenDeleteDialog(false)}
-              handleAccept={() => setOpenDeleteDialog(false)}
+              handleAccept={acceptDeleteHandler}
             />
           )}
         </Stack>
@@ -321,9 +333,9 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EventsTable() {
+export default function EventsTable({ events }) {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("ID");
+  const [orderBy, setOrderBy] = React.useState("id");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -337,7 +349,7 @@ export default function EventsTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = events.map((n) => n.ID);
+      const newSelected = events.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -389,7 +401,11 @@ export default function EventsTable() {
   );
 
   const searchChangeHandler = (search) => {
-    setViewedEvents(events.filter((event) => event.title.includes(search)));
+    setViewedEvents(
+      events.filter((event) =>
+        event.title.toLowerCase().includes(search.toLowerCase())
+      )
+    );
   };
 
   return (
@@ -399,6 +415,7 @@ export default function EventsTable() {
           numSelected={selected.length}
           selected={selected}
           onSearchChange={searchChangeHandler}
+          events={events}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -409,20 +426,21 @@ export default function EventsTable() {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={events.length}
+              events={events}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.ID);
+                const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.ID)}
+                    onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.ID}
+                    key={row.id}
                     selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >
@@ -442,7 +460,7 @@ export default function EventsTable() {
                       padding="none"
                       align="center"
                     >
-                      {row.ID}
+                      {row.id}
                     </TableCell>
                     <TableCell align="right">
                       {row.title > 80
