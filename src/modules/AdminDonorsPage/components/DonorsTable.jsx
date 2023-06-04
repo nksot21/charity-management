@@ -338,9 +338,9 @@ export default function DonorsTable({ donors }) {
     setViewedDonors(
       donors.filter(
         (donor) =>
-          donor.name.includes(search) ||
-          donor.username.includes(search) ||
-          donor.email.includes(search) ||
+          donor.name.toLowerCase().includes(search.toLowerCase()) ||
+          donor.username.toLowerCase().includes(search.toLowerCase()) ||
+          donor.email.toLowerCase().includes(search.toLowerCase()) ||
           donor.phone.includes(search)
       )
     );
