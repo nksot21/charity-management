@@ -13,7 +13,7 @@ export const sidebarMenu = [
     title: "Dashboard",
     name: "Trang chủ",
     icon: faHouse,
-    route: "/",
+    route: "/trang-chu",
   },
   {
     id: 2,
@@ -30,19 +30,12 @@ export const sidebarMenu = [
     route: "/donations",
   },
   {
-    id: 3,
+    id: 4,
     title: "Activity",
     name: "Sự kiện từ thiện",
     icon: faBullhorn,
     route: "/events",
     isEnd: true,
-  },
-  {
-    id: 4,
-    title: "Inventory",
-    name: "Quản lý kho",
-    icon: faWarehouse,
-    route: "/quan-ly/kho",
   },
   {
     id: 5,
@@ -58,19 +51,26 @@ export const sidebarMenu = [
     icon: faBullhorn,
     route: "/admin/manage/events",
   },
+  // {
+  //   id: 8,
+  //   title: "CharityManagement",
+  //   name: "Quản lý tài trợ",
+  //   icon: faHouse,
+  //   route: "/quan-ly/tai-tro",
+  // },
   {
     id: 7,
-    title: "CharityManagement",
-    name: "Quản lý tài trợ",
-    icon: faHouse,
-    route: "/quan-ly/tai-tro",
-  },
-  {
-    id: 8,
     title: "ReceiverManagement",
     name: "Quản lý người nhận",
     icon: faHandsHoldingCircle,
     route: "/nguoi-nhan",
+  },
+  {
+    id: 8,
+    title: "Inventory",
+    name: "Quản lý kho",
+    icon: faWarehouse,
+    route: "/quan-ly/kho",
   },
   {
     id: 9,
@@ -79,11 +79,11 @@ export const sidebarMenu = [
     icon: faCircleDollarToSlot,
     route: "/quan-ly/hoat-dong",
   },
-  {
-    id: 10,
-    title: "PostManagement",
-    name: "Kêu gọi",
-    icon: faHouse,
-    route: "/keu-goi",
-  },
+  // {
+  //   id: 10,
+  //   title: "PostManagement",
+  //   name: "Kêu gọi",
+  //   icon: faHouse,
+  //   route: "/keu-goi",
+  // },
 ];

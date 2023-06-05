@@ -91,7 +91,7 @@ function EventPopup({ onCloseModal, eventId }) {
             style={{ position: "absolute", right: "10px", bottom: "10px" }}
           >
             <Link
-              to={"/events/123"}
+              to={"/events/" + eventId}
               style={{
                 color: "white",
                 textDecoration: "none",

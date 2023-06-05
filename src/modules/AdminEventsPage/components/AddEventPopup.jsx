@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -13,8 +13,9 @@ import {
 import Modal from "../../../globalComponents/Modal/Modal";
 import { MuiFileInput } from "mui-file-input";
 import { format } from "date-fns";
+import { EventService, StorageService } from "../../../services";
 
-function AddEventPopup({ onCloseModal, event }) {
+function AddEventPopup({ onCloseModal, event = null }) {
   const [title, setTitle] = useState(event?.title || "");
   const [description, setDescription] = useState(event?.description || "");
   const [amountNeeded, setAmountNeeded] = useState(event?.amountNeeded || 0);
@@ -41,6 +42,17 @@ function AddEventPopup({ onCloseModal, event }) {
     event?.category.id || categories[0].id
   );
 
+  useEffect(() => {
+    if (!file) {
+      setImage(event?.image);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(file);
+    setImage(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
+
   const addEventHandler = () => {
     let haveError = false;
     setErrors([]);
@@ -64,27 +76,64 @@ function AddEventPopup({ onCloseModal, event }) {
       setErrors((prev) => [...prev, "Ngày bắt đầu phải là từ ngày hôm nay!"]);
     }
 
-    //   Upload image to firebase and get image url
-    const imageURL = "link-from-firebase";
+    if (event === null && file === null) {
+      haveError = true;
+      setErrors((prev) => [...prev, "Vui lòng chọn ảnh cho sự kiện"]);
+    }
 
-    //   Save to data base
-    const eventBody = {
+    if (haveError === true) return;
+
+    const eventWithoutImage = {
       title,
-      image: imageURL,
       description,
       address,
       amountNeeded,
       dateBegin,
       dateEnd,
-      category,
+      category: categories.find((cate) => cate.id === category),
     };
 
-    console.log(eventBody);
+    if (file !== null) {
+      //   Upload image to firebase and get image url
+      const imageData = new FormData();
+      imageData.append("image", file);
+
+      StorageService.getImageURL(imageData)
+        .then((imageURL) => {
+          console.log(imageURL.data);
+          let eventBody = {
+            ...eventWithoutImage,
+            image: imageURL.data,
+          };
+
+          if (event) {
+            eventBody = { ...eventBody, id: event.id };
+          }
+
+          return EventService.addEvent(eventBody);
+        })
+        .then((newEvent) => {
+          console.log(newEvent);
+        })
+        .catch((e) => {
+          throw e;
+        });
+    } else {
+      let eventBody = { ...eventWithoutImage, id: event.id };
+
+      EventService.addEvent(eventBody)
+        .then((newEvent) => {
+          console.log(newEvent);
+        })
+        .catch((e) => {
+          throw e;
+        });
+    }
+
     if (!haveError && errors.length === 0) onCloseModal();
   };
 
   const imageChooseHandler = (fileChosen) => {
-    setFile(fileChosen);
     const extension = fileChosen.name.split(".").pop();
 
     if (extension !== "jpg" && extension !== "png") {
@@ -95,6 +144,7 @@ function AddEventPopup({ onCloseModal, event }) {
         return prev;
       });
     } else {
+      setFile(fileChosen);
       setErrors((prev) =>
         [...prev].filter((error) => error.includes("Định dạng") === false)
       );
@@ -110,7 +160,7 @@ function AddEventPopup({ onCloseModal, event }) {
       </Stack>
       <Stack
         direction="row"
-        spacing={4}
+        spacing={3}
         paddingX={2}
         paddingTop={2}
         marginTop={2}
@@ -125,9 +175,10 @@ function AddEventPopup({ onCloseModal, event }) {
             <MuiFileInput
               label="Chọn ảnh"
               size="small"
-              style={{ width: "120px" }}
+              style={{ width: "100%", whiteSpace: "nowrap" }}
               onChange={imageChooseHandler}
               value={file}
+              hideSizeText
             />
             <Typography
               fontSize={13}

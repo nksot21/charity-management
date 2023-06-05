@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import Modal from "../../../globalComponents/Modal/Modal";
-import { donors } from "../../AdminDonorsPage/screens/data";
+import { DonorService } from "../../../services";
 
 function AddDonationPopup({ onCloseModal, event }) {
   const [donorId, setDonorId] = useState("");
@@ -29,9 +29,15 @@ function AddDonationPopup({ onCloseModal, event }) {
   const [amount, setAmount] = useState("");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState([]);
-
+  const [donors, setDonors] = useState([]);
   const [donorsResult, setDonorsResult] = useState([]);
   const [donorChosen, setDonorChosen] = React.useState(null);
+
+  useEffect(() => {
+    DonorService.getAllDonors().then((fetchedDonors) => {
+      setDonors(fetchedDonors.data);
+    });
+  }, []);
 
   const banks = [
     "Vietcombank",
@@ -57,8 +63,11 @@ function AddDonationPopup({ onCloseModal, event }) {
       setDonorsResult(
         donors.filter(
           (donor) =>
-            donor.ID.toString() === e.target.value ||
-            donor.username.includes(e.target.value)
+            donor.id.toString() === e.target.value ||
+            donor.username
+              .toLowerCase()
+              .includes(e.target.value.toLowerCase()) ||
+            donor.name.toLowerCase().includes(e.target.value.toLowerCase())
         )
       );
     } else {
@@ -122,7 +131,10 @@ function AddDonationPopup({ onCloseModal, event }) {
   return (
     <Modal onCloseModal={onCloseModal}>
       <Stack>
-        <Typography fontSize={20}>Thêm quyên góp (chuyển khoản)</Typography>
+        <Typography fontSize={20}>
+          Thêm quyên góp ({" "}
+          {event.category.name === "Tiền" ? "chuyển khoản" : "hàng hóa"})
+        </Typography>
       </Stack>
       <Stack spacing={2} marginTop={2}>
         <TextField
@@ -137,16 +149,16 @@ function AddDonationPopup({ onCloseModal, event }) {
         {donorsResult.length > 0 && (
           <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
             {donorsResult.slice(0, 4).map((donor) => {
-              const labelId = `checkbox-list-secondary-label-${donor.ID}`;
+              const labelId = `checkbox-list-secondary-label-${donor.id}`;
               return (
                 <ListItem
-                  key={donor.ID}
+                  key={donor.id}
                   secondaryAction={
                     <Checkbox
                       edge="end"
                       onChange={handleToggle(donor)}
                       checked={
-                        donorChosen ? donor.ID === donorChosen.ID : false
+                        donorChosen ? donor.id === donorChosen.id : false
                       }
                       inputProps={{ "aria-labelledby": labelId }}
                     />
@@ -157,7 +169,7 @@ function AddDonationPopup({ onCloseModal, event }) {
                     <ListItemAvatar>
                       <Avatar
                         alt={`Avatar n°${donor.name + 1}`}
-                        src={donor.image}
+                        src={donor.photo}
                       />
                     </ListItemAvatar>
                     <ListItemText id={labelId} primary={donor.name} />
@@ -222,7 +234,13 @@ function AddDonationPopup({ onCloseModal, event }) {
             required
             endAdornment={
               <InputAdornment position="end">
-                {event.category.unit}
+                {event.category.name === "Tiền"
+                  ? event.category.unit
+                  : (
+                      event.category.unit +
+                      " " +
+                      event.category.name
+                    ).toLowerCase()}
               </InputAdornment>
             }
             onChange={(event) => setAmount(event.target.value)}

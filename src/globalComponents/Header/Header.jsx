@@ -5,19 +5,33 @@ import HeaderNotification from "./HeaderNotification";
 import HeaderAccount from "./HeaderAccount";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import { IconButton, Stack } from "@mui/material";
+import HeaderLogin from "./HeaderLogin";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import { uiActions } from "../../store/ui";
 
 export default function Header() {
+  const dispatch = useDispatch()
+
   return (
-    <div className="sticky-top header-disable-copy" style={{zIndex: 10}}>
-      <Container
-        fluid
-        style={{
-          height: "70px",
-          padding: "12px",
-          backgroundColor: "white",
-          borderBottom: "1px solid #E5E7EB",
-        }}
+    <Stack
+      style={{ zIndex: 10, backgroundColor: "white" }}
+      direction={"row"}
+      height={70}
+      alignItems={"center"}
+      spacing={3}
+      paddingX={2}
+      borderBottom={"1px solid #ccc"}
+      position={"sticky"}
+      top={0}
+    >
+      <IconButton
+        sx={{ width: 50, height: 50 }}
+        onClick={() => dispatch(uiActions.toggleMenu())}
       >
+<<<<<<< HEAD
         <Row>
           {/* Header Logo */}
           <Col className="col-4">
@@ -93,5 +107,49 @@ export default function Header() {
         </Row>
       </Container>
     </div>
+=======
+        <FontAwesomeIcon color="#444" icon={faBars} />
+      </IconButton>
+      <Stack>
+        <Link to="/trang-chu">
+          <img
+            src={LogoImg}
+            style={{
+              lineHeight: "46px",
+              height: "46px",
+              padding: "3px",
+              objectFit: "contain",
+            }}
+          />
+        </Link>
+      </Stack>
+      <Stack
+        direction={"row"}
+        flexGrow={1}
+        justifyContent={"end"}
+        spacing={3}
+        height={"100%"}
+        alignItems={"center"}
+      >
+        <Link to="/" className="header-link">
+          Giới thiệu
+        </Link>
+        <Link to="/trang-chu" className="header-link">
+          Trang chủ
+        </Link>
+        <Link to="/events" className="header-link">
+          Sự kiện
+        </Link>
+        <Link to="/donors" className="header-link">
+          Nhà hảo tâm
+        </Link>
+      </Stack>
+      <Stack direction={"row"} spacing={2} alignItems={"center"}>
+        <HeaderNotification />
+        <HeaderAccount />
+      </Stack>
+      {/* <HeaderLogin /> */}
+    </Stack>
+>>>>>>> dev
   );
 }

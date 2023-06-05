@@ -201,8 +201,8 @@ export const events = [
     "Ta thêm lòng tiếp sức, để bớt cuộc chia ly",
     "2023-02-23T05:53:56.642Z",
     "2023-11-01T05:53:56.642Z",
-    200000000,
-    136000000,
+    20,
+    12,
     "An Lão, Bình Định",
     {
       id: 4,
