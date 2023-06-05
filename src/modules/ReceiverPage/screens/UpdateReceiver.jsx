@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import styled from "../components/style.module.css"
-import { Link, useNavigate  } from 'react-router-dom'
+import { Link, useNavigate, useParams  } from 'react-router-dom'
 import { Button } from "react-bootstrap";
 import { Col, Form, Row, Image, Modal} from 'react-bootstrap'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,10 +13,8 @@ import axios from "axios";
 import { Alert, Snackbar } from '@mui/material';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 // import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
-export default function AddReceiver() {
-    const navigate = useNavigate();
-    const fullname = useRef("");
-    
+export default function UpdateReceiver() {
+    const fullname = useRef("")
     const address = useRef("");
     const district = useRef("");
     const city = useRef("");
@@ -27,7 +25,6 @@ export default function AddReceiver() {
     const dob = useRef("");
     const docId = useRef("");
     const description = useRef("");
-    const scoreDesire = useRef("");
     const receiverType = useRef("");
     const [successMessOpen, setSuccessMessOpen] = useState(false);
     const [failedMessOpen, setFailedMessOpen] = useState(false);
@@ -38,11 +35,43 @@ export default function AddReceiver() {
     const [classList, setClassList] = useState([]);
     const [choosenClass, setChoosenClass] = useState();
     const [recInfo, setRecInfo] = useState({});
-    const [isLoading, setLoading] = useState("true");
     const [typeDb, setTypeDb] = useState([])
     var radios = document.getElementsByName('group');
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState();
+
+    const [receiver, setReceiver] = useState({});
+    const [isLoading, setLoading] = useState("true");
+    const params = useParams()
+    const navigate = useNavigate()
+    console.log('params')
+    console.log(params.id.slice(3))
+    useEffect(() => {
+      retrieveReceivers();
+      setLoading(false)
+    }, []);
+    const retrieveReceivers = () => {
+        ReceiverService.getReceiverById(params.id.slice(3))
+        .then(response => {
+            console.log("receiver")
+            console.log(response.data.data)
+            
+            const receivers = response.data.data
+            setReceiver(receivers);
+        })
+        .catch(e => {
+            console.log('Error: ',e);
+        });
+    }
+
+    useEffect(() => {
+        if(receiver){
+            setGender(receiver.gender)
+        }
+    }, [receiver])
+  
+
+   
 
     const uploadImage = () => {
         const imageRef = ref(storage, `${imageUpload.name}`);
@@ -90,12 +119,12 @@ export default function AddReceiver() {
     };
     
     const saveHandler = async () => {
-        if(imageUpload){
-            uploadImage();
-            while (url==null) {await sleep(1000);}
-        }else{
-            setUrl("https://i.imgur.com/1baFFao.png")
-        }
+        // if(imageUpload){
+        //     uploadImage();
+        //     while (url==null) {await sleep(1000);}
+        // }else{
+        //     setUrl("https://i.imgur.com/1baFFao.png")
+        // }
         
         console.log("url image")
         console.log(url)
@@ -103,39 +132,39 @@ export default function AddReceiver() {
             const recInfo = {
                 name: fullname.current.value,
                 gender: gender,
-                receiverType_id: parseInt(receiverType.current.value),
-                phone: phoneNumber.current.value,
+                // receiverType_id: parseInt(receiverType.current.value),
+                // phone: phoneNumber.current.value,
                 address: address.current.value,
                 district: district.current.value,
-                cityprovince: city.current.value,
+                // cityprovince: city.current.value,
                 country: country.current.value,
-                birthday: dob.current.value,
+                // birthday: dob.current.value,
                 docId: docId.current.value,
                 description: description.current.value,
                 photo: url,
-                bankName: bank_name.current.value,
-                bankNumber: bank_number.current.value
+                // bankName: bank_name.current.value,
+                // bankNumber: bank_number.current.value
             };
            
             // Check requiment
-            if( !receiverType.current.value || !phoneNumber.current.value || !docId.current.value ){
-                setFailedMess("Thông tin Tổ chức, Số liên hệ, Căn cước công dân còn thiếu!")
-                setFailedMessOpen(true)
-                return 
-            }
+            // if( !receiverType.current.value || !phoneNumber.current.value || !docId.current.value ){
+            //     setFailedMess("Thông tin Tổ chức, Số liên hệ, Căn cước công dân còn thiếu!")
+            //     setFailedMessOpen(true)
+            //     return 
+            // }
             
-            setRecInfo(recInfo)
+            // setRecInfo(recInfo)
             console.log('Receiver Info: ',recInfo);
-            ReceiverService.createReceiver(recInfo)
-            .then(response => {
-                resetTextField()
-                setSuccessMessOpen(true)
-                navigate("/nguoi-nhan")
-            }).catch(err => {
-                console.log(err.response.data.message)
-                setFailedMess(err.response.data.message)
-                setFailedMessOpen(true)
-            })
+            // ReceiverService.createReceiver(recInfo)
+            // .then(response => {
+            //     cancelHandler()
+            //     setSuccessMessOpen(true)
+            //     navigate("/nguoi-nhan")
+            // }).catch(err => {
+            //     console.log(err.response.data.message)
+            //     setFailedMess(err.response.data.message)
+            //     setFailedMessOpen(true)
+            // })
             
         } catch (e) {
             console.log('Error: ',e);
@@ -143,18 +172,7 @@ export default function AddReceiver() {
     }
 
     const cancelHandler = (e) => {
-
-        fullname.current.value= ''
-        district.current.value= ''
-        address.current.value= ''
-        city.current.value= ''
-        country.current.value= ''
-        phoneNumber.current.value= ''
-        dob.current.value= ''
-        docId.current.value= ''
-        description.current.value= ''
-        bank_name.current.value=''
-        bank_number.current.value=''
+        navigate("../nguoi-nhan/REC" + receiver.id)
     }
 
     const handleClose = (event, reason) => {
@@ -199,7 +217,7 @@ export default function AddReceiver() {
                             <Row className="mb-1"><lable style={{fontWeight:"500"}}>Ảnh</lable></Row>
                             <Row>
                                 <div className={`${styled['avt']}`}>
-                                    <Image src="https://i.imgur.com/1baFFao.png" roundedCircle="true" width="48px" height="48px"></Image>
+                                    <Image src={receiver.photo || "https://i.imgur.com/1baFFao.png"} roundedCircle="true" width="48px" height="48px"></Image>
                                     <Form.Group controlId="formFileSm">
                                         <Form.Control type="file" size="sm" style={{fontSize: "14px", color: "#6B7280"}} accept=".jpg, .png"
                                             onChange={(event) => setImageUpload(event.target.files[0])}/>
@@ -212,7 +230,7 @@ export default function AddReceiver() {
                         <div className={`${styled['name-gender']}`}>
                             <Form.Group controlId="formGridName" style={{width: "600px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Họ và tên</Form.Label>
-                                <Form.Control type="text" placeholder="Họ và tên" style={{fontSize: "14px", marginTop:"4px"}} ref={fullname}/>
+                                <Form.Control type="text" placeholder="Họ và tên" style={{fontSize: "14px", marginTop:"4px"}} ref={fullname} defaultValue={receiver.name}/>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "200px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Giới tính</Form.Label>
@@ -226,6 +244,7 @@ export default function AddReceiver() {
                                     name="gender"
                                     value={0}
                                     onChange={handleChangeGender}
+                                    defaultChecked={receiver.gender === 0}
                                 />
                                 <Form.Check
                                     inline
@@ -236,6 +255,7 @@ export default function AddReceiver() {
                                     name="gender"
                                     value={1}
                                     onChange={handleChangeGender}
+                                    defaultChecked={receiver.gender === 1}
                                 />
                             </Form.Group>
                         </div>
@@ -244,7 +264,8 @@ export default function AddReceiver() {
                         <div  className={`${styled['name-gender']}`}>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Tổ chức <span style={{color:'red'}}> *</span></Form.Label>
-                                <Form.Select defaultValue="Type" placeholder="Type" style={{fontSize: "14px", marginTop:"4px"}} ref={receiverType} required>
+                                <Form.Select defaultValue="Type" placeholder="Type" style={{fontSize: "14px", marginTop:"4px"}} ref={receiverType} required 
+                                defaultChecked={receiver.receiverType}>
                                             {
                                                 typeDb.map(type => <option value={type.id}>{type.name}</option>)
                                             }
@@ -252,7 +273,8 @@ export default function AddReceiver() {
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                     <Form.Label style={{fontWeight:"500"}}>Số liên hệ <span style={{color:'red'}}> *</span></Form.Label>
-                                    <Form.Control type="tel" placeholder="Số liên hệ" style={{fontSize: "14px", marginTop:"4px"}} ref={phoneNumber} />
+                                    <Form.Control type="tel" placeholder="Số liên hệ" style={{fontSize: "14px", marginTop:"4px"}} ref={phoneNumber}
+                                    defaultValue={receiver.phone} />
                             </Form.Group>
                         </div>
                     </Row>
@@ -260,11 +282,11 @@ export default function AddReceiver() {
                         <div className={`${styled['name-gender']}`}>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Địa chỉ</Form.Label>
-                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={address}/>
+                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}}defaultValue={receiver.address}  ref={address}  />
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Phường/Xã</Form.Label>
-                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={district}/>
+                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={district} defaultValue={receiver.district} />
                             </Form.Group>
                         </div>
                     </Row>
@@ -273,11 +295,11 @@ export default function AddReceiver() {
                         <div className={`${styled['name-gender']}`}>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Tỉnh/Thành phố</Form.Label>
-                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={city}/>
+                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={city} defaultValue={receiver.cityprovince} />
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Quốc gia</Form.Label>
-                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={country}/>
+                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={country} defaultValue={receiver.country} />
                             </Form.Group>
                         </div>
                     </Row>
@@ -286,11 +308,11 @@ export default function AddReceiver() {
                         <div className={`${styled['name-gender']}`}>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Ngày sinh</Form.Label>
-                                <Form.Control type="date" style={{fontSize: "14px", marginTop:"4px"}} ref={dob}/>
+                                <Form.Control type="date" style={{fontSize: "14px", marginTop:"4px"}} ref={dob} defaultValue={receiver.birthday}/>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Căn cước công dân <span style={{color:'red'}}> *</span></Form.Label>
-                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={docId} required/>
+                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={docId} required defaultValue={receiver.docId} />
                             </Form.Group>
                         </div>
                     </Row>
@@ -299,11 +321,11 @@ export default function AddReceiver() {
                         <div className={`${styled['name-gender']}`}>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Ngân hàng: </Form.Label>
-                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={bank_name}/>
+                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}}  defaultValue={receiver.bankName}  ref={bank_name}/>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "425px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Số tài khoản: </Form.Label>
-                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={bank_number}/>
+                                <Form.Control type="text" style={{fontSize: "14px", marginTop:"4px"}} ref={bank_number} defaultValue={receiver.bankNumber} />
                             </Form.Group>
                         </div>
                     </Row>
@@ -312,7 +334,7 @@ export default function AddReceiver() {
                         <div>
                             <Form.Group controlId="formGridName" style={{width: "600px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Thông tin chi tiết</Form.Label>
-                                <Form.Control as="textarea" rows={3} style={{fontSize: "14px", marginTop:"4px"}} ref={description}/>
+                                <Form.Control as="textarea" rows={3} style={{fontSize: "14px", marginTop:"4px"}} ref={description} defaultValue={receiver.description}/>
                             </Form.Group>
                         </div>
                     </Row>

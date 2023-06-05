@@ -8,6 +8,24 @@ export class ReceiverService {
     return axios.post(url + "receiver", data);
   }
 
+<<<<<<< HEAD
+    static getAllReceivers(){
+        return axios.get(url + 'receiver')
+    }
+
+    static getReceiverById(id){
+        return axios.get(url + 'receiver/' + id)
+    }
+
+    static getAllReceiverType(){
+        return axios.get(url + 'receiver/types')
+    }
+
+    static getAllDistribution(id){
+        return axios.get(url + 'distribution/receiver/' + id)
+    }
+}
+=======
   static getAllReceiverType() {
     return axios.get(url + "receiver/types");
   }
@@ -47,3 +65,4 @@ export class StorageService {
     return await axios.post(url + "images", image);
   }
 }
+>>>>>>> dev

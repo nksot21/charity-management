@@ -12,10 +12,14 @@ import HomepageRoot from "./modules/Homepage/screens/HomepageRoot";
 import Receiver from "./modules/ReceiverPage/screens/Receiver";
 import AddReceiver from "./modules/ReceiverPage/screens/AddReceiver";
 import DonationPage from "./modules/DonationPage/screens/DonationPage";
+import ReceiverDetail from "./modules/ReceiverPage/screens/ReceiverDetail";
 import EventsPage from "./modules/EventsPage/screens/EventsPage";
 import EventDetailPage from "./modules/EventDetailPage/screens/EventDetailPage";
 import AdminDonorsPage from "./modules/AdminDonorsPage/screens/AdminDonorsPage";
 import AdminEventsPage from "./modules/AdminEventsPage/screens/AdminEventsPage";
+import { Update } from "@mui/icons-material";
+import UpdateReceiver from "./modules/ReceiverPage/screens/UpdateReceiver";
+import DistributionPage from "./modules/DistributionPage/screens/DistributionPage";
 import { Provider } from "react-redux";
 import store from "./store/store";
 
@@ -39,8 +43,20 @@ const router = createBrowserRouter([
             element: <Receiver />,
           },
           {
+            path: "quan-ly/tai-tro",
+            element: <DistributionPage />,
+          },
+          {
             path: "nguoi-nhan/them",
             element: <AddReceiver />,
+          },
+          {
+            path: ":nguoi-nhan/:id",
+            element: <ReceiverDetail />,
+          },
+          {
+            path: ":nguoi-nhan/:id/sua",
+            element: <UpdateReceiver />,
           },
           {
             path: "donors",
