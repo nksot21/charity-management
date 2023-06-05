@@ -19,6 +19,7 @@ import AdminDonorsPage from "./modules/AdminDonorsPage/screens/AdminDonorsPage";
 import AdminEventsPage from "./modules/AdminEventsPage/screens/AdminEventsPage";
 import { Update } from "@mui/icons-material";
 import UpdateReceiver from "./modules/ReceiverPage/screens/UpdateReceiver";
+import DistributionPage from "./modules/DistributionPage/screens/DistributionPage";
 const router = createBrowserRouter([
   {
     path: "",
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
           {
             path: "nguoi-nhan",
             element: <Receiver />,
+          },
+          {
+            path: "quan-ly/tai-tro",
+            element: <DistributionPage />,
           },
           {
             path: "nguoi-nhan/them",

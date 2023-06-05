@@ -5,8 +5,8 @@ import { ReceiverService } from '../../../services';
 import { Link } from 'react-router-dom';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 100 },
-  { field: 'name', headerName: 'Tên hoạt động', width: 250,
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'name', headerName: 'Tên hoạt động', width: 300,
     type: 'link',
     renderCell: (params) =>{
       return  <Link to={params.row.id} className=' text-decoration-none cursor  ' style={{alignItems: "center"}}>
@@ -24,9 +24,10 @@ const columns = [
   {
     field: 'expectMoney',
     headerName: 'Mục tiêu',
-    width: 150,
+    width: 120,
   },
-  { field: 'receiverMoney', headerName: 'Thực nhận', width: 150  },
+  { field: 'receiverMoney', headerName: 'Thực nhận', width: 120  },
+  { field: 'status', headerName: 'Tình trạng', width: 150  },
 ];
 
 

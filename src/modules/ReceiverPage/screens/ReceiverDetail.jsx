@@ -14,12 +14,15 @@ import InfoCard from '../components/InfoCard'
 export default function ReceiverDetail() {
   const [receiver, setReceiver] = useState({});
   const [isLoading, setLoading] = useState("true");
+  const [distributionList, setDistributionList] = useState([])
+  const [currentDistribution, setCurrentDistribution] = useState({})
   const params = useParams()
 
   console.log('params')
   console.log(params.id.slice(3))
   useEffect(() => {
     retrieveReceivers();
+    retrieveDistributions();
     setLoading(false)
   }, []);
   const retrieveReceivers = () => {
@@ -33,6 +36,36 @@ export default function ReceiverDetail() {
           console.log('Error: ',e);
       });
   }
+
+  const retrieveDistributions= () => {
+    ReceiverService.getAllDistribution(params.id.slice(3))
+    .then(response => {
+        console.log(response.data.data)
+        const distributions = response.data.data
+        let tempList = []
+        distributions.map(dis => {
+          if(dis.status != "completed"){
+            setCurrentDistribution(dis)
+          }
+          let status = dis.status == "upcoming" ? "Sắp diễn ra" : (dis.status == "completed" ? "Hoàn thành" : "Đang diễn ra" )
+          let temp = {
+            id: "EVE" + dis.event.id,
+            name: dis.event.title,
+            startTime: dis.event.dateBegin,
+            endTime: dis.event.dateEnd,
+            expectMoney: (dis.item?.plannedQuantity || "0" ) + " " + dis.item?.category.unit + " (" + dis.item?.category.name + ")",
+            receiverMoney: (dis.item?.actualQuantity || "0" ) +  " " +dis.item?.category.unit + " (" + dis.item?.category.name + ")",
+            status: status
+          }
+          tempList.push(temp)
+        })
+        setDistributionList(tempList)
+    })
+    .catch(e => {
+        console.log('Error: ',e);
+    });
+  }
+
 
   if(!isLoading)
   return (
@@ -67,7 +100,7 @@ export default function ReceiverDetail() {
                 <InfoCard data={receiver}/>
             </Col>
             <Col className='col-8'>
-                <ContentCard  data={receiver}/>
+                <ContentCard  data={receiver} distribution={currentDistribution}/>
             </Col>
           </Row>
           <Row style={{marginTop: "50px"}}>
@@ -77,7 +110,7 @@ export default function ReceiverDetail() {
             <p className="mb-3"style={{color: "green"}}>Tổng số tiền đã nhận: 1.200.000 VNĐ</p>
           </Row>
           <Row style={{marginBottom: "50px"}}>
-            <ActivityTable data={rows}/>
+            <ActivityTable data={distributionList}/>
           </Row>
         </Container>
     </div>

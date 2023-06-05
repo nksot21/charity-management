@@ -10,6 +10,9 @@ import { Col, Container, Row } from 'react-bootstrap';
 
 export default function ContentCard(props) {
     const receiver = props.data
+    const distribution = props.distribution
+    console.log('distribution')
+    console.log(distribution)
     return (
       <Card sx={{ maxWidth: 700, padding:"0 20px 0 20px" }}>
       <CardActionArea>
@@ -96,7 +99,7 @@ export default function ContentCard(props) {
                            Hoạt động đang tham gia
                         </Typography>
                         <Typography variant="body2" color="text.secondary" className='d-inline' style={{marginLeft: "20px",  height: '50px', lineHeight: '50px'}}>
-                            Vì tình thương miền Trung 2023
+                            {distribution?.event?.title || "Không có hoạt động nào đang tham gia"}
                         </Typography>
                     </Col>
                 </Row>

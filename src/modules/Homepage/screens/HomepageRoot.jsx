@@ -9,11 +9,7 @@ export default function Homepage() {
         <Container fluid style={{padding: '0px'}}>
           {/* <Header /> */}
           <Row className='d-flex' style={{height: '100%', padding: "0px", margin: "0px"}}>
-<<<<<<< HEAD
-            <Col xs={2} >
-=======
             <Col xs={2} style={{borderRight: "1px solid #E5E7EB", padding: 0}}>
->>>>>>> dev
                 <Sidebar/>
             </Col>
             <Col xs={10}>
