@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Button, Chip, Typography } from "@mui/material";
 import { Stack } from "@mui/material";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function EventInfo({ event }) {
+  const role = useSelector((state) => state.auth.role);
+  const navigate = useNavigate();
+  const [showDonatePopup, setShowDonatePopup] = useState(false);
+
+  const donateHandler = () => {
+    if (role === "GUESS") {
+      navigate("/dang-ky");
+    } else {
+      setShowDonatePopup(true);
+    }
+  };
+
   return (
     <Stack
       width={"40%"}
@@ -38,7 +52,7 @@ function EventInfo({ event }) {
         <Typography fontSize={17}>Còn </Typography>
         <Chip
           size="large"
-          style={{fontSize: 17}}
+          style={{ fontSize: 17 }}
           label={
             (new Date(event.dateEnd) - new Date(event.dateBegin)) /
               (1000 * 60 * 60 * 24) +
@@ -85,6 +99,7 @@ function EventInfo({ event }) {
             fontSize: "17px",
             backgroundImage: "linear-gradient(to right, #298474, #092849)",
           }}
+          onClick={donateHandler}
         >
           Quyên góp
         </Button>

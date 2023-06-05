@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { sidebarMenu } from "./SidebarMenu";
 import { Divider, Stack, Typography } from "@mui/material";
 import SidebarItem from "./SidebarItem";
@@ -14,7 +14,7 @@ export default function Sidebar() {
       top={70}
       left={0}
       borderRight={"1px solid #ddd"}
-      width={"fit-content"}
+      width={isMenuShown ? "240px" : "fit-content"}
     >
       <Stack marginTop={2} width={"100%"}>
         {sidebarMenu

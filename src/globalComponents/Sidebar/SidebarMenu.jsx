@@ -45,7 +45,7 @@ export const sidebarMenu = [
     title: "CharityManagement",
     name: "Quản lý nhà hảo tâm",
     icon: faHandHoldingDollar,
-    route: "/ADMIN/manage/donors",
+    route: "/admin/manage/donors",
     roles: ["ADMIN"],
   },
   {
@@ -53,7 +53,7 @@ export const sidebarMenu = [
     title: "CharityManagement",
     name: "Quản lý sự kiện",
     icon: faBullhorn,
-    route: "/ADMIN/manage/events",
+    route: "/admin/manage/events",
     roles: ["ADMIN"],
   },
   {

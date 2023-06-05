@@ -154,7 +154,7 @@ function Signup() {
         return DonorService.addDonor(donorBody);
       })
       .then((res) => {
-        console.log(res.data);
+        navigate("/dang-nhap");
       })
       .catch((res) => {
         if (res.response.data.message.includes("already exists")) {
