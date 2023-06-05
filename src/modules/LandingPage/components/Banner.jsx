@@ -2,11 +2,27 @@ import React from "react";
 import LogoImg from "../../../assets/images/global/logo.png";
 import "./Banner.css";
 import { Button, Stack, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Banner() {
+  const { role } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const joinHandler = () => {
+    if (role === "GUESS") {
+      navigate("/dang-ky");
+    } else navigate("/events");
+  };
+
   return (
     <Stack className="banner" height={500} padding={2}>
-      <Stack direction={"row"} spacing={10} alignItems={"center"} height={"100%"}>
+      <Stack
+        direction={"row"}
+        spacing={10}
+        alignItems={"center"}
+        height={"100%"}
+      >
         <Stack>
           <img
             src={LogoImg}
@@ -25,12 +41,18 @@ export default function Banner() {
           </Stack>
         </Stack>
       </Stack>
-      <Stack direction={"row"} spacing={3} marginTop={6} justifyContent={"center"}>
+      <Stack
+        direction={"row"}
+        spacing={3}
+        marginTop={6}
+        justifyContent={"center"}
+      >
         <Button
           variant="contained"
           size="large"
           color="success"
           style={{ fontWeight: "bold", width: 200 }}
+          onClick={joinHandler}
         >
           Tham gia ngay
         </Button>

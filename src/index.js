@@ -6,7 +6,6 @@ import Root from "./Root";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import DonorsPage from "./modules/DonorsPage/screens/DonorsPage";
 import DonorDetailPage from "./modules/DonorDetailPage/screens/DonorDetailPage";
-import ErrorPage from "./modules/ErrorPage/ErrorPage";
 import LandingPage from "./modules/LandingPage/screens/LandingPage";
 import HomepageRoot from "./modules/Homepage/screens/HomepageRoot";
 import Receiver from "./modules/ReceiverPage/screens/Receiver";
@@ -18,17 +17,20 @@ import AdminDonorsPage from "./modules/AdminDonorsPage/screens/AdminDonorsPage";
 import AdminEventsPage from "./modules/AdminEventsPage/screens/AdminEventsPage";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import SomethingWentWrong from "./globalComponents/NoResult/Error";
+import Signup from "./modules/Authentication/screens/Signup";
+import Login from "./modules/Authentication/screens/Login";
 
 const router = createBrowserRouter([
   {
     path: "",
     element: <Root />,
-    errorElement: <ErrorPage />,
+    errorElement: <SomethingWentWrong />,
     children: [
       {
         path: "",
         element: <HomepageRoot />,
-        errorElement: <ErrorPage />,
+        errorElement: <SomethingWentWrong />,
         children: [
           {
             path: "trang-chu",
@@ -51,6 +53,10 @@ const router = createBrowserRouter([
               },
               {
                 path: ":donorId",
+                element: <DonorDetailPage />,
+              },
+              {
+                path: "profile",
                 element: <DonorDetailPage />,
               },
             ],
@@ -93,9 +99,12 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/gioi-thieu",
-        element: <LandingPage />,
-        errorElement: <ErrorPage />,
+        path: "dang-ky",
+        element: <Signup />,
+      },
+      {
+        path: "dang-nhap",
+        element: <Login />,
       },
     ],
   },

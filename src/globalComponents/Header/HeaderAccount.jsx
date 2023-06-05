@@ -4,7 +4,7 @@ import { Avatar, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function HeaderAccount() {
+export default function HeaderAccount({ user }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,9 +26,11 @@ export default function HeaderAccount() {
       onClick={!openPopup ? handleClick : handleClose}
       id="menu"
     >
-      <Avatar src="" sx={{ height: 38, width: 38 }}></Avatar>
+      <Avatar src={user.photo} sx={{ height: 38, width: 38 }}></Avatar>
       <Stack>
-        <Typography>Lê Văn Thiện</Typography>
+        <Typography>
+          {user.name.length > 15 ? user.name.slice(0, 15) + "..." : user.name}
+        </Typography>
       </Stack>
       <Menu
         id="menu"
@@ -41,7 +43,7 @@ export default function HeaderAccount() {
         }}
       >
         <MenuItem onClick={handleClose}>
-          <Link style={{ textDecoration: "none" }}>Trang cá nhân</Link>
+          <Link style={{ textDecoration: "none" }} to={"/donors/profile"}>Trang cá nhân</Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Link style={{ textDecoration: "none" }}>Đăng xuất</Link>

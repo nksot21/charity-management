@@ -10,18 +10,25 @@ import {
 import EventCard from "../components/EventCard";
 import NoResult from "../../../globalComponents/NoResult/NoResult";
 import { EventService } from "../../../services";
+import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
 
 function EventsPage() {
   const [count, setCount] = React.useState(9);
   const [search, setSearch] = React.useState("");
   const [events, setEvents] = React.useState([]);
   const [viewedEvents, setViewedEvents] = React.useState(events);
+  const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    EventService.getAllEvents().then((fetchedEvents) => {
-      setEvents(fetchedEvents.data);
-      setViewedEvents(fetchedEvents.data);
-    });
+    EventService.getAllEvents()
+      .then((fetchedEvents) => {
+        setError(null);
+        setEvents(fetchedEvents.data);
+        setViewedEvents(fetchedEvents.data);
+      })
+      .catch((e) => {
+        setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
+      });
   }, []);
 
   const seeMoreHandler = () => {
@@ -35,6 +42,7 @@ function EventsPage() {
       )
     );
   };
+  
   return (
     <Container>
       <Typography marginTop={8} textAlign="center" variant="h4">
@@ -75,7 +83,12 @@ function EventsPage() {
       {viewedEvents.length > 0 && (
         <>
           <Stack Stack marginTop={6}>
-            <Grid container rowSpacing={3} columnSpacing={3} alignItems={"normal"}>
+            <Grid
+              container
+              rowSpacing={3}
+              columnSpacing={3}
+              alignItems={"normal"}
+            >
               {viewedEvents.slice(0, count).map((event) => (
                 <Grid item xs={4} key={event.id}>
                   <EventCard event={event} />
@@ -100,7 +113,8 @@ function EventsPage() {
           </Stack>
         </>
       )}
-      {viewedEvents.length === 0 && <NoResult />}
+      {viewedEvents.length === 0 && !error && <NoResult />}
+      {error && <SomethingWentWrong error={error} />}
     </Container>
   );
 }
