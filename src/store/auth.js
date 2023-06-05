@@ -5,7 +5,6 @@ const user = JSON.parse(localStorage.getItem("user")) || null;
 const initialState = {
   user: user,
   role: user ? user.role : "GUESS",
-  isLoggedIn: false,
 };
 
 const authSlice = createSlice({
@@ -14,10 +13,12 @@ const authSlice = createSlice({
   reducers: {
     logUserIn(state, action) {
       state.user = action.payload;
+      state.role = state.user.role;
     },
 
     logUserOut(state) {
-      state.user = null;
+        state.user = null;
+        state.role = "GUESS"
     },
   },
 });

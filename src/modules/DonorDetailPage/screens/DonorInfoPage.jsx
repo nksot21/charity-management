@@ -203,7 +203,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               label="Tên nhà hảo tâm"
               type="text"
               value={name}
-              disabled={!isProfile}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
               onChange={(event) => setName(event.target.value)}
             />
             <TextField
@@ -213,7 +215,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="date"
               value={format(new Date(birthday), "yyyy-MM-dd")}
               onChange={(event) => setbirthday(event.target.value)}
-              disabled={!isProfile}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -222,7 +226,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="text"
               value={phone}
               onChange={(event) => setphone(event.target.value)}
-              disabled={!isProfile}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -231,7 +237,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="email"
               value={email}
               onChange={(event) => setemail(event.target.value)}
-              disabled={!isProfile}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -242,7 +250,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               multiline
               rows={4}
               onChange={(event) => setslogan(event.target.value)}
-              disabled={!isProfile}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -251,7 +261,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="text"
               value={address}
               onChange={(event) => setaddress(event.target.value)}
-              disabled={!isProfile}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -260,7 +272,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="text"
               value={username}
               onChange={(event) => setusername(event.target.value)}
-              disabled={!isProfile}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             {isChangingPassword && isProfile && (
               <>

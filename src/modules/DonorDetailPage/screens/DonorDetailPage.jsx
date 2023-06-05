@@ -107,6 +107,10 @@ function DonorDetailPage() {
         navigate("/donors/profile");
       }
     }
+
+    if (!params.donorId && !loggedInDonor) {
+      navigate("/trang-chu");
+    }
   }, [donor]);
 
   return (

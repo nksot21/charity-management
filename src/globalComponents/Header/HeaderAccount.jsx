@@ -1,17 +1,36 @@
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, Menu, MenuItem, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { authActions } from "../../store/auth";
 
 export default function HeaderAccount({ user }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logoutHandler = () => {
+    localStorage.removeItem("user");
+    dispatch(authActions.logUserOut());
+    navigate("/trang-chu");
+  };
+
   const openPopup = Boolean(anchorEl);
   return (
     <Stack
@@ -43,10 +62,14 @@ export default function HeaderAccount({ user }) {
         }}
       >
         <MenuItem onClick={handleClose}>
-          <Link style={{ textDecoration: "none" }} to={"/donors/profile"}>Trang cá nhân</Link>
+          <Button onClick={() => navigate("/donors/profile")}>
+            Trang cá nhân
+          </Button>
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Link style={{ textDecoration: "none" }}>Đăng xuất</Link>
+          <Button style={{ textDecoration: "none" }} onClick={logoutHandler}>
+            Đăng xuất
+          </Button>
         </MenuItem>
       </Menu>
     </Stack>
