@@ -45,14 +45,9 @@ export default function DonorList() {
           }}
           width={"100%"}
         >
-          {userArray.map((user) => (
+          {userArray.map((donor) => (
             <SwiperSlide key={Math.random()}>
-              <DonorCard
-                id={user.id}
-                name={user.name}
-                email={user.email}
-                date={user.date}
-              />
+              <DonorCard donor={donor} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -103,24 +98,24 @@ const userArray = [
     id: "00723",
     name: "Jennie Kim",
     email: "@JennieRubyJane",
-    date: "07/2022",
+    joinDate: "2023-02-24T17:09:42.411",
   },
   {
     id: "00724",
     name: "Jennie Kim",
     email: "@JennieRubyJane",
-    date: "07/2022",
+    joinDate: "2023-02-24T17:09:42.411",
   },
   {
     id: "00725",
     name: "Jennie Kim",
     email: "@JennieRubyJane",
-    date: "07/2022",
+    joinDate: "2023-02-24T17:09:42.411",
   },
   {
     id: "00726",
     name: "Jennie Kim",
     email: "@JennieRubyJane",
-    date: "07/2022",
+    joinDate: "2023-02-24T17:09:42.411",
   },
 ];

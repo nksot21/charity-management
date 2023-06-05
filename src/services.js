@@ -36,8 +36,19 @@ export class DonorService {
     return await axios.get(url + "donors/get-all");
   }
 
+  static async logIn(username, password) {
+    const loginFormData = new FormData();
+    loginFormData.append("username", username);
+    loginFormData.append("password", password);
+    return await axios.post(url + "donors/log-in", loginFormData);
+  }
+
   static async getDonor(donorId) {
     return await axios.get(url + "donors/" + donorId);
+  }
+
+  static async addDonor(donor) {
+    return await axios.post(url + "donors/add", donor);
   }
 }
 

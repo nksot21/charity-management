@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Avatar, Button, Stack, Typography } from "@mui/material";
 import quote from "../../../assets/images/quote.png";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import DonorInfoPage from "../screens/DonorInfoPage";
 import { format } from "date-fns";
 
 function DonorInfo({ onDonation = false, donor }) {
   const [isShowingInfo, setIsShowingInfo] = useState(false);
+
   return (
     <Stack position="sticky" top={100} left={0}>
       <Stack direction="row" spacing={4} alignItems={"center"}>
