@@ -3,9 +3,9 @@ import Header from "../src/globalComponents/Header/Header";
 import { Outlet } from "react-router";
 import Footer from "./globalComponents/Footer/Footer";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Stack } from "@mui/material";
 
 const Root = () => {
-  
   const theme = createTheme({
     typography: {
       fontFamily: "Montserrat, sans-serif",
@@ -16,8 +16,9 @@ const Root = () => {
     <ThemeProvider theme={theme}>
       <Container fluid style={{ padding: "0px", margin: "0" }}>
         <Header />
-        <Outlet>
-        </Outlet>
+        <Stack minHeight={"96vh"}>
+          <Outlet></Outlet>
+        </Stack>
         <Footer />
       </Container>
     </ThemeProvider>

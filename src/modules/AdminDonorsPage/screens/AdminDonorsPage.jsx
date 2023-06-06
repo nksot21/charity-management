@@ -8,8 +8,8 @@ function AdminDonorsPage() {
   const [donors, setDonors] = React.useState(null);
   const [error, setError] = React.useState(null);
 
-  useEffect(() => {
-    DonorService.getAllDonors()
+  const fetchDonors = async () => {
+    await DonorService.getAllDonors()
       .then((fetchedDonors) => {
         setError(null);
         setDonors(fetchedDonors.data);
@@ -17,6 +17,10 @@ function AdminDonorsPage() {
       .catch((e) => {
         setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
       });
+  };
+
+  useEffect(() => {
+    fetchDonors();
   }, []);
 
   return (

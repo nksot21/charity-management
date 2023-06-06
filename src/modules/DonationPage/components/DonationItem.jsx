@@ -75,7 +75,9 @@ function DonationItem({ donation }) {
         <Stack>
           <Typography textAlign={"end"}>Sự kiện</Typography>
           <Typography textAlign={"end"} fontWeight={"bold"}>
-            {donation.event.title}
+            {donation.event.title.length > 40
+              ? donation.event.title.slice(0, 40) + "..."
+              : donation.event.title}
           </Typography>
         </Stack>
         <Avatar sx={{ width: 60, height: 60 }} src={donation.event.image} />
@@ -84,14 +86,21 @@ function DonationItem({ donation }) {
         <DonorPopup
           onCloseModal={() => setIsOpenDonorPopup(false)}
           onDonation={true}
-          donorId={donation.donor.id}
+          donor={donation.donor}
         />
       )}
       {isOpenEventPopup && (
-        <EventPopup onCloseModal={() => setIsOpenEventPopup(false)} eventId={donation.event.id} />
+        <EventPopup
+          onCloseModal={() => setIsOpenEventPopup(false)}
+          event={donation.event}
+        />
       )}
       {isOpenTransferPopup && (
-        <TransferPopup onCloseModal={() => setIsOpenTransferPopup(false)} transferId={donation.transfer.id} />
+        <TransferPopup
+          onCloseModal={() => setIsOpenTransferPopup(false)}
+          transfer={donation.transfer}
+          item={donation.item}
+        />
       )}
     </Stack>
   );

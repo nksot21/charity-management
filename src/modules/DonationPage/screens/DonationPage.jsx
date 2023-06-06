@@ -1,10 +1,28 @@
 import { Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DonationItem from "../components/DonationItem";
 import DonationFilter from "../components/DonationFilter";
+import { DonationService } from "../../../services";
 
 function DonationPage() {
-  const [viewedDonations, setViewedDonations] = useState(donations);
+  const [donations, setDonations] = useState([]);
+  const [viewedDonations, setViewedDonations] = useState([]);
+
+  const fetchDonations = async () => {
+    await DonationService.getAllDonation()
+      .then((res) => {
+        console.log(res.data);
+        setDonations(res.data);
+        setViewedDonations(res.data);
+      })
+      .catch((e) => {
+        throw e;
+      });
+  };
+
+  useEffect(() => {
+    fetchDonations();
+  }, []);
 
   const searchHandler = (searchDonor, searchEvent) => {
     if (searchDonor.length > 0 && searchEvent.length > 0) {
@@ -37,17 +55,21 @@ function DonationPage() {
 
   return (
     <Stack paddingY={4} paddingX={3}>
-      <DonationFilter onSearch={searchHandler} />
-      <Stack marginTop={2} spacing={2}>
-        {viewedDonations.map((donation) => (
-          <DonationItem donation={donation} key={Math.round()} />
-        ))}
-        {viewedDonations.length === 0 && (
-          <Typography marginTop={3} fontSize={18} textAlign={"center"}>
-            Không có kết quả để hiển thị
-          </Typography>
-        )}
-      </Stack>
+      {viewedDonations.length > 0 && (
+        <>
+          <DonationFilter onSearch={searchHandler} />
+          <Stack marginTop={2} spacing={2}>
+            {viewedDonations.map((donation) => (
+              <DonationItem donation={donation} key={Math.round()} />
+            ))}
+            {viewedDonations.length === 0 && (
+              <Typography marginTop={3} fontSize={18} textAlign={"center"}>
+                Không có kết quả để hiển thị
+              </Typography>
+            )}
+          </Stack>
+        </>
+      )}
     </Stack>
   );
 }

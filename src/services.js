@@ -8,21 +8,21 @@ export class ReceiverService {
     return axios.post(url + "receiver", data);
   }
 
-    static getAllReceivers(){
-        return axios.get(url + 'receiver')
-    }
+  static getAllReceivers() {
+    return axios.get(url + "receiver");
+  }
 
-    static getReceiverById(id){
-        return axios.get(url + 'receiver/' + id)
-    }
+  static getReceiverById(id) {
+    return axios.get(url + "receiver/" + id);
+  }
 
-    static getAllReceiverType(){
-        return axios.get(url + 'receiver/types')
-    }
+  static getAllReceiverType() {
+    return axios.get(url + "receiver/types");
+  }
 
-    static getAllDistribution(id){
-        return axios.get(url + 'distribution/receiver/' + id)
-    }
+  static getAllDistribution(id) {
+    return axios.get(url + "distribution/receiver/" + id);
+  }
 
   static getAllReceiverType() {
     return axios.get(url + "receiver/types");
@@ -72,5 +72,33 @@ export class EventService {
 export class StorageService {
   static async getImageURL(image) {
     return await axios.post(url + "images", image);
+  }
+}
+
+export class DonationService {
+  static async getAllDonation() {
+    return await axios.get(url + "donations");
+  }
+
+  static async addDonation(donation) {
+    return await axios.post(url + "donations", donation);
+  }
+}
+
+export class CategoryService {
+  static async getCategories() {
+    return await axios.get(url + "categories");
+  }
+}
+
+export class TransferService {
+  static async addTransferFrom(transferFrom) {
+    return await axios.post(url + "transfer-from", transferFrom);
+  }
+}
+
+export class ItemService {
+  static async addItemFrom(itemFrom) {
+    return await axios.post(url + "itemfr", itemFrom)
   }
 }
