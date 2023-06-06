@@ -6,17 +6,22 @@ import Donations from "../components/Donations";
 import EventInfo from "../components/EventInfo";
 import { useParams } from "react-router";
 import { EventService } from "../../../services";
+import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
 
 function EventDetailPage() {
   const params = useParams();
   const [event, setEvent] = useState(null);
+  const [error, setError] = React.useState(null);
 
   useEffect(() => {
     EventService.getEvent(params.eventId)
       .then((fetchedEvent) => {
+        setError(null);
         setEvent(fetchedEvent.data);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
+      });
   }, []);
 
   const donations = [
@@ -60,14 +65,17 @@ function EventDetailPage() {
       <Typography fontSize={28} fontWeight={600}>
         {event?.title}
       </Typography>
-      <Stack marginTop={3} direction={"row"} spacing={3}>
-        <Stack width={"60%"}>
-          {event && <EventDescription event={event} />}
+      {event && (
+        <Stack marginTop={3} direction={"row"} spacing={3}>
+          <Stack width={"60%"}>
+            <EventDescription event={event} />
 
-          <Donations donations={donations} />
+            <Donations donations={donations} />
+          </Stack>
+          <EventInfo event={event} />
         </Stack>
-        {event && <EventInfo event={event} />}
-      </Stack>
+      )}
+      {error && <SomethingWentWrong error={error} />}
     </Stack>
   );
 }

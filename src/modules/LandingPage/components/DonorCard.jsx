@@ -27,7 +27,7 @@ export default function DonorCard({ donor }) {
       >
         <Avatar
           sx={{ width: 70, height: 70 }}
-          src={donor.photo}
+          src={donor?.photo}
           style={{ border: "2px solid #060" }}
         />
         <Stack justifyContent={"center"}>

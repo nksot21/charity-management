@@ -10,21 +10,27 @@ import {
 import DonorCard from "../../LandingPage/components/DonorCard";
 import NoResult from "../../../globalComponents/NoResult/NoResult";
 import { DonorService } from "../../../services";
+import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
 
 function DonorsPage() {
   const [count, setCount] = React.useState(9);
   const [search, setSearch] = React.useState("");
   const [donors, setDonors] = React.useState([]);
   const [viewedDonors, setViewedDonors] = React.useState([]);
+  const [error, setError] = React.useState(null);
+
   const seeMoreHandler = () => {
     setCount((prev) => prev + 9);
   };
 
   React.useEffect(() => {
     DonorService.getAllDonors().then((fetchedDonors) => {
+      setError(null)
       setDonors(fetchedDonors.data);
       setViewedDonors(fetchedDonors.data);
-    });
+    }).catch(e => {
+      setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
+    })
   }, []);
 
   const searchHandler = () => {
@@ -102,7 +108,8 @@ function DonorsPage() {
           </Stack>
         </>
       )}
-      {viewedDonors.length === 0 && <NoResult />}
+      {viewedDonors.length === 0 && !error && <NoResult />}
+      {error && <SomethingWentWrong error={error} />}
     </Container>
   );
 }

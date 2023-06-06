@@ -9,11 +9,12 @@ import { IconButton, Stack } from "@mui/material";
 import HeaderLogin from "./HeaderLogin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../store/ui";
 
 export default function Header() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
   return (
     <Stack
@@ -54,9 +55,6 @@ export default function Header() {
         height={"100%"}
         alignItems={"center"}
       >
-        <Link to="/" className="header-link">
-          Giới thiệu
-        </Link>
         <Link to="/trang-chu" className="header-link">
           Trang chủ
         </Link>
@@ -67,11 +65,13 @@ export default function Header() {
           Nhà hảo tâm
         </Link>
       </Stack>
-      <Stack direction={"row"} spacing={2} alignItems={"center"}>
-        <HeaderNotification />
-        <HeaderAccount />
-      </Stack>
-      {/* <HeaderLogin /> */}
+      {user && (
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          <HeaderNotification />
+          <HeaderAccount user={user} />
+        </Stack>
+      )}
+      {!user && <HeaderLogin />}
     </Stack>
   );
 }

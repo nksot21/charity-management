@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import quote from "../../../assets/images/quote.png";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Modal from "../../../globalComponents/Modal/Modal";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { MuiFileInput } from "mui-file-input";
@@ -36,6 +36,8 @@ function DonorInfoPage({ onCloseModal, donor }) {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showNewPassword, setShowNewPassword] = React.useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const params = useParams();
+  const isProfile = !params.donorId;
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
@@ -145,24 +147,26 @@ function DonorInfoPage({ onCloseModal, donor }) {
               sx={{ width: 250, height: 250, boxShadow: "0 0 10px #00000022" }}
               src={photo}
             />
-            <Stack marginTop={3} alignItems={"center"}>
-              <MuiFileInput
-                label="Chọn ảnh"
-                size="small"
-                style={{ width: "100%", whiteSpace: "nowrap" }}
-                onChange={imageChooseHandler}
-                value={file}
-                hideSizeText
-              />
-              <Typography
-                fontSize={13}
-                fontStyle={"italic"}
-                marginTop={1}
-                color={"#666"}
-              >
-                Định dạng: JPEG, PNG
-              </Typography>
-            </Stack>
+            {isProfile && (
+              <Stack marginTop={3} alignItems={"center"}>
+                <MuiFileInput
+                  label="Chọn ảnh"
+                  size="small"
+                  style={{ width: "100%", whiteSpace: "nowrap" }}
+                  onChange={imageChooseHandler}
+                  value={file}
+                  hideSizeText
+                />
+                <Typography
+                  fontSize={13}
+                  fontStyle={"italic"}
+                  marginTop={1}
+                  color={"#666"}
+                >
+                  Định dạng: JPEG, PNG
+                </Typography>
+              </Stack>
+            )}
             {errors.length > 0 && (
               <Stack
                 marginTop={2}
@@ -183,11 +187,13 @@ function DonorInfoPage({ onCloseModal, donor }) {
                 ))}
               </Stack>
             )}
-            <Stack flexGrow={1} justifyContent={"end"}>
-              <Button variant="outlined" onClick={() => onCloseModal()}>
-                Hủy
-              </Button>
-            </Stack>
+            {isProfile && (
+              <Stack flexGrow={1} justifyContent={"end"}>
+                <Button variant="outlined" onClick={() => onCloseModal()}>
+                  Hủy
+                </Button>
+              </Stack>
+            )}
           </Stack>
 
           <Stack spacing={2} width={400}>
@@ -197,6 +203,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               label="Tên nhà hảo tâm"
               type="text"
               value={name}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
               onChange={(event) => setName(event.target.value)}
             />
             <TextField
@@ -206,6 +215,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="date"
               value={format(new Date(birthday), "yyyy-MM-dd")}
               onChange={(event) => setbirthday(event.target.value)}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -214,6 +226,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="text"
               value={phone}
               onChange={(event) => setphone(event.target.value)}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -222,6 +237,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="email"
               value={email}
               onChange={(event) => setemail(event.target.value)}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -232,6 +250,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               multiline
               rows={4}
               onChange={(event) => setslogan(event.target.value)}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -240,6 +261,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="text"
               value={address}
               onChange={(event) => setaddress(event.target.value)}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
             <TextField
               size="small"
@@ -248,8 +272,11 @@ function DonorInfoPage({ onCloseModal, donor }) {
               type="text"
               value={username}
               onChange={(event) => setusername(event.target.value)}
+              InputProps={{
+                readOnly: !isProfile,
+              }}
             />
-            {isChangingPassword && (
+            {isChangingPassword && isProfile && (
               <>
                 <FormControl
                   sx={{ m: 1 }}
@@ -312,21 +339,25 @@ function DonorInfoPage({ onCloseModal, donor }) {
                 </FormControl>
               </>
             )}
-            <Stack alignItems={"end"}>
-              <Button
-                variant="text"
-                size="small"
-                style={{ textTransform: "none", textDecoration: "underline" }}
-                onClick={() => setIsChangingPassword((show) => !show)}
-              >
-                {isChangingPassword ? "Hủy" : "Đổi mật khẩu"}
-              </Button>
-            </Stack>
-            <Stack>
-              <Button variant="contained" onClick={addDonorHandler}>
-                Cập nhật
-              </Button>
-            </Stack>
+            {isProfile && (
+              <Stack alignItems={"end"}>
+                <Button
+                  variant="text"
+                  size="small"
+                  style={{ textTransform: "none", textDecoration: "underline" }}
+                  onClick={() => setIsChangingPassword((show) => !show)}
+                >
+                  {isChangingPassword ? "Hủy" : "Đổi mật khẩu"}
+                </Button>
+              </Stack>
+            )}
+            {isProfile && (
+              <Stack>
+                <Button variant="contained" onClick={addDonorHandler}>
+                  Cập nhật
+                </Button>
+              </Stack>
+            )}
           </Stack>
         </Stack>
       </Stack>
