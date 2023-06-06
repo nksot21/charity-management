@@ -20,7 +20,14 @@ import {
   Typography,
 } from "@mui/material";
 import Modal from "../../../globalComponents/Modal/Modal";
-import { DonorService } from "../../../services";
+import {
+  DonationService,
+  DonorService,
+  ItemService,
+  TransferService,
+} from "../../../services";
+import { useDispatch } from "react-redux";
+import { fetchEvents } from "../../../store/events";
 
 function AddDonationPopup({ onCloseModal, event }) {
   const [donorId, setDonorId] = useState("");
@@ -32,6 +39,7 @@ function AddDonationPopup({ onCloseModal, event }) {
   const [donors, setDonors] = useState([]);
   const [donorsResult, setDonorsResult] = useState([]);
   const [donorChosen, setDonorChosen] = React.useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     DonorService.getAllDonors().then((fetchedDonors) => {
@@ -79,20 +87,28 @@ function AddDonationPopup({ onCloseModal, event }) {
     setDonorChosen(value);
   };
 
-  const addDonationHandler = () => {
+  const addDonationHandler = async () => {
     setErrors([]);
+    let haveError = false;
     if (donorChosen === null) {
+      haveError = true;
       setErrors((prev) => [...prev, "Vui lòng chọn nhà hảo tâm!"]);
     }
     if (
       event.category.name === "Tiền" &&
       (bank === "" || account === "" || amount === "" || content === "")
     ) {
+      haveError = true;
       setErrors((prev) => [...prev, "Vui lòng điền đầy đủ thông tin!"]);
     }
     if (event.category.name !== "Tiền" && amount === "") {
+      haveError = true;
       setErrors((prev) => [...prev, "Vui lòng điền đầy đủ thông tin!"]);
     }
+
+    if (haveError) return;
+
+    let newDonation;
     if (event.category.name === "Tiền") {
       let transferFrom = {
         bank,
@@ -102,30 +118,55 @@ function AddDonationPopup({ onCloseModal, event }) {
         time: new Date().toISOString(),
       };
       // save transferFrom to database
-      transferFrom = { ...transferFrom, id: 10 };
+      let newTransfer;
+      try {
+        newTransfer = await TransferService.addTransferFrom(transferFrom);
+        console.log(newTransfer.data);
+      } catch (e) {
+        throw e.response;
+      }
 
-      const newDonation = {
+      newDonation = {
         donor: donorChosen,
         event: event,
-        transfer: transferFrom,
+        transfer: newTransfer.data,
+        item: null,
       };
+
       console.log(newDonation);
     } else {
       let itemFrom = {
         amount,
-        time: new Date().toISOString(),
+        categoryId: event.category.id,
       };
 
       // save itemFrom to database
-      itemFrom = { ...itemFrom, id: 10 };
-      const newDonation = {
+      let newItemFrom;
+      try {
+        newItemFrom = await ItemService.addItemFrom(itemFrom);
+        console.log(newItemFrom.data);
+      } catch (e) {
+        throw e.response;
+      }
+
+      newDonation = {
         donor: donorChosen,
         event: event,
-        item: itemFrom,
+        item: newItemFrom.data.data,
+        transfer: null,
       };
 
       console.log(newDonation);
     }
+
+    await DonationService.addDonation(newDonation)
+      .then((res) => {
+        dispatch(fetchEvents());
+        onCloseModal();
+      })
+      .catch((e) => {
+        throw e;
+      });
   };
 
   return (

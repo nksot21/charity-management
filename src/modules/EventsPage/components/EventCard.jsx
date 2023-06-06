@@ -61,7 +61,9 @@ function EventCard({ event }) {
           <Typography>
             Cần{" "}
             <span style={{ fontWeight: "600", color: "#fb8500" }}>
-              {currencyFormatter.format(event.amountNeeded)}
+              {event.category.name === "Tiền"
+                ? currencyFormatter.format(event.amountNeeded)
+                : event.amountNeeded + " " + event.category.unit}
             </span>
           </Typography>
           <Typography fontWeight={600} fontSize={19}>
@@ -79,7 +81,12 @@ function EventCard({ event }) {
         <Typography marginTop={1} textAlign={"end"}>
           Còn{" "}
           <span style={{ fontWeight: "600", color: "#fb8500" }}>
-            {currencyFormatter.format(event.amountNeeded - event.amountGot)}
+            {event.category.name === "Tiền"
+              ? currencyFormatter.format(event.amountNeeded - event.amountGot)
+              : event.amountNeeded -
+                event.amountGot +
+                " " +
+                event.category.unit}
           </span>
         </Typography>
       </Stack>

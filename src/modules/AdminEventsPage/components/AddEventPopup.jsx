@@ -13,7 +13,13 @@ import {
 import Modal from "../../../globalComponents/Modal/Modal";
 import { MuiFileInput } from "mui-file-input";
 import { format } from "date-fns";
-import { EventService, StorageService } from "../../../services";
+import {
+  CategoryService,
+  EventService,
+  StorageService,
+} from "../../../services";
+import { useDispatch } from "react-redux";
+import { fetchEvents } from "../../../store/events";
 
 function AddEventPopup({ onCloseModal, event = null }) {
   const [title, setTitle] = useState(event?.title || "");
@@ -25,22 +31,20 @@ function AddEventPopup({ onCloseModal, event = null }) {
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(event?.image || "");
   const [errors, setErrors] = useState([]);
+  const dispatch = useDispatch()
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState();
 
-  const [categories, setCategories] = useState([
-    {
-      id: 3,
-      name: "Tiền",
-      unit: "VNĐ",
-    },
-    {
-      id: 4,
-      name: "Gạo",
-      unit: "tấn",
-    },
-  ]);
-  const [category, setCategory] = useState(
-    event?.category.id || categories[0].id
-  );
+  useEffect(() => {
+    CategoryService.getCategories()
+      .then((res) => {
+        setCategories(res.data);
+        setCategory(event ? event.category.id : res.data[0].id);
+      })
+      .catch((e) => {
+        throw e;
+      });
+  }, []);
 
   useEffect(() => {
     if (!file) {
@@ -53,7 +57,7 @@ function AddEventPopup({ onCloseModal, event = null }) {
     return () => URL.revokeObjectURL(objectUrl);
   }, [file]);
 
-  const addEventHandler = () => {
+  const addEventHandler = async () => {
     let haveError = false;
     setErrors([]);
     if (title.length === 0 || description.length === 0) {
@@ -98,7 +102,7 @@ function AddEventPopup({ onCloseModal, event = null }) {
       const imageData = new FormData();
       imageData.append("image", file);
 
-      StorageService.getImageURL(imageData)
+      await StorageService.getImageURL(imageData)
         .then((imageURL) => {
           console.log(imageURL.data);
           let eventBody = {
@@ -113,24 +117,31 @@ function AddEventPopup({ onCloseModal, event = null }) {
           return EventService.addEvent(eventBody);
         })
         .then((newEvent) => {
-          console.log(newEvent);
+          console.log(newEvent.data);
         })
         .catch((e) => {
           throw e;
         });
     } else {
-      let eventBody = { ...eventWithoutImage, id: event.id };
+      let eventBody = {
+        ...eventWithoutImage,
+        id: event.id,
+        image: event.image,
+      };
 
-      EventService.addEvent(eventBody)
+      await EventService.addEvent(eventBody)
         .then((newEvent) => {
-          console.log(newEvent);
+          console.log(newEvent.data);
         })
         .catch((e) => {
           throw e;
         });
     }
 
-    if (!haveError && errors.length === 0) onCloseModal();
+    if (!haveError && errors.length === 0) {
+      dispatch(fetchEvents())
+      onCloseModal();
+    }
   };
 
   const imageChooseHandler = (fileChosen) => {
@@ -234,22 +245,24 @@ function AddEventPopup({ onCloseModal, event = null }) {
             required
             onChange={(event) => setDescription(event.target.value)}
           />
-          <FormControl fullWidth size="small" disabled={event}>
-            <InputLabel id="category">Loại quyên góp</InputLabel>
-            <Select
-              labelId="category"
-              id="demo-simple-select"
-              value={category}
-              label="Loại quyên góp"
-              onChange={(event) => setCategory(event.target.value)}
-            >
-              {categories.map((cate) => (
-                <MenuItem key={cate.id} value={cate.id}>
-                  {"Quyên góp " + cate.name + " (" + cate.unit + ")"}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {categories.length > 0 && (
+            <FormControl fullWidth size="small" disabled={event}>
+              <InputLabel id="category">Loại quyên góp</InputLabel>
+              <Select
+                labelId="category"
+                id="demo-simple-select"
+                value={category}
+                label="Loại quyên góp"
+                onChange={(event) => setCategory(event.target.value)}
+              >
+                {categories.map((cate) => (
+                  <MenuItem key={cate.id} value={cate.id}>
+                    {"Quyên góp " + cate.name + " (" + cate.unit + ")"}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <TextField
             size="small"
             fullWidth
@@ -288,7 +301,7 @@ function AddEventPopup({ onCloseModal, event = null }) {
           />
 
           <Stack justifyContent={"center"} direction={"row"} spacing={2}>
-            <Button variant="outlined" onClick={() => onCloseModal()} fullWidth>
+            <Button variant="outlined" onClick={onCloseModal} fullWidth>
               Hủy
             </Button>
             <Button variant="contained" onClick={addEventHandler} fullWidth>

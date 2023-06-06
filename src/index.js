@@ -24,6 +24,8 @@ import store from "./store/store";
 import SomethingWentWrong from "./globalComponents/NoResult/Error";
 import Signup from "./modules/Authentication/screens/Signup";
 import Login from "./modules/Authentication/screens/Login";
+import ProtectedRoute from "./utils/ProtectedRoute";
+import NotAllow from "./globalComponents/NoResult/NotAllow";
 
 const router = createBrowserRouter([
   {
@@ -95,24 +97,33 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "admin",
+            element: <ProtectedRoute />,
             children: [
               {
-                path: "manage",
+                path: "admin",
                 children: [
                   {
-                    path: "donors",
-                    element: <AdminDonorsPage />,
-                  },
-                  {
-                    path: "events",
-                    element: <AdminEventsPage />,
+                    path: "manage",
+                    children: [
+                      {
+                        path: "donors",
+                        element: <AdminDonorsPage />,
+                      },
+                      {
+                        path: "events",
+                        element: <AdminEventsPage />,
+                      },
+                    ],
                   },
                 ],
               },
             ],
           },
         ],
+      },
+      {
+        path: "khong-co-quyen",
+        element: <NotAllow />,
       },
       {
         path: "dang-ky",

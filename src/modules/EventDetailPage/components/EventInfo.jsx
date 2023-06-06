@@ -64,7 +64,9 @@ function EventInfo({ event }) {
         <Typography fontSize={18}>
           Đã quyên góp được{" "}
           <span style={{ fontWeight: "600", color: "#fb8500" }}>
-            {currencyFormatter.format(event.amountGot)}
+            {event.category.name === "Tiền"
+              ? currencyFormatter.format(event.amountGot)
+              : event.amountGot + " " + event.category.unit}
           </span>
         </Typography>
         <Typography fontWeight={600} fontSize={19}>
@@ -79,7 +81,7 @@ function EventInfo({ event }) {
       >
         <Stack
           height={12}
-          width={"67%"}
+          width={(event.amountGot / event.amountNeeded) * 100 + "%"}
           style={{ backgroundColor: "orange" }}
           borderRadius={2}
         ></Stack>
@@ -87,7 +89,9 @@ function EventInfo({ event }) {
       <Typography marginTop={1} textAlign={"end"}>
         Còn{" "}
         <span style={{ fontWeight: "600", color: "#fb8500" }}>
-          {currencyFormatter.format(event.amountNeeded - event.amountGot)}
+          {event.category.name === "Tiền"
+            ? currencyFormatter.format(event.amountNeeded - event.amountGot)
+            : event.amountNeeded - event.amountGot + " " + event.category.unit}
         </span>
       </Typography>
       <Stack marginTop={3} alignItems={"center"} style={{}}>
