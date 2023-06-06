@@ -33,7 +33,7 @@ function DonationItem({ donation }) {
         paddingRight={2}
         onClick={() => setIsOpenDonorPopup(true)}
       >
-        <Avatar sx={{ width: 60, height: 60 }} src={donation.donor.image} />
+        <Avatar sx={{ width: 60, height: 60 }} src={donation.donor.photo} />
         <Stack>
           <Typography fontSize={18} fontWeight={"bold"} whiteSpace={"nowrap"}>
             {donation.donor.name}
@@ -49,17 +49,36 @@ function DonationItem({ donation }) {
         justifyContent={"center"}
         onClick={() => setIsOpenTransferPopup(true)}
       >
-        <Typography>
-          Đã quyên góp{" "}
-          <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
-            {currencyFormatter.format(donation.transfer.amount)}
-          </span>{" "}
-          vào lúc{" "}
-          <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
-            {format(new Date(donation.transfer.time), "hh:mm:ss dd-MM-yyyy")}
-          </span>{" "}
-          đến sự kiện
-        </Typography>
+        {donation.transfer && (
+          <Typography>
+            Đã quyên góp{" "}
+            <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
+              {currencyFormatter.format(donation.transfer.amount)}
+            </span>{" "}
+            vào lúc{" "}
+            <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
+              {format(new Date(donation.transfer.time), "hh:mm:ss dd-MM-yyyy")}
+            </span>{" "}
+            đến sự kiện
+          </Typography>
+        )}
+        {donation.item && (
+          <Typography>
+            Đã quyên góp{" "}
+            <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
+              {donation.item.amount +
+                " " +
+                donation.event.category.unit +
+                " " +
+                donation.event.category.name}
+            </span>{" "}
+            vào lúc{" "}
+            <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
+              {format(new Date(donation.item.time), "hh:mm:ss dd-MM-yyyy")}
+            </span>{" "}
+            đến sự kiện
+          </Typography>
+        )}
       </Stack>
       <Circle fontSize="10" style={{ color: "#aaa", alignSelf: "center" }} />
       <Stack

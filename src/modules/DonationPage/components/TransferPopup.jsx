@@ -55,6 +55,14 @@ function TransferPopup({ onCloseModal, transfer, item }) {
               <Typography width={"40%"}>Số lượng: </Typography>
               <Chip label={item.amount} />
             </Stack>
+            <Stack direction={"row"} alignItems={"center"} spacing={2}>
+              <Typography width={"40%"}>Loại: </Typography>
+              <Chip label={item.category.name} />
+            </Stack>
+            <Stack direction={"row"} alignItems={"center"} spacing={2}>
+              <Typography width={"40%"}>Đơn vị tính: </Typography>
+              <Chip label={item.category.unit} />
+            </Stack>
           </Stack>
         </Stack>
       )}

@@ -5,60 +5,39 @@ import EventDescription from "../components/EventDescription";
 import Donations from "../components/Donations";
 import EventInfo from "../components/EventInfo";
 import { useParams } from "react-router";
-import { EventService } from "../../../services";
+import { DonationService, EventService } from "../../../services";
 import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
 
 function EventDetailPage() {
   const params = useParams();
   const [event, setEvent] = useState(null);
   const [error, setError] = React.useState(null);
+  const [donations, setDonations] = useState([]);
 
-  useEffect(() => {
-    EventService.getEvent(params.eventId)
+  const fetchEvent = async () => {
+    await EventService.getEvent(params.eventId)
       .then((fetchedEvent) => {
-        setError(null);
         setEvent(fetchedEvent.data);
       })
       .catch((e) => {
         setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
       });
-  }, []);
+  };
 
-  const donations = [
-    {
-      donor: {
-        image:
-          "https://thiennguyen.app/_next/static/media/logo@2x.82fbd1ac.png",
-        name: "Nguyễn Đỗ Nhã Khuyên",
-      },
-      transfer: {
-        amount: 100000,
-        time: "30/05/2023 05:02",
-      },
-    },
-    {
-      donor: {
-        image:
-          "https://thiennguyen.app/_next/static/media/logo@2x.82fbd1ac.png",
-        name: "Nguyễn Đỗ Nhã Khuyên",
-      },
-      transfer: {
-        amount: 100000,
-        time: "30/05/2023 05:02",
-      },
-    },
-    {
-      donor: {
-        image:
-          "https://thiennguyen.app/_next/static/media/logo@2x.82fbd1ac.png",
-        name: "Nguyễn Đỗ Nhã Khuyên",
-      },
-      transfer: {
-        amount: 100000,
-        time: "30/05/2023 05:02",
-      },
-    },
-  ];
+  const fetchDonations = async () => {
+    await DonationService.getDonationsByEvent(params.eventId)
+      .then((fetchDonations) => {
+        setDonations(fetchDonations.data);
+      })
+      .catch((e) => {
+        setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
+      });
+  };
+
+  useEffect(() => {
+    fetchEvent();
+    fetchDonations();
+  }, []);
 
   return (
     <Stack paddingX={3} paddingY={4}>
@@ -69,8 +48,7 @@ function EventDetailPage() {
         <Stack marginTop={3} direction={"row"} spacing={3}>
           <Stack width={"60%"}>
             <EventDescription event={event} />
-
-            <Donations donations={donations} />
+            {donations && <Donations donations={donations} />}
           </Stack>
           <EventInfo event={event} />
         </Stack>

@@ -70,7 +70,7 @@ function EventInfo({ event }) {
           </span>
         </Typography>
         <Typography fontWeight={600} fontSize={19}>
-          {(event.amountGot / event.amountNeeded) * 100 + "%"}
+          {Math.round((event.amountGot / event.amountNeeded) * 100) + "%"}
         </Typography>
       </Stack>
       <Stack

@@ -3,10 +3,13 @@ import React, { useEffect, useState } from "react";
 import DonationItem from "../components/DonationItem";
 import DonationFilter from "../components/DonationFilter";
 import { DonationService } from "../../../services";
+import { useLocation } from "react-router-dom";
 
 function DonationPage() {
   const [donations, setDonations] = useState([]);
   const [viewedDonations, setViewedDonations] = useState([]);
+  const location = useLocation();
+  let username = location.state?.username;
 
   const fetchDonations = async () => {
     await DonationService.getAllDonation()
@@ -23,6 +26,16 @@ function DonationPage() {
   useEffect(() => {
     fetchDonations();
   }, []);
+
+  useEffect(() => {
+    if (username) {
+      setViewedDonations(
+        donations.filter((donation) =>
+          donation.donor.username.includes(username)
+        )
+      );
+    }
+  });
 
   const searchHandler = (searchDonor, searchEvent) => {
     if (searchDonor.length > 0 && searchEvent.length > 0) {
