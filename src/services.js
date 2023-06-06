@@ -48,6 +48,10 @@ export class DonorService {
   static async addDonor(donor) {
     return await axios.post(url + "donors/add", donor);
   }
+
+  static async getJoinedEvents(donorId) {
+    return await axios.get(url + "donors/" + donorId + "/events");
+  }
 }
 
 export class EventService {
@@ -83,6 +87,14 @@ export class DonationService {
   static async addDonation(donation) {
     return await axios.post(url + "donations", donation);
   }
+
+  static async getDonationsByEvent(eventId) {
+    return await axios.get(url + "events/" + eventId + "/donations");
+  }
+
+  static async getDonationsByDonor(donorId) {
+    return await axios.get(url + "donors/" + donorId + "/donations");
+  }
 }
 
 export class CategoryService {
@@ -99,6 +111,6 @@ export class TransferService {
 
 export class ItemService {
   static async addItemFrom(itemFrom) {
-    return await axios.post(url + "itemfr", itemFrom)
+    return await axios.post(url + "itemfr", itemFrom);
   }
 }

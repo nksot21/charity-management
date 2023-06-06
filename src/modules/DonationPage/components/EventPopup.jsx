@@ -46,7 +46,7 @@ function EventPopup({ onCloseModal, event }) {
             {"Ta thêm lòng tiếp sức, để bớt cuộc chia ly 1"}
           </Typography>
           <Typography fontSize={17} marginTop={1}>
-            {event.description ? event.description.slice(0, 200) + "..." : ""}
+            {event.description ? event.description.slice(0, 140) + "..." : ""}
           </Typography>
           <Stack
             direction={"row"}

@@ -35,7 +35,7 @@ function JoinedEvents({ events }) {
       </Stack>
       <Grid container columnSpacing={2} rowSpacing={2} marginTop={1} padding={2}>
         {events.map((event) => (
-          <Grid item key={event.name} xs={6}>
+          <Grid item key={event.title} xs={6}>
             <Stack
               borderRadius={3}
               overflow="hidden"

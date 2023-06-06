@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar, Button, Typography } from "@mui/material";
 import { Stack } from "@mui/material";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
+import { format } from "date-fns";
 
 function Donations({ donations }) {
   const [count, setCount] = useState(10);
@@ -26,17 +27,32 @@ function Donations({ donations }) {
           >
             <Avatar
               alt={donation.donor.name}
-              src={donation.donor.image}
+              src={donation.donor.photo}
               sx={{ width: 65, height: 65, border: "1px solid orange" }}
             />
             <Stack justifyContent={"center"} flexGrow={1}>
               <Typography fontSize={14}>{donation.donor.name}</Typography>
               <Typography fontWeight={600} fontSize={18}>
-                {currencyFormatter.format(donation.transfer.amount)}
+                {donation.transfer
+                  ? currencyFormatter.format(donation.transfer.amount)
+                  : donation.item.amount +
+                    " " +
+                    donation.event.category.unit +
+                    " " +
+                    donation.event.category.name}
               </Typography>
             </Stack>
             <Stack justifyContent={"center"}>
-              <Typography fontSize={14}>{donation.transfer.time}</Typography>
+              <Typography fontSize={14}>
+                {format(
+                  new Date(
+                    donation.transfer
+                      ? donation.transfer.time
+                      : donation.item.time
+                  ),
+                  "dd/MM/yyyy hh:mm:ss"
+                )}
+              </Typography>
             </Stack>
           </Stack>
         ))}

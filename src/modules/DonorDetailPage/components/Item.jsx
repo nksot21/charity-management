@@ -17,7 +17,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&:nth-child(5)`]: {
+  [`&:nth-child(3)`]: {
     color: "#29bf12",
     fontSize: 18,
   },
@@ -42,9 +42,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function Transfers({ donations }) {
+function Items({ donations }) {
   const navigate = useNavigate();
-  const count = donations.filter((donation) => donation.item === null).length;
+  const count = donations.filter(
+    (donation) => donation.transfer === null
+  ).length;
 
   const seeAllHandler = () => {
     navigate("/donations", {
@@ -64,7 +66,7 @@ function Transfers({ donations }) {
     >
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="h6" fontSize={26} fontWeight={200}>
-          Giao dịch gần đây
+          Các loại quyên góp khác
         </Typography>
         {count > 0 && (
           <Button
@@ -84,28 +86,27 @@ function Transfers({ donations }) {
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Thời gian</StyledTableCell>
-                  <StyledTableCell>Ngân hàng</StyledTableCell>
-                  <StyledTableCell>Số tài khoản</StyledTableCell>
-                  <StyledTableCell>Nội dung</StyledTableCell>
-                  <StyledTableCell>Số tiền</StyledTableCell>
+                  <StyledTableCell>Loại</StyledTableCell>
+                  <StyledTableCell>Số lượng</StyledTableCell>
+                  <StyledTableCell>Đơn vị</StyledTableCell>
                   <StyledTableCell>Sự kiện</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {donations
-                  .filter((donation) => donation.item === null)
+                  .filter((donation) => donation.transfer === null)
                   .map((row) => (
-                    <StyledTableRow key={row.transfer.content}>
+                    <StyledTableRow key={row.item.time}>
                       <StyledTableCell>
-                        {format(
-                          new Date(row.transfer.time),
-                          "dd/MM/yy hh:mm:ss"
-                        )}
+                        {format(new Date(row.item.time), "dd/MM/yyyy hh:mm:ss")}
                       </StyledTableCell>
-                      <StyledTableCell>{row.transfer.bank}</StyledTableCell>
-                      <StyledTableCell>{row.transfer.account}</StyledTableCell>
-                      <StyledTableCell>{row.transfer.content}</StyledTableCell>
-                      <StyledTableCell>{row.transfer.amount}</StyledTableCell>
+                      <StyledTableCell>
+                        {row.item.category.name}
+                      </StyledTableCell>
+                      <StyledTableCell>{row.item.amount}</StyledTableCell>
+                      <StyledTableCell>
+                        {row.item.category.unit}
+                      </StyledTableCell>
                       <StyledTableCell>
                         <Button
                           variant="contained"
@@ -130,4 +131,4 @@ function Transfers({ donations }) {
   );
 }
 
-export default Transfers;
+export default Items;
