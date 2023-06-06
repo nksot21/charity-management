@@ -31,83 +31,6 @@ export default function Header() {
         sx={{ width: 50, height: 50 }}
         onClick={() => dispatch(uiActions.toggleMenu())}
       >
-<<<<<<< HEAD
-        <Row>
-          {/* Header Logo */}
-          <Col className="col-4">
-            <div className="d-flex justify-content-around">
-              <a href="#">
-                <img
-                  src={LogoImg}
-                  style={{
-                    lineHeight: "46px",
-                    height: "46px",
-                    padding: "3px",
-                    objectFit: "contain",
-                  }}
-                />
-              </a>
-            </div>
-          </Col>
-          <Col className="col-2"></Col>
-          {/* Account Info */}
-          <Col className="col-4 justify-content-around d-flex header-menu-item">
-            <div style={{ lineHeight: "46px", height: "46px" }}>
-              <Link
-                to="/gioi-thieu"
-                style={{
-                  fontWeight: "500",
-                  fontSize: "18px",
-                }}
-              >
-                Giới thiệu
-              </Link>
-            </div>
-            <div style={{ lineHeight: "46px", height: "46px" }}>
-              <Link
-                to="/"
-                style={{
-                  fontWeight: "500",
-                  fontSize: "18px",
-                }}
-              >
-                Trang chủ
-              </Link>
-            </div>
-            <div style={{ lineHeight: "46px", height: "46px" }}>
-              <Link
-                to="/events"
-                style={{
-                  fontWeight: "500",
-                  fontSize: "18px",
-                }}
-              >
-                Sự kiện
-              </Link>
-            </div>
-            <div style={{ lineHeight: "46px", height: "46px" }}>
-              <Link
-                to="/donors"
-                style={{
-                  fontWeight: "500",
-                  fontSize: "18px",
-                }}
-              >
-                Nhà hảo tâm
-              </Link>
-            </div>
-          </Col>
-          <Col
-            className="col-2 d-flex justify-content-end"
-            style={{ paddingRight: "25px" }}
-          >
-            <HeaderNotification />
-            <HeaderAccount />
-          </Col>
-        </Row>
-      </Container>
-    </div>
-=======
         <FontAwesomeIcon color="#444" icon={faBars} />
       </IconButton>
       <Stack>
@@ -150,6 +73,5 @@ export default function Header() {
       </Stack>
       {/* <HeaderLogin /> */}
     </Stack>
->>>>>>> dev
   );
 }

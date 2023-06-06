@@ -22,6 +22,8 @@ import UpdateReceiver from "./modules/ReceiverPage/screens/UpdateReceiver";
 import DistributionPage from "./modules/DistributionPage/screens/DistributionPage";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import InventoryPage from "./modules/InventoryManagePage/screens/InventoryPage";
+import DetailCategory from "./modules/InventoryManagePage/screens/DetailCategory";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
           {
             path: "quan-ly/tai-tro",
             element: <DistributionPage />,
+          },
+          {
+            path: "quan-ly/kho",
+            element: <InventoryPage />,
+          },
+          {
+            path: "quan-ly/kho/:id",
+            element: <DetailCategory />,
           },
           {
             path: "nguoi-nhan/them",

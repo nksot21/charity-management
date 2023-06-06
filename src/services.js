@@ -8,7 +8,6 @@ export class ReceiverService {
     return axios.post(url + "receiver", data);
   }
 
-<<<<<<< HEAD
     static getAllReceivers(){
         return axios.get(url + 'receiver')
     }
@@ -25,11 +24,18 @@ export class ReceiverService {
         return axios.get(url + 'distribution/receiver/' + id)
     }
 }
-=======
-  static getAllReceiverType() {
-    return axios.get(url + "receiver/types");
+
+export class CategoryService {
+  static async getAll() {
+    return await axios.get(url + "categories");
+  }
+
+  static async create(data) {
+    console.log(data)
+    return await axios.post(url + "categories", data);
   }
 }
+
 
 export class DonorService {
   static async getAllDonors() {
@@ -65,4 +71,3 @@ export class StorageService {
     return await axios.post(url + "images", image);
   }
 }
->>>>>>> dev

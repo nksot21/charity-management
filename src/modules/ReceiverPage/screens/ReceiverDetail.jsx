@@ -13,6 +13,7 @@ import InfoCard from '../components/InfoCard'
 
 export default function ReceiverDetail() {
   const [receiver, setReceiver] = useState({});
+  const [moneyReceived, setMoneyReceived] = useState(0);
   const [isLoading, setLoading] = useState("true");
   const [distributionList, setDistributionList] = useState([])
   const [currentDistribution, setCurrentDistribution] = useState({})
@@ -43,22 +44,34 @@ export default function ReceiverDetail() {
         console.log(response.data.data)
         const distributions = response.data.data
         let tempList = []
+        let moneyReceived = 0
         distributions.map(dis => {
           if(dis.status != "completed"){
             setCurrentDistribution(dis)
           }
           let status = dis.status == "upcoming" ? "Sắp diễn ra" : (dis.status == "completed" ? "Hoàn thành" : "Đang diễn ra" )
+          let expectValue = ""
+          let actualValue = ""
+          if(dis.transfer){
+              moneyReceived += parseInt(dis.transfer.amount)
+              expectValue = (dis.transfer.amount || "0") + " VND"
+              actualValue = (dis.transfer.amount || "0") + " VND"
+          }else{
+            expectValue = (dis.item?.plannedQuantity || "0" ) + " " + dis.item?.category.unit + " (" + dis.item?.category.name + ")"
+            actualValue = (dis.item?.actualQuantity || "0" ) +  " " +dis.item?.category.unit + " (" + dis.item?.category.name + ")"
+          }
           let temp = {
             id: "EVE" + dis.event.id,
             name: dis.event.title,
             startTime: dis.event.dateBegin,
             endTime: dis.event.dateEnd,
-            expectMoney: (dis.item?.plannedQuantity || "0" ) + " " + dis.item?.category.unit + " (" + dis.item?.category.name + ")",
-            receiverMoney: (dis.item?.actualQuantity || "0" ) +  " " +dis.item?.category.unit + " (" + dis.item?.category.name + ")",
+            expectMoney:expectValue ,
+            receiverMoney: actualValue,
             status: status
           }
           tempList.push(temp)
         })
+        setMoneyReceived(moneyReceived)
         setDistributionList(tempList)
     })
     .catch(e => {
@@ -107,7 +120,7 @@ export default function ReceiverDetail() {
             <h6 style={{color: "green"}}><b>Các hoạt động đã tham gia</b></h6>
           </Row>
           <Row>
-            <p className="mb-3"style={{color: "green"}}>Tổng số tiền đã nhận: 1.200.000 VNĐ</p>
+            <p className="mb-3"style={{color: "green"}}>Tổng số tiền đã nhận: {moneyReceived } VNĐ</p>
           </Row>
           <Row style={{marginBottom: "50px"}}>
             <ActivityTable data={distributionList}/>
@@ -117,14 +130,4 @@ export default function ReceiverDetail() {
   )
 }
 
-const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  ];
+
