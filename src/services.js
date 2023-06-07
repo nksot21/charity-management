@@ -71,6 +71,10 @@ export class EventService {
   static async deleteEvent(eventId) {
     return await axios.delete(url + "events/" + eventId);
   }
+
+  static async getJoinedDonors(eventId) {
+    return await axios.get(url + "events/" + eventId + "/donors");
+  }
 }
 
 export class StorageService {

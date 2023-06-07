@@ -96,10 +96,10 @@ const headCells = [
     label: "Số tiền nhận được",
   },
   {
-    id: "address",
-    numeric: false,
+    id: "donorsQuantity",
+    numeric: true,
     disablePadding: false,
-    label: "Địa chỉ",
+    label: "Số người quyên góp",
   },
   {
     id: "category",
@@ -117,7 +117,7 @@ const headCells = [
     id: "isDonating",
     numeric: false,
     disablePadding: false,
-    label: "Đang hoạt động",
+    label: "Đang nhận",
   },
 ];
 
@@ -354,6 +354,8 @@ export default function EventsTable() {
   const events = useSelector((state) => state.events.events);
   const [viewedEvents, setViewedEvents] = React.useState([]);
 
+  console.log(events);
+
   React.useEffect(() => {
     setViewedEvents(events);
   }, [events]);
@@ -519,18 +521,20 @@ export default function EventsTable() {
                         ></Stack>
                       </Stack>
                     </TableCell>
-                    <TableCell align="right">{row.address}</TableCell>
+                    <TableCell align="right">{row.donorsQuantity}</TableCell>
                     <TableCell align="right">{row.category.name}</TableCell>
                     <TableCell
                       align="right"
                       style={{ fontWeight: 600, color: "#2AC48A" }}
                     >
-                      {currencyFormatter.format(row.amountDistributed)}
+                      {row.category.name === "Tiền"
+                        ? currencyFormatter.format(row.amountDistributed)
+                        : row.amountDistributed + " " + row.category.unit}
                     </TableCell>
                     <TableCell align="right">
                       <Checkbox
                         color="primary"
-                        checked={row.isDonating}
+                        checked={row.donating}
                         disabled
                       />
                     </TableCell>

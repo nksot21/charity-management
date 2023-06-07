@@ -1,20 +1,40 @@
 import React, { useState } from "react";
-import { Avatar, Button, Stack, Typography } from "@mui/material";
+import { Avatar, Badge, Button, Stack, Typography, capitalize } from "@mui/material";
 import quote from "../../../assets/images/quote.png";
 import { Link, useParams } from "react-router-dom";
 import DonorInfoPage from "../screens/DonorInfoPage";
 import { format } from "date-fns";
+import { useSelector } from "react-redux";
 
 function DonorInfo({ onDonation = false, donor }) {
   const [isShowingInfo, setIsShowingInfo] = useState(false);
+  const role = useSelector((state) => state.auth.role);
 
   return (
     <Stack position="sticky" top={100} left={0}>
       <Stack direction="row" spacing={4} alignItems={"center"}>
-        <Avatar
-          sx={{ width: 170, height: 170, boxShadow: "0 0 10px #00000022" }}
-          src={donor.photo}
-        />
+        {role === "ADMIN" && (
+          <Badge
+            color="secondary"
+            badgeContent={"ADMIN"}
+            anchorOrigin={{
+              horizontal: "right",
+              vertical: "bottom",
+            }}
+            overlap="circular"
+          >
+            <Avatar
+              sx={{ width: 170, height: 170, boxShadow: "0 0 10px #00000022" }}
+              src={donor.photo}
+            />
+          </Badge>
+        )}
+        {role !== "ADMIN" && (
+          <Avatar
+            sx={{ width: 170, height: 170, boxShadow: "0 0 10px #00000022" }}
+            src={donor.photo}
+          />
+        )}
         <Stack paddingTop={3} flexGrow={1}>
           <Typography variant="h5" fontWeight={600}>
             {donor.name}

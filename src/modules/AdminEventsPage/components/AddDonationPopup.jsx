@@ -41,10 +41,14 @@ function AddDonationPopup({ onCloseModal, event }) {
   const [donorChosen, setDonorChosen] = React.useState(null);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    DonorService.getAllDonors().then((fetchedDonors) => {
+  const fetchDonors = async () => {
+    await DonorService.getAllDonors().then((fetchedDonors) => {
       setDonors(fetchedDonors.data);
     });
+  };
+
+  useEffect(() => {
+    fetchDonors();
   }, []);
 
   const banks = [

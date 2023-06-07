@@ -13,17 +13,6 @@ function AdminEventsPage() {
   const [error, setError] = React.useState(null);
   const dispatch = useDispatch();
 
-  // const fetchEvents = () => {
-  //   EventService.getAllEvents()
-  //     .then((fetchedEvents) => {
-  //       setError(null);
-  //       dispatch(eventsActions.setEvents(fetchedEvents.data));
-  //     })
-  //     .catch((e) => {
-  //       setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
-  //     });
-  // };
-
   useEffect(() => {
     dispatch(fetchEvents());
   }, []);
@@ -52,7 +41,7 @@ function AdminEventsPage() {
               <AddEventPopup onCloseModal={closeModalHandler} />
             )}
           </Stack>
-          <EventsTable/>
+          <EventsTable />
         </>
       )}
       {error && <SomethingWentWrong error={error} />}

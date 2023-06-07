@@ -8,19 +8,29 @@ const initialState = {
 export const fetchEvents = createAsyncThunk(
   "events/fetchEvents",
   async (arg, thunkAPI) => {
-    return await EventService.getAllEvents();
+    const events = (await EventService.getAllEvents()) || [];
+    const mappedEvents = await Promise.all(
+      events.data.map(async (e) => {
+        let joinedDonors;
+        await EventService.getJoinedDonors(e.id)
+          .then((res) => (joinedDonors = res.data))
+          .catch((e) => {
+            throw e;
+          });
+        return { ...e, donorsQuantity: joinedDonors.length };
+      })
+    );
+    return mappedEvents;
   }
 );
 
 const eventsSlice = createSlice({
   initialState,
   name: "events",
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchEvents.fulfilled, (state, action) => {
-      console.log(action.payload.data);
-      state.events = action.payload.data;
+      state.events = action.payload;
     });
   },
 });
