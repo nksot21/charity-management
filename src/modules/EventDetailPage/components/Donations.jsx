@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { Avatar, Button, Typography } from "@mui/material";
 import { Stack } from "@mui/material";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
-<<<<<<< HEAD
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-=======
 import { format } from "date-fns";
->>>>>>> dev
 
 function Donations({ donations }) {
   const [count, setCount] = useState(10);

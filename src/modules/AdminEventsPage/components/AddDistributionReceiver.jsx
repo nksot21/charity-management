@@ -5,7 +5,7 @@ import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import AddDistributionProduct from './AddDistributionProduct'
 
 
-export default function AddDistribution() {
+export default function AddDistribution(props) {
   return (
     <Container>
       <Row style={{marginTop: '30px'}}>
@@ -19,7 +19,7 @@ export default function AddDistribution() {
       </Row>
       <Row>
         <Col  style={{ padding: '0'}}>
-          <AddDistributionProduct />
+          <AddDistributionProduct categoryList={props.categoryList}/>
         </Col>
       </Row>
       

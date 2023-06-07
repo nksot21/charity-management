@@ -19,7 +19,7 @@ export default function DistributionPopup(props) {
     }
 
     const handleAddReceiverDiv = (e) => {
-        setReceiverDiv(addReceiverDiv.concat(<AddDistribution />))
+        setReceiverDiv(addReceiverDiv.concat(<AddDistribution categoryList={props.categoryList} />))
     }
     
   return (
@@ -46,7 +46,7 @@ export default function DistributionPopup(props) {
                     </Row>
                     <Row>
                         <Col id="dataField">
-                            <AddDistribution id="dis1"/>
+                            <AddDistribution id="dis1" categoryList={props.categoryList}/>
                             {addReceiverDiv}
                         </Col>
                     </Row>

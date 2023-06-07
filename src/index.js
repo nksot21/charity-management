@@ -125,16 +125,17 @@ const router = createBrowserRouter([
                         path: "events",
                         element: <AdminEventsPage />,
                       },
+                      {
+                        path: "events/:id",
+                        element: <AdminEventDetailPage />,
+                      },
+                      {
+                        path: "events/:id/them",
+                        element: <CreateDistributionPage />,
+                      },
                     ],
                   },
-                  {
-                    path: "events/:id",
-                    element: <AdminEventDetailPage />,
-                  },
-                  {
-                    path: "events/:id/them",
-                    element: <CreateDistributionPage />,
-                  },
+                  
                 ],
               },
             ],

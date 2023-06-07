@@ -5,7 +5,7 @@ import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { Col, Container, FormControl, Row, Stack } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom'
-import { CategoryService, EventService, ReceiverService } from '../../../services'
+import { CategoryService, DistributionService, EventService, ReceiverService } from '../../../services'
 import AddDistributionProduct from '../components/AddDistributionProduct'
 import AddDistribution from '../components/AddDistributionReceiver'
 import ReceiverTable from '../components/ReceiverTable'
@@ -24,7 +24,8 @@ export default function CreateDistributionPage() {
     const [setCategoryList, setSetCategoryList] = useState([])
     const [distributionData, setDistributionData] = useState([])
     const [categoryCardDiv, setCategoryCardDiv] = useState([])
-    
+    const [selectOption, setSelectOption] = useState([])
+    const [selectedRow, setSelectedRow] = useState([])
     useEffect(() => {
         EventService.getEvent(params.id)
           .then((fetchedEvent) => {
@@ -159,11 +160,79 @@ export default function CreateDistributionPage() {
     }, [setCategoryList])
 
     useEffect(() => {
+        let tempList = []
+        productList.map(item => {
+            tempList.push(`${item.id}.${item.name} (${item.unit})`)
+        })
+        setCategoryList.map(item => {
+            tempList.push(`S.${item.name}`)
+        })
+        setSelectOption(tempList)
+    }, [setCategoryList, productList])
+
+    useEffect(() => {
         console.log('distributionData')
         console.log(distributionData)
 
         
     }, [distributionData])
+    const divideSet = (distributeBySet) => {
+        let option = setCategoryList.map(item => {
+            if(distributeBySet.option.split(".")[1] == item.name)
+                return item
+        })
+        console.log('option')
+        console.log(option)
+        let tempList = option[0].products?.map(product => {
+            console.log("product")
+            console.log(product)
+            return {
+                plannedQuantity: product.amount,
+                categoryId: product.category.split(".")[0],
+                receiverId: distributeBySet.id.slice(3)
+            }
+        })
+        return tempList
+    }
+    const handleCreateDistribution = () => {
+        console.log("distribution handle")
+        console.log(selectedRow)
+        let request = {
+            status: 'Sắp diễn ra',
+            event_id: params.id,
+            itemList: []
+        }
+        selectedRow.map(row => {
+            if(row.option.toString().split('.')[0] === 'S'){
+                let tempList = divideSet(row)
+                console.log('tempList')
+                console.log(tempList)
+                for(let i = 0; i<row.amount; i++){
+                    console.log("concat")
+                    request.itemList.push(...tempList)
+                }
+                    
+            }else{
+                console.log("indi product")
+                console.log(row.option + " " + row.amount)
+                let temp ={
+                    plannedQuantity: row.amount,
+                    categoryId: row.option.split(".")[0],
+                    receiverId: row.id.slice(3)
+                }
+                request.itemList.push(temp)
+            }
+        })
+        console.log("request")
+        console.log(request)
+        DistributionService.createDistribution(request)
+        .then(res => {
+            console.log(res)
+        })
+        .catch(e =>{
+            console.log(e)
+        })
+    }
   
     if(!isLoading)
   return (
@@ -189,7 +258,7 @@ export default function CreateDistributionPage() {
         </Stack>
         
         <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Tạo phân phối cho hoạt động <span style={{color: "green"}}>{event?.title}</span></b></h4>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", flexWrap: "wrap"}}>
                     {categoryCardDiv}
                 </div> 
 
@@ -204,8 +273,8 @@ export default function CreateDistributionPage() {
             onClick={handleOpen}   > Tạo phần quà</Button>
             </div>
         
-        <ReceiverTable data={receiverShow} dataState={distributionData} setDataState={setDistributionData}/>
-        <div>
+        <ReceiverTable data={receiverShow} selectOption={selectOption} selectedRow={selectedRow} setSelectedRow={setSelectedRow}/>
+        <div style={{display: "flex", justifyContent: "end", margin: "20px 50px 20px 0"}}>
             <Button
                 // onClick={handleClose}
                 variant='outlined'
@@ -216,7 +285,7 @@ export default function CreateDistributionPage() {
             </Button>
             <Button
             variant='contained'
-                // onClick={handleCreateSet}
+                onClick={handleCreateDistribution}
                 style={{fontSize: "14px", paddingInline: "16px", width: "100px"}}
                 >
                 Lưu

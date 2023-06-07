@@ -46,6 +46,15 @@ export class CategoryService {
   static async getDonationByCategory(id){
     return await axios.get(url + "donations/category/" + id)
   }
+  static async getCategories() {
+    return await axios.get(url + "categories");
+  }
+}
+
+export class DistributionService{
+  static async createDistribution(data){
+    return await axios.post(url + "distribution", data)
+  }
 }
 
 
@@ -118,12 +127,6 @@ export class DonationService {
 
   static async getDonationsByDonor(donorId) {
     return await axios.get(url + "donors/" + donorId + "/donations");
-  }
-}
-
-export class CategoryService {
-  static async getCategories() {
-    return await axios.get(url + "categories");
   }
 }
 

@@ -21,7 +21,7 @@ export default function AddDistributionProduct(props) {
                     <Select labelId="product-label" value={selectedCategory} id={"selectValue" + props.id}
                     label="Sản phẩm" onChange={handleChangeCategory}>
                     {
-                        props.categoryList.map(item => {
+                        props.categoryList?.map(item => {
                             return  <MenuItem value={item.id}>{item.id + ". " + item.name + " (" + item.unit + ")"}</MenuItem>
                         })
                     }

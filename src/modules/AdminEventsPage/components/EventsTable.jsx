@@ -525,14 +525,14 @@ export default function EventsTable() {
                       </Stack>
                     </TableCell>
                     <TableCell align="right">{row.donorsQuantity}</TableCell>
-                    <TableCell align="right">{row.category.name}</TableCell>
+                    <TableCell align="right">{row.category?.name}</TableCell>
                     <TableCell
                       align="right"
                       style={{ fontWeight: 600, color: "#2AC48A" }}
                     >
-                      {row.category.name === "Tiền"
+                      {row.category?.name === "Tiền"
                         ? currencyFormatter.format(row.amountDistributed)
-                        : row.amountDistributed + " " + row.category.unit}
+                        : row.amountDistributed + " " + row.category?.unit}
                     </TableCell>
                     <TableCell align="right">
                       <Checkbox

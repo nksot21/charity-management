@@ -17,6 +17,7 @@ function EventDetailPage(props) {
   const [error, setError] = React.useState(null);
 
   useEffect(() => {
+    console.log(params.id)
     EventService.getEvent(params.id)
       .then((fetchedEvent) => {
         setError(null);
