@@ -44,7 +44,6 @@ export default function DataTable(props ) {
           },
         }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
       />
     </div>
   );

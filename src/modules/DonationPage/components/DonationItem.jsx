@@ -1,4 +1,4 @@
-import { Circle, MoreHoriz } from "@mui/icons-material";
+import { Circle, MoreHoriz, LineAxisOutlined } from "@mui/icons-material";
 import { Avatar, IconButton, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
@@ -16,9 +16,9 @@ function DonationItem({ donation }) {
   return (
     <Stack
       direction="row"
-      borderRadius={10}
-      border="2px solid #e3deca"
-      style={{ backgroundColor: "#f2f1eb" }}
+      borderRadius={5}
+      border="2px solid #f1f1f3"
+      style={{ backgroundColor: "white" }}
       spacing={1}
       justifyContent={"space-between"}
       overflow={"hidden"}
@@ -35,17 +35,17 @@ function DonationItem({ donation }) {
       >
         <Avatar sx={{ width: 60, height: 60 }} src={donation.donor.photo} />
         <Stack>
-          <Typography fontSize={18} fontWeight={"bold"} whiteSpace={"nowrap"}>
+          <Typography fontSize={14} fontWeight={"bold"} whiteSpace={"nowrap"}>
             {donation.donor.name}
           </Typography>
-          <Typography>{donation.donor.username}</Typography>
+          <Typography  fontSize={14}>{donation.donor.username}</Typography>
         </Stack>
       </Stack>
       <Circle fontSize="10" style={{ color: "#aaa", alignSelf: "center" }} />
       <Stack
         padding={1}
         className={styles.hover}
-        paddingX={3}
+        paddingX={2}
         justifyContent={"center"}
         onClick={() => setIsOpenTransferPopup(true)}
       >
@@ -99,7 +99,7 @@ function DonationItem({ donation }) {
               : donation.event.title}
           </Typography>
         </Stack>
-        <Avatar sx={{ width: 60, height: 60 }} src={donation.event.image} />
+        <Avatar sx={{ width: 40, height: 40 }} src={donation.event.image} />
       </Stack>
       {isOpenDonorPopup && (
         <DonorPopup

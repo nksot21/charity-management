@@ -16,14 +16,18 @@ import EventsPage from "./modules/EventsPage/screens/EventsPage";
 import EventDetailPage from "./modules/EventDetailPage/screens/EventDetailPage";
 import AdminDonorsPage from "./modules/AdminDonorsPage/screens/AdminDonorsPage";
 import AdminEventsPage from "./modules/AdminEventsPage/screens/AdminEventsPage";
+import AdminEventDetailPage from "./modules/AdminEventsPage/screens/EventDetailPage"
 import { Update } from "@mui/icons-material";
 import UpdateReceiver from "./modules/ReceiverPage/screens/UpdateReceiver";
 import DistributionPage from "./modules/DistributionPage/screens/DistributionPage";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import InventoryPage from "./modules/InventoryManagePage/screens/InventoryPage";
+import DetailCategory from "./modules/InventoryManagePage/screens/DetailCategory";
 import SomethingWentWrong from "./globalComponents/NoResult/Error";
 import Signup from "./modules/Authentication/screens/Signup";
 import Login from "./modules/Authentication/screens/Login";
+import CreateDistributionPage from "./modules/AdminEventsPage/screens/CreateDistributionPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import NotAllow from "./globalComponents/NoResult/NotAllow";
 
@@ -49,6 +53,14 @@ const router = createBrowserRouter([
           {
             path: "quan-ly/tai-tro",
             element: <DistributionPage />,
+          },
+          {
+            path: "quan-ly/kho",
+            element: <InventoryPage />,
+          },
+          {
+            path: "quan-ly/kho/:id",
+            element: <DetailCategory />,
           },
           {
             path: "nguoi-nhan/them",
@@ -113,8 +125,17 @@ const router = createBrowserRouter([
                         path: "events",
                         element: <AdminEventsPage />,
                       },
+                      {
+                        path: "events/:id",
+                        element: <AdminEventDetailPage />,
+                      },
+                      {
+                        path: "events/:id/them",
+                        element: <CreateDistributionPage />,
+                      },
                     ],
                   },
+                  
                 ],
               },
             ],

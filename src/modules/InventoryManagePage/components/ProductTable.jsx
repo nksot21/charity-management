@@ -5,8 +5,8 @@ import { ReceiverService } from '../../../services';
 import { Link } from 'react-router-dom';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Tên hoạt động', width: 350,
+  { field: 'id', headerName: 'ID', width: 100 },
+  { field: 'name', headerName: 'Tên sản phẩm', width: 300,
     type: 'link',
     renderCell: (params) =>{
       return  <Link to={params.row.id} className=' text-decoration-none cursor  ' style={{alignItems: "center"}}>
@@ -15,37 +15,31 @@ const columns = [
     }
      
   },
-  { field: 'startTime', headerName: 'Thời gian bắt đầu', width: 150 },
   {
-    field: 'endTime',
-    headerName: 'Thời gian kết thúc',
-    width: 150  ,
+    field: 'unit',
+    headerName: 'Đơn vị',
+    width: 200  ,
   },
-  {
-    field: 'expectMoney',
-    headerName: 'Mục tiêu',
-    width: 120,
-  },
-  { field: 'receiverMoney', headerName: 'Thực nhận', width: 120  },
-  { field: 'status', headerName: 'Tình trạng', width: 125  },
+  { field: 'amount', headerName: 'Số lượng', width: 150 },
+
 ];
 
 
 
-export default function ActivityTable(props ) {
+export default function ProductTable(props ) {
   console.log(props.data)
   return (
-    <div style={{ height: 400, width: '97%' }}>
+    <div style={{ height: 660, width: '97%' }}>
       <DataGrid
         rows={props.data}
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+            paginationModel: { page: 0, pageSize: 10 },
           },
         }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
+        
       />
     </div>
   );

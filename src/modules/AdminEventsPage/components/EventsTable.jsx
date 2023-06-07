@@ -24,7 +24,7 @@ import { Button } from "@mui/material";
 import { format } from "date-fns";
 import MyDialog from "../../../globalComponents/Dialog/MyDialog";
 import AddEventPopup from "./AddEventPopup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AddDonationPopup from "./AddDonationPopup";
 import { EventService } from "../../../services";
 import { useDispatch, useSelector } from "react-redux";
@@ -480,9 +480,12 @@ export default function EventsTable() {
                       {row.id}
                     </TableCell>
                     <TableCell align="right">
-                      {row.title.length > 50
-                        ? row.title.slice(0, 50) + "..."
+                    <Link to={"/admin/manage/events/" + row.id} className=' text-decoration-none cursor  ' style={{alignItems: "center"}}>
+                        {row.title > 80
+                        ? row.title.slice(0, 80) + "..."
                         : row.title}
+                    </Link>
+                      
                     </TableCell>
                     <TableCell align="right">
                       {format(new Date(row.dateBegin), "dd/MM/yyyy")}
@@ -494,18 +497,18 @@ export default function EventsTable() {
                       align="right"
                       style={{ fontWeight: 600, color: "#2AC48A" }}
                     >
-                      {row.category.name === "Tiền"
+                      {row.category?.name === "Tiền"
                         ? currencyFormatter.format(row.amountNeeded)
-                        : row.amountNeeded + " " + row.category.unit}
+                        : row.amountNeeded + " " + row.category?.unit}
                     </TableCell>
                     <TableCell align="right">
                       <Typography
                         fontSize={"inherit"}
                         style={{ fontWeight: 600, color: "#2AC48A" }}
                       >
-                        {row.category.name === "Tiền"
+                        {row.category?.name === "Tiền"
                           ? currencyFormatter.format(row.amountGot)
-                          : row.amountGot + " " + row.category.unit}
+                          : row.amountGot + " " + row.category?.unit}
                       </Typography>
                       <Stack
                         height={4}
@@ -522,14 +525,14 @@ export default function EventsTable() {
                       </Stack>
                     </TableCell>
                     <TableCell align="right">{row.donorsQuantity}</TableCell>
-                    <TableCell align="right">{row.category.name}</TableCell>
+                    <TableCell align="right">{row.category?.name}</TableCell>
                     <TableCell
                       align="right"
                       style={{ fontWeight: 600, color: "#2AC48A" }}
                     >
-                      {row.category.name === "Tiền"
+                      {row.category?.name === "Tiền"
                         ? currencyFormatter.format(row.amountDistributed)
-                        : row.amountDistributed + " " + row.category.unit}
+                        : row.amountDistributed + " " + row.category?.unit}
                     </TableCell>
                     <TableCell align="right">
                       <Checkbox

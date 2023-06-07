@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Avatar, Button, Typography } from "@mui/material";
 import { Stack } from "@mui/material";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { format } from "date-fns";
 
 function Donations({ donations }) {
@@ -10,6 +12,7 @@ function Donations({ donations }) {
   const seeMoreHandler = () => {
     if (count < donations.length) setCount((prev) => prev + 10);
   };
+
   return (
     <Stack marginTop={3}>
       <Typography fontSize={20} fontWeight={600}>

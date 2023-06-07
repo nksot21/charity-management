@@ -20,14 +20,43 @@ export class ReceiverService {
     return axios.get(url + "receiver/types");
   }
 
-  static getAllDistribution(id) {
-    return axios.get(url + "distribution/receiver/" + id);
+    static getAllDistribution(id){
+        return axios.get(url + 'distribution/receiver/' + id)
+    }
+}
+
+export class CategoryService {
+  static async getAll() {
+    return await axios.get(url + "categories");
   }
 
-  static getAllReceiverType() {
-    return axios.get(url + "receiver/types");
+  static async create(data) {
+    console.log(data)
+    return await axios.post(url + "categories", data);
+  }
+  
+  static async getCategoryById(id){
+    return await axios.get(url + "categories/" + id);
+  }
+
+  static async getDistributionByCategory(id){
+    return await axios.get(url + "distribution/category/" + id)
+  }
+
+  static async getDonationByCategory(id){
+    return await axios.get(url + "donations/category/" + id)
+  }
+  static async getCategories() {
+    return await axios.get(url + "categories");
   }
 }
+
+export class DistributionService{
+  static async createDistribution(data){
+    return await axios.post(url + "distribution", data)
+  }
+}
+
 
 export class DonorService {
   static async getAllDonors() {
@@ -105,12 +134,6 @@ export class DonationService {
 
   static async getDonationsByDonor(donorId) {
     return await axios.get(url + "donors/" + donorId + "/donations");
-  }
-}
-
-export class CategoryService {
-  static async getCategories() {
-    return await axios.get(url + "categories");
   }
 }
 

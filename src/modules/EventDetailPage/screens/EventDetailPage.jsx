@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 import { DonationService, EventService } from "../../../services";
 import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
 
-function EventDetailPage() {
+function EventDetailPage(props) {
   const params = useParams();
   const [event, setEvent] = useState(null);
   const [error, setError] = React.useState(null);
@@ -56,6 +56,7 @@ function EventDetailPage() {
       {error && <SomethingWentWrong error={error} />}
     </Stack>
   );
+  
 }
 
 export default EventDetailPage;

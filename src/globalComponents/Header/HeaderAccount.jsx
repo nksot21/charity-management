@@ -39,7 +39,7 @@ export default function HeaderAccount({ user }) {
       alignItems={"center"}
       padding={"3px"}
       paddingRight={1}
-      style={{ backgroundColor: "#fffaed", cursor: "pointer" }}
+      style={{ backgroundColor: "white", cursor: "pointer" }}
       borderRadius={10}
       border={"2px solid #ddd"}
       onClick={!openPopup ? handleClick : handleClose}
