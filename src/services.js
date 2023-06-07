@@ -8,17 +8,17 @@ export class ReceiverService {
     return axios.post(url + "receiver", data);
   }
 
-    static getAllReceivers(){
-        return axios.get(url + 'receiver')
-    }
+  static getAllReceivers() {
+    return axios.get(url + "receiver");
+  }
 
-    static getReceiverById(id){
-        return axios.get(url + 'receiver/' + id)
-    }
+  static getReceiverById(id) {
+    return axios.get(url + "receiver/" + id);
+  }
 
-    static getAllReceiverType(){
-        return axios.get(url + 'receiver/types')
-    }
+  static getAllReceiverType() {
+    return axios.get(url + "receiver/types");
+  }
 
     static getAllDistribution(id){
         return axios.get(url + 'distribution/receiver/' + id)
@@ -68,6 +68,10 @@ export class DonorService {
   static async addDonor(donor) {
     return await axios.post(url + "donors/add", donor);
   }
+
+  static async getJoinedEvents(donorId) {
+    return await axios.get(url + "donors/" + donorId + "/events");
+  }
 }
 
 export class EventService {
@@ -87,10 +91,50 @@ export class EventService {
   static async deleteEvent(eventId) {
     return await axios.delete(url + "events/" + eventId);
   }
+
+  static async getJoinedDonors(eventId) {
+    return await axios.get(url + "events/" + eventId + "/donors");
+  }
 }
 
 export class StorageService {
   static async getImageURL(image) {
     return await axios.post(url + "images", image);
+  }
+}
+
+export class DonationService {
+  static async getAllDonation() {
+    return await axios.get(url + "donations");
+  }
+
+  static async addDonation(donation) {
+    return await axios.post(url + "donations", donation);
+  }
+
+  static async getDonationsByEvent(eventId) {
+    return await axios.get(url + "events/" + eventId + "/donations");
+  }
+
+  static async getDonationsByDonor(donorId) {
+    return await axios.get(url + "donors/" + donorId + "/donations");
+  }
+}
+
+export class CategoryService {
+  static async getCategories() {
+    return await axios.get(url + "categories");
+  }
+}
+
+export class TransferService {
+  static async addTransferFrom(transferFrom) {
+    return await axios.post(url + "transfer-from", transferFrom);
+  }
+}
+
+export class ItemService {
+  static async addItemFrom(itemFrom) {
+    return await axios.post(url + "itemfr", itemFrom);
   }
 }

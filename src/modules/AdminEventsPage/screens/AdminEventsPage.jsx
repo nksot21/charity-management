@@ -4,20 +4,22 @@ import EventsTable from "../components/EventsTable";
 import AddEventPopup from "../components/AddEventPopup";
 import { EventService } from "../../../services";
 import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
+import { useDispatch, useSelector } from "react-redux";
+import { eventsActions, fetchEvents } from "../../../store/events";
 
 function AdminEventsPage() {
   const [isAddingEvent, setIsAddingEvent] = useState(false);
-  const [events, setEvents] = React.useState(null);
+  const events = useSelector((state) => state.events.events);
   const [error, setError] = React.useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    EventService.getAllEvents().then((fetchedEvents) => {
-      setError(null)
-      setEvents(fetchedEvents.data);
-    }).catch(e => {
-      setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
-    })
+    dispatch(fetchEvents());
   }, []);
+
+  const closeModalHandler = () => {
+    setIsAddingEvent(false);
+  };
 
   return (
     <Stack marginTop={3}>
@@ -36,10 +38,10 @@ function AdminEventsPage() {
               Thêm sự kiện
             </Button>
             {isAddingEvent && (
-              <AddEventPopup onCloseModal={() => setIsAddingEvent(false)} />
+              <AddEventPopup onCloseModal={closeModalHandler} />
             )}
           </Stack>
-          <EventsTable events={events} />
+          <EventsTable />
         </>
       )}
       {error && <SomethingWentWrong error={error} />}

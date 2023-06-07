@@ -8,15 +8,31 @@ function AdminDonorsPage() {
   const [donors, setDonors] = React.useState(null);
   const [error, setError] = React.useState(null);
 
-  useEffect(() => {
-    DonorService.getAllDonors()
-      .then((fetchedDonors) => {
-        setError(null);
-        setDonors(fetchedDonors.data);
+  const fetchDonors = async () => {
+    const fetchedDonors = await DonorService.getAllDonors()
+      .then((res) => {
+        return res.data;
       })
       .catch((e) => {
         setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
       });
+
+    const mappedDonors = await Promise.all(
+      fetchedDonors.map(async (donor) => {
+        const joinedEvents = await DonorService.getJoinedEvents(donor.id)
+          .then((res) => res.data)
+          .catch((e) => {
+            throw e;
+          });
+        return { ...donor, eventsQuantity: joinedEvents.length };
+      })
+    );
+
+    setDonors(mappedDonors);
+  };
+
+  useEffect(() => {
+    fetchDonors();
   }, []);
 
   return (

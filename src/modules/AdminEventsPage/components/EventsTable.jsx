@@ -27,7 +27,8 @@ import AddEventPopup from "./AddEventPopup";
 import { Link, useNavigate } from "react-router-dom";
 import AddDonationPopup from "./AddDonationPopup";
 import { EventService } from "../../../services";
-import { async } from "q";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEvents } from "../../../store/events";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -95,10 +96,10 @@ const headCells = [
     label: "Số tiền nhận được",
   },
   {
-    id: "address",
-    numeric: false,
+    id: "donorsQuantity",
+    numeric: true,
     disablePadding: false,
-    label: "Địa chỉ",
+    label: "Số người quyên góp",
   },
   {
     id: "category",
@@ -116,7 +117,7 @@ const headCells = [
     id: "isDonating",
     numeric: false,
     disablePadding: false,
-    label: "Đang hoạt động",
+    label: "Đang nhận",
   },
 ];
 
@@ -189,7 +190,9 @@ function EnhancedTableToolbar(props) {
   const [isDeletable, setIsDeleteTable] = React.useState(false);
   const [isUpdating, setIsUpdating] = React.useState(false);
   const [isAddingDonation, setIsAddingDonation] = React.useState(false);
+  const events = useSelector((state) => state.events.events);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [search, setSearch] = React.useState("");
 
@@ -201,7 +204,7 @@ function EnhancedTableToolbar(props) {
   React.useEffect(() => {
     if (
       selected.findIndex((eventId) => {
-        const event = props.events.find((e) => e.id === eventId);
+        const event = events.find((e) => e.id === eventId);
         return event.amountGot !== event.amountDistributed;
       }) > -1
     ) {
@@ -215,10 +218,15 @@ function EnhancedTableToolbar(props) {
     console.log(selected);
     await Promise.all(
       selected.map(async (e) => {
-        await EventService.deleteEvent(e);
+        await EventService.deleteEvent(e)
+          .then(() => {})
+          .catch((e) => {
+            throw e;
+          });
       })
     );
 
+    dispatch(fetchEvents());
     setOpenDeleteDialog(false);
   };
 
@@ -283,15 +291,19 @@ function EnhancedTableToolbar(props) {
               </Button>
               {isAddingDonation && (
                 <AddDonationPopup
-                  onCloseModal={() => setIsAddingDonation(false)}
-                  event={props.events.find((e) => e.id === selected[0])}
+                  onCloseModal={() => {
+                    setIsAddingDonation(false);
+                  }}
+                  event={events.find((e) => e.id === selected[0])}
                 />
               )}
 
               {isUpdating && (
                 <AddEventPopup
-                  onCloseModal={() => setIsUpdating(false)}
-                  event={props.events.find((e) => e.id === selected[0])}
+                  onCloseModal={() => {
+                    setIsUpdating(false);
+                  }}
+                  event={events.find((e) => e.id === selected[0])}
                 />
               )}
             </>
@@ -333,13 +345,20 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EventsTable({ events }) {
+export default function EventsTable() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("id");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [viewedEvents, setViewedEvents] = React.useState(events);
+  const events = useSelector((state) => state.events.events);
+  const [viewedEvents, setViewedEvents] = React.useState([]);
+
+  console.log(events);
+
+  React.useEffect(() => {
+    setViewedEvents(events);
+  }, [events]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -415,7 +434,6 @@ export default function EventsTable({ events }) {
           numSelected={selected.length}
           selected={selected}
           onSearchChange={searchChangeHandler}
-          events={events}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -426,7 +444,6 @@ export default function EventsTable({ events }) {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={events.length}
-              events={events}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -507,18 +524,20 @@ export default function EventsTable({ events }) {
                         ></Stack>
                       </Stack>
                     </TableCell>
-                    <TableCell align="right">{row.address}</TableCell>
-                    <TableCell align="right">{row.category?.name}</TableCell>
+                    <TableCell align="right">{row.donorsQuantity}</TableCell>
+                    <TableCell align="right">{row.category.name}</TableCell>
                     <TableCell
                       align="right"
                       style={{ fontWeight: 600, color: "#2AC48A" }}
                     >
-                      {currencyFormatter.format(row.amountDistributed)}
+                      {row.category.name === "Tiền"
+                        ? currencyFormatter.format(row.amountDistributed)
+                        : row.amountDistributed + " " + row.category.unit}
                     </TableCell>
                     <TableCell align="right">
                       <Checkbox
                         color="primary"
-                        checked={row.isDonating}
+                        checked={row.donating}
                         disabled
                       />
                     </TableCell>

@@ -33,7 +33,7 @@ function DonationItem({ donation }) {
         paddingRight={2}
         onClick={() => setIsOpenDonorPopup(true)}
       >
-        <Avatar sx={{ width: 40, height: 40 }} src={donation.donor.image} />
+        <Avatar sx={{ width: 60, height: 60 }} src={donation.donor.photo} />
         <Stack>
           <Typography fontSize={14} fontWeight={"bold"} whiteSpace={"nowrap"}>
             {donation.donor.name}
@@ -49,17 +49,36 @@ function DonationItem({ donation }) {
         justifyContent={"center"}
         onClick={() => setIsOpenTransferPopup(true)}
       >
-        <Typography  fontSize={14}>
-          Đã quyên góp{" "}
-          <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
-            {currencyFormatter.format(donation.transfer.amount)}
-          </span>{" "}
-          vào lúc{" "}
-          <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
-            {format(new Date(donation.transfer.time), "hh:mm:ss dd-MM-yyyy")}
-          </span>{" "}
-          đến sự kiện
-        </Typography>
+        {donation.transfer && (
+          <Typography>
+            Đã quyên góp{" "}
+            <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
+              {currencyFormatter.format(donation.transfer.amount)}
+            </span>{" "}
+            vào lúc{" "}
+            <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
+              {format(new Date(donation.transfer.time), "hh:mm:ss dd-MM-yyyy")}
+            </span>{" "}
+            đến sự kiện
+          </Typography>
+        )}
+        {donation.item && (
+          <Typography>
+            Đã quyên góp{" "}
+            <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
+              {donation.item.amount +
+                " " +
+                donation.event.category.unit +
+                " " +
+                donation.event.category.name}
+            </span>{" "}
+            vào lúc{" "}
+            <span style={{ fontWeight: "bold", color: "#2AC48A" }}>
+              {format(new Date(donation.item.time), "hh:mm:ss dd-MM-yyyy")}
+            </span>{" "}
+            đến sự kiện
+          </Typography>
+        )}
       </Stack>
       <Circle fontSize="10" style={{ color: "#aaa", alignSelf: "center" }} />
       <Stack
@@ -73,9 +92,11 @@ function DonationItem({ donation }) {
         onClick={() => setIsOpenEventPopup(true)}
       >
         <Stack>
-          <Typography fontSize={14} textAlign={"end"}>Sự kiện</Typography>
-          <Typography  fontSize={14} textAlign={"end"} fontWeight={"bold"}>
-            {donation.event.title}
+          <Typography textAlign={"end"}>Sự kiện</Typography>
+          <Typography textAlign={"end"} fontWeight={"bold"}>
+            {donation.event.title.length > 40
+              ? donation.event.title.slice(0, 40) + "..."
+              : donation.event.title}
           </Typography>
         </Stack>
         <Avatar sx={{ width: 40, height: 40 }} src={donation.event.image} />
@@ -84,14 +105,21 @@ function DonationItem({ donation }) {
         <DonorPopup
           onCloseModal={() => setIsOpenDonorPopup(false)}
           onDonation={true}
-          donorId={donation.donor.id}
+          donor={donation.donor}
         />
       )}
       {isOpenEventPopup && (
-        <EventPopup onCloseModal={() => setIsOpenEventPopup(false)} eventId={donation.event.id} />
+        <EventPopup
+          onCloseModal={() => setIsOpenEventPopup(false)}
+          event={donation.event}
+        />
       )}
       {isOpenTransferPopup && (
-        <TransferPopup onCloseModal={() => setIsOpenTransferPopup(false)} transferId={donation.transfer.id} />
+        <TransferPopup
+          onCloseModal={() => setIsOpenTransferPopup(false)}
+          transfer={donation.transfer}
+          item={donation.item}
+        />
       )}
     </Stack>
   );

@@ -5,7 +5,7 @@ import heart from "../../../assets/images/heart.png";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import { Link } from "react-router-dom";
 
-function EventPopup({ onCloseModal, eventId }) {
+function EventPopup({ onCloseModal, event }) {
   // Get event from database base on event ID
 
   return (
@@ -25,12 +25,7 @@ function EventPopup({ onCloseModal, eventId }) {
           alignItems={"center"}
           overflow={"hidden"}
         >
-          <img
-            height="100%"
-            src={
-              "https://static.thiennguyen.app/public/donate-target/photo/2023/3/8/ce83ad23-bc2e-451f-b1c0-44806d810d9e.jpg"
-            }
-          />
+          <img height="100%" src={event.image} />
           <Stack
             position="absolute"
             top={12}
@@ -39,7 +34,11 @@ function EventPopup({ onCloseModal, eventId }) {
             borderRadius={1}
             paddingX={1}
           >
-            Còn 67 ngày
+            {"Còn " +
+              (new Date(event.dateEnd).getTime() -
+                new Date(event.dateBegin).getTime()) /
+                (1000 * 24 * 60 * 60) +
+              " ngày"}
           </Stack>
         </Stack>
         <Stack padding={2} width={450}>
@@ -47,10 +46,7 @@ function EventPopup({ onCloseModal, eventId }) {
             {"Ta thêm lòng tiếp sức, để bớt cuộc chia ly 1"}
           </Typography>
           <Typography fontSize={17} marginTop={1}>
-            {(
-              "“Như chưa hề có cuộc chia ly” tin rằng những khoảnh khắc đầy xúc động khi người thân gặp lại nhau sẽ dung dưỡng lòng trắc ẩn và khơi dậy nhiều giá trị gia đình vốn thường trực trong lòng mỗi người." +
-              "“Như chưa hề có cuộc chia ly cũng tin rằng việc tham gia làm thiện nguyện vốn là hành động tốt đẹp thuần khiết. Chỉ một sự tiếp sức nhỏ, nhưng đều đặn, mỗi người đều có thể tiếp sức cùng ekip “Như chưa hề có cuộc chia ly” làm nên các cuộc đoàn tụ mỗi tháng."
-            ).slice(0, 200) + "..."}
+            {event.description ? event.description.slice(0, 140) + "..." : ""}
           </Typography>
           <Stack
             direction={"row"}
@@ -60,11 +56,13 @@ function EventPopup({ onCloseModal, eventId }) {
             <Typography>
               Cần{" "}
               <span style={{ fontWeight: "600", color: "#fb8500" }}>
-                {currencyFormatter.format(43000000)}
+                {event.category.name === "Tiền"
+                  ? currencyFormatter.format(event.amountNeeded)
+                  : event.amountNeeded + " " + event.category.unit}
               </span>
             </Typography>
             <Typography fontWeight={600} fontSize={19}>
-              66%
+              {Math.round((event.amountGot / event.amountNeeded) * 100) + "%"}
             </Typography>
           </Stack>
           <Stack
@@ -74,7 +72,9 @@ function EventPopup({ onCloseModal, eventId }) {
           >
             <Stack
               height={8}
-              width={"67%"}
+              width={
+                Math.round(event.amountGot / event.amountNeeded) * 100 + "%"
+              }
               style={{ backgroundColor: "orange" }}
               borderRadius={2}
             ></Stack>
@@ -82,7 +82,12 @@ function EventPopup({ onCloseModal, eventId }) {
           <Typography marginTop={1} textAlign={"end"}>
             Còn{" "}
             <span style={{ fontWeight: "600", color: "#fb8500" }}>
-              {currencyFormatter.format(13000000)}
+              {event.category.name === "Tiền"
+                ? currencyFormatter.format(event.amountNeeded - event.amountGot)
+                : event.amountNeeded -
+                  event.amountGot +
+                  " " +
+                  event.category.unit}
             </span>
           </Typography>
           <Button
@@ -91,7 +96,7 @@ function EventPopup({ onCloseModal, eventId }) {
             style={{ position: "absolute", right: "10px", bottom: "10px" }}
           >
             <Link
-              to={"/events/" + eventId}
+              to={"/events/" + event.id}
               style={{
                 color: "white",
                 textDecoration: "none",
