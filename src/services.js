@@ -52,6 +52,13 @@ export class DonorService {
   static async getJoinedEvents(donorId) {
     return await axios.get(url + "donors/" + donorId + "/events");
   }
+
+  static async checkPassword(donorId, password) {
+    const data = new FormData();
+    data.append("donorId", donorId);
+    data.append("password", password);
+    return await axios.post(url + "donors/check-password", data);
+  }
 }
 
 export class EventService {

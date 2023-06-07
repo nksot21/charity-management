@@ -4,16 +4,16 @@ import Banner from "../components/Banner";
 import Introduction from "../components/Introduction";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import DonorList from "../components/DonorList";
 import { Stack } from "@mui/material";
 import "./LandingPage.css";
+import Leaderboard from "../components/Leaderboard";
 
 function LandingPage() {
   return (
     <Stack>
       <Banner />
       <Introduction />
-      <DonorList />
+      <Leaderboard/>
     </Stack>
   );
 }

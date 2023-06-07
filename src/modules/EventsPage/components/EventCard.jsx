@@ -52,7 +52,9 @@ function EventCard({ event }) {
         style={{ cursor: "pointer" }}
       >
         <Typography fontSize={19} fontWeight={600}>
-          {event.title}
+          {event.title.length > 50
+            ? event.title.slice(0, 60) + "..."
+            : event.title}
         </Typography>
         <Typography fontSize={17} marginTop={1}>
           {event.description ? event.description.slice(0, 100) + "..." : ""}

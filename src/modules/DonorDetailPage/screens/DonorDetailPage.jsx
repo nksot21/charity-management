@@ -20,7 +20,7 @@ function DonorDetailPage() {
   const loggedInDonor = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
 
-  const donorId = params.donorId || loggedInDonor.id;
+  const donorId = params.donorId || loggedInDonor?.id;
 
   if (params.donorId && loggedInDonor) {
     if (loggedInDonor.id === parseInt(params.donorId)) {
@@ -45,6 +45,12 @@ function DonorDetailPage() {
       setDonor(loggedInDonor);
     }
   };
+
+  useEffect(() => {
+    if (!params.donorId) {
+      setDonor(loggedInDonor);
+    }
+  }, [loggedInDonor]);
 
   const fetchJoinedEvents = async () => {
     await DonorService.getJoinedEvents(donorId)

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function MyDialog({ title = "Thông báo", message, handleClose, handleAccept }) {
+function MyDialog({ title = "Thông báo", message, handleClose = null, handleAccept }) {
   return (
     <Dialog
       open={true}
@@ -23,7 +23,7 @@ function MyDialog({ title = "Thông báo", message, handleClose, handleAccept })
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Hủy</Button>
+        {handleClose && <Button onClick={handleClose}>Hủy</Button>}
         <Button onClick={handleAccept} autoFocus>
           OK
         </Button>
