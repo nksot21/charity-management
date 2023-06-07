@@ -14,11 +14,15 @@ import {
   Typography,
 } from "@mui/material";
 import quote from "../../../assets/images/quote.png";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Modal from "../../../globalComponents/Modal/Modal";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { MuiFileInput } from "mui-file-input";
 import { format, setDate } from "date-fns";
+import { DonorService } from "../../../services";
+import MyDialog from "../../../globalComponents/Dialog/MyDialog";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../../store/auth";
 
 function DonorInfoPage({ onCloseModal, donor }) {
   const [name, setName] = useState(donor.name);
@@ -36,7 +40,11 @@ function DonorInfoPage({ onCloseModal, donor }) {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showNewPassword, setShowNewPassword] = React.useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [updateSuccessfull, setUpdateSuccessful] = useState(false);
+
   const params = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isProfile = !params.donorId;
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -76,7 +84,7 @@ function DonorInfoPage({ onCloseModal, donor }) {
     return () => URL.revokeObjectURL(objectUrl);
   }, [file]);
 
-  const addDonorHandler = () => {
+  const addDonorHandler = async () => {
     let haveError = false;
     setErrors([]);
     if (
@@ -99,6 +107,7 @@ function DonorInfoPage({ onCloseModal, donor }) {
     const photoURL = "url/to/firebase/image";
 
     let donorBody = {
+      id: donor.id,
       name,
       phone,
       birthday,
@@ -110,10 +119,6 @@ function DonorInfoPage({ onCloseModal, donor }) {
     };
 
     if (isChangingPassword) {
-      if (password !== donor.password) {
-        haveError = true;
-        setErrors((prev) => [...prev, "Mật khẩu không đúng"]);
-      }
       if (password.length === 0 && newPassword.length === 0) {
         haveError = true;
         setErrors((prev) => [
@@ -121,12 +126,52 @@ function DonorInfoPage({ onCloseModal, donor }) {
           "Vui lòng điện mật khẩu hoặc/và mật khẩu mới",
         ]);
       }
-      donorBody = { ...donorBody, password };
+      const isCorrectPassword = await DonorService.checkPassword(
+        donor.id,
+        password
+      )
+        .then((res) => res.data)
+        .catch((e) => {
+          haveError = true;
+          throw e;
+        });
+
+      console.log(isCorrectPassword);
+
+      if (!isCorrectPassword) {
+        haveError = true;
+        setErrors((prev) => [...prev, "Mật khẩu không đúng"]);
+      } else {
+        haveError = false;
+      }
+
+      donorBody = { id: donor.id, password: newPassword };
     }
 
-    console.log(donorBody);
+    if (!haveError) {
+      await DonorService.addDonor(donorBody)
+        .then((res) => {
+          console.log(res.data);
+          dispatch(authActions.logUserIn(res.data));
+          localStorage.setItem("user", JSON.stringify({ ...res.data }));
+          setUpdateSuccessful(true);
+        })
+        .catch((e) => {
+          setUpdateSuccessful(false);
+          haveError = true;
+          setErrors((prev) => [
+            ...prev,
+            "Có lỗi xảy ra! Cập nhật thông tin thất bại.",
+          ]);
+          throw e;
+        });
+    }
+  };
 
-    if (!haveError && errors.length === 0) onCloseModal();
+  const navigateToLogin = () => {
+    localStorage.removeItem("user");
+    dispatch(authActions.logUserOut());
+    navigate("/dang-nhap");
   };
 
   return (
@@ -141,13 +186,14 @@ function DonorInfoPage({ onCloseModal, donor }) {
           paddingX={2}
           paddingTop={2}
           marginTop={2}
+          alignItems={"stretch"}
         >
           <Stack width={250}>
             <Avatar
               sx={{ width: 250, height: 250, boxShadow: "0 0 10px #00000022" }}
               src={photo}
             />
-            {isProfile && (
+            {isProfile && !isChangingPassword && (
               <Stack marginTop={3} alignItems={"center"}>
                 <MuiFileInput
                   label="Chọn ảnh"
@@ -188,102 +234,100 @@ function DonorInfoPage({ onCloseModal, donor }) {
               </Stack>
             )}
             {isProfile && (
-              <Stack flexGrow={1} justifyContent={"end"}>
+              <Stack flexGrow={1} justifyContent={"end"} marginTop={2}>
                 <Button variant="outlined" onClick={() => onCloseModal()}>
                   Hủy
                 </Button>
               </Stack>
             )}
           </Stack>
-
           <Stack spacing={2} width={400}>
-            <TextField
-              size="small"
-              fullWidth
-              label="Tên nhà hảo tâm"
-              type="text"
-              value={name}
-              InputProps={{
-                readOnly: !isProfile,
-              }}
-              onChange={(event) => setName(event.target.value)}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              label="Ngày sinh"
-              type="date"
-              value={format(new Date(birthday), "yyyy-MM-dd")}
-              onChange={(event) => setbirthday(event.target.value)}
-              InputProps={{
-                readOnly: !isProfile,
-              }}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              label="Số điện thoại"
-              type="text"
-              value={phone}
-              onChange={(event) => setphone(event.target.value)}
-              InputProps={{
-                readOnly: !isProfile,
-              }}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(event) => setemail(event.target.value)}
-              InputProps={{
-                readOnly: !isProfile,
-              }}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              label="Slogan"
-              type="text"
-              value={slogan}
-              multiline
-              rows={4}
-              onChange={(event) => setslogan(event.target.value)}
-              InputProps={{
-                readOnly: !isProfile,
-              }}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              label="Địa chỉ"
-              type="text"
-              value={address}
-              onChange={(event) => setaddress(event.target.value)}
-              InputProps={{
-                readOnly: !isProfile,
-              }}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              label="Username"
-              type="text"
-              value={username}
-              onChange={(event) => setusername(event.target.value)}
-              InputProps={{
-                readOnly: !isProfile,
-              }}
-            />
-            {isChangingPassword && isProfile && (
+            {!isChangingPassword && (
               <>
-                <FormControl
-                  sx={{ m: 1 }}
-                  variant="outlined"
+                <TextField
                   size="small"
                   fullWidth
-                >
+                  label="Tên nhà hảo tâm"
+                  type="text"
+                  value={name}
+                  InputProps={{
+                    readOnly: !isProfile,
+                  }}
+                  onChange={(event) => setName(event.target.value)}
+                />
+                <TextField
+                  size="small"
+                  fullWidth
+                  label="Ngày sinh"
+                  type="date"
+                  value={format(new Date(birthday), "yyyy-MM-dd")}
+                  onChange={(event) => setbirthday(event.target.value)}
+                  InputProps={{
+                    readOnly: !isProfile,
+                  }}
+                />
+                <TextField
+                  size="small"
+                  fullWidth
+                  label="Số điện thoại"
+                  type="text"
+                  value={phone}
+                  onChange={(event) => setphone(event.target.value)}
+                  InputProps={{
+                    readOnly: !isProfile,
+                  }}
+                />
+                <TextField
+                  size="small"
+                  fullWidth
+                  label="Email"
+                  type="email"
+                  value={email}
+                  onChange={(event) => setemail(event.target.value)}
+                  InputProps={{
+                    readOnly: !isProfile,
+                  }}
+                />
+                <TextField
+                  size="small"
+                  fullWidth
+                  label="Slogan"
+                  type="text"
+                  value={slogan}
+                  multiline
+                  rows={4}
+                  onChange={(event) => setslogan(event.target.value)}
+                  InputProps={{
+                    readOnly: !isProfile,
+                  }}
+                />
+                <TextField
+                  size="small"
+                  fullWidth
+                  label="Địa chỉ"
+                  type="text"
+                  value={address}
+                  onChange={(event) => setaddress(event.target.value)}
+                  InputProps={{
+                    readOnly: !isProfile,
+                  }}
+                />
+                <TextField
+                  size="small"
+                  fullWidth
+                  label="Username"
+                  type="text"
+                  value={username}
+                  onChange={(event) => setusername(event.target.value)}
+                  InputProps={{
+                    readOnly: !isProfile,
+                  }}
+                />
+              </>
+            )}
+            {isChangingPassword && isProfile && (
+              <>
+                <FormControl variant="outlined" size="small" fullWidth>
                   <InputLabel htmlFor="password">
                     Nhập lại mật khẩu cũ
                   </InputLabel>
@@ -304,16 +348,11 @@ function DonorInfoPage({ onCloseModal, donor }) {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label="Password"
+                    label="Nhập lại mật khẩu cũ"
                   />
                 </FormControl>
 
-                <FormControl
-                  sx={{ m: 1 }}
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                >
+                <FormControl variant="outlined" size="small" fullWidth>
                   <InputLabel htmlFor="new-password">
                     Nhập mật khẩu mới
                   </InputLabel>
@@ -334,17 +373,20 @@ function DonorInfoPage({ onCloseModal, donor }) {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label="Password"
+                    label="Nhập mật khẩu mới"
                   />
                 </FormControl>
               </>
             )}
             {isProfile && (
-              <Stack alignItems={"end"}>
+              <Stack alignSelf={"end"}>
                 <Button
                   variant="text"
                   size="small"
-                  style={{ textTransform: "none", textDecoration: "underline" }}
+                  style={{
+                    textTransform: "none",
+                    textDecoration: "underline",
+                  }}
                   onClick={() => setIsChangingPassword((show) => !show)}
                 >
                   {isChangingPassword ? "Hủy" : "Đổi mật khẩu"}
@@ -352,11 +394,31 @@ function DonorInfoPage({ onCloseModal, donor }) {
               </Stack>
             )}
             {isProfile && (
-              <Stack>
+              <Stack flexGrow={1} justifyContent={"end"}>
                 <Button variant="contained" onClick={addDonorHandler}>
                   Cập nhật
                 </Button>
               </Stack>
+            )}
+            {updateSuccessfull && isChangingPassword && (
+              <MyDialog
+                handleAccept={() => {
+                  setUpdateSuccessful(false);
+                  navigateToLogin();
+                }}
+                title="Thông báo"
+                message="Cập nhật mật khẩu thành công! Vui lòng đăng nhập lại!"
+              ></MyDialog>
+            )}
+            {updateSuccessfull && !isChangingPassword && (
+              <MyDialog
+                handleAccept={() => {
+                  setUpdateSuccessful(false);
+                  onCloseModal();
+                }}
+                title="Thông báo"
+                message="Cập nhật thông tin thành công!"
+              ></MyDialog>
             )}
           </Stack>
         </Stack>

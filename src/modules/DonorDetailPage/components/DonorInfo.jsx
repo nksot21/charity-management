@@ -8,12 +8,11 @@ import { useSelector } from "react-redux";
 
 function DonorInfo({ onDonation = false, donor }) {
   const [isShowingInfo, setIsShowingInfo] = useState(false);
-  const role = useSelector((state) => state.auth.role);
 
   return (
     <Stack position="sticky" top={100} left={0}>
       <Stack direction="row" spacing={4} alignItems={"center"}>
-        {role === "ADMIN" && (
+        {donor.role === "ADMIN" && (
           <Badge
             color="secondary"
             badgeContent={"ADMIN"}
@@ -29,7 +28,7 @@ function DonorInfo({ onDonation = false, donor }) {
             />
           </Badge>
         )}
-        {role !== "ADMIN" && (
+        {donor.role !== "ADMIN" && (
           <Avatar
             sx={{ width: 170, height: 170, boxShadow: "0 0 10px #00000022" }}
             src={donor.photo}
