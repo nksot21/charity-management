@@ -104,7 +104,7 @@ const headCells = [
     label: "Địa chỉ",
   },
   {
-    id: "eventQuantity",
+    id: "eventsQuantity",
     numeric: true,
     disablePadding: false,
     label: "Số sự kiện tham gia",
@@ -413,7 +413,7 @@ export default function DonorsTable({ donors }) {
                     <TableCell align="right">{row.email}</TableCell>
                     <TableCell align="right">{row.address}</TableCell>
                     <TableCell align="right" style={{ fontWeight: 600 }}>
-                      {row.eventQuantity}
+                      {row.eventsQuantity}
                     </TableCell>
                     <TableCell
                       align="right"

@@ -22,14 +22,28 @@ function DonorDetailPage() {
 
   const donorId = params.donorId || loggedInDonor.id;
 
+  if (params.donorId && loggedInDonor) {
+    if (loggedInDonor.id === parseInt(params.donorId)) {
+      navigate("/donors/profile");
+    }
+  }
+
+  if (!params.donorId && !loggedInDonor) {
+    navigate("/trang-chu");
+  }
+
   const fetchDonor = async () => {
-    await DonorService.getDonor(donorId)
-      .then((fetchedDonor) => {
-        setDonor(fetchedDonor.data);
-      })
-      .catch((e) => {
-        setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
-      });
+    if (params.donorId) {
+      await DonorService.getDonor(donorId)
+        .then((fetchedDonor) => {
+          setDonor(fetchedDonor.data);
+        })
+        .catch((e) => {
+          setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
+        });
+    } else {
+      setDonor(loggedInDonor);
+    }
   };
 
   const fetchJoinedEvents = async () => {
@@ -53,24 +67,10 @@ function DonorDetailPage() {
   };
 
   useEffect(() => {
-    if (params.donorId) {
-      fetchDonor();
-    } else {
-      setDonor(loggedInDonor);
-    }
-    if (params.donorId && loggedInDonor) {
-      if (loggedInDonor.id === parseInt(params.donorId)) {
-        navigate("/donors/profile");
-      }
-    }
-
-    if (!params.donorId && !loggedInDonor) {
-      navigate("/trang-chu");
-    }
-
+    fetchDonor();
     fetchDonations();
     fetchJoinedEvents();
-  }, [donor]);
+  }, [params]);
 
   return (
     <>
