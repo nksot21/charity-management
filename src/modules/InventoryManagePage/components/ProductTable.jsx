@@ -16,12 +16,11 @@ const columns = [
      
   },
   {
-    field: 'amount',
-    headerName: 'Tồn kho',
+    field: 'unit',
+    headerName: 'Đơn vị',
     width: 200  ,
   },
-  { field: 'unit', headerName: 'Đơn vị', width: 150 },
-  { field: 'description', headerName: 'Mô tả', width: 300 },
+  { field: 'amount', headerName: 'Số lượng', width: 150 },
 
 ];
 
@@ -40,7 +39,7 @@ export default function ProductTable(props ) {
           },
         }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
+        
       />
     </div>
   );

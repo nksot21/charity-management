@@ -34,6 +34,18 @@ export class CategoryService {
     console.log(data)
     return await axios.post(url + "categories", data);
   }
+  
+  static async getCategoryById(id){
+    return await axios.get(url + "categories/" + id);
+  }
+
+  static async getDistributionByCategory(id){
+    return await axios.get(url + "distribution/category/" + id)
+  }
+
+  static async getDonationByCategory(id){
+    return await axios.get(url + "donations/category/" + id)
+  }
 }
 
 

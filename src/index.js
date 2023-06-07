@@ -16,19 +16,18 @@ import EventsPage from "./modules/EventsPage/screens/EventsPage";
 import EventDetailPage from "./modules/EventDetailPage/screens/EventDetailPage";
 import AdminDonorsPage from "./modules/AdminDonorsPage/screens/AdminDonorsPage";
 import AdminEventsPage from "./modules/AdminEventsPage/screens/AdminEventsPage";
+import AdminEventDetailPage from "./modules/AdminEventsPage/screens/EventDetailPage"
 import { Update } from "@mui/icons-material";
 import UpdateReceiver from "./modules/ReceiverPage/screens/UpdateReceiver";
 import DistributionPage from "./modules/DistributionPage/screens/DistributionPage";
 import { Provider } from "react-redux";
 import store from "./store/store";
-<<<<<<< HEAD
 import InventoryPage from "./modules/InventoryManagePage/screens/InventoryPage";
 import DetailCategory from "./modules/InventoryManagePage/screens/DetailCategory";
-=======
 import SomethingWentWrong from "./globalComponents/NoResult/Error";
 import Signup from "./modules/Authentication/screens/Signup";
 import Login from "./modules/Authentication/screens/Login";
->>>>>>> dev
+import CreateDistributionPage from "./modules/AdminEventsPage/screens/CreateDistributionPage";
 
 const router = createBrowserRouter([
   {
@@ -120,6 +119,14 @@ const router = createBrowserRouter([
                   {
                     path: "events",
                     element: <AdminEventsPage />,
+                  },
+                  {
+                    path: "events/:id",
+                    element: <AdminEventDetailPage />,
+                  },
+                  {
+                    path: "events/:id/them",
+                    element: <CreateDistributionPage />,
                   },
                 ],
               },
