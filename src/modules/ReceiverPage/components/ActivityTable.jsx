@@ -9,8 +9,8 @@ const columns = [
   { field: 'name', headerName: 'Tên hoạt động', width: 350,
     type: 'link',
     renderCell: (params) =>{
-      return  <Link to={params.row.id} className=' text-decoration-none cursor  ' style={{alignItems: "center"}}>
-                <span>{params.row.name}</span>
+      return  <Link to={params.row.name.id} className=' text-decoration-none cursor  ' style={{alignItems: "center"}}>
+                <span>{params.row.name.name}</span>
               </Link>
     }
      
@@ -22,17 +22,18 @@ const columns = [
     width: 150  ,
   },
   {
-    field: 'expectMoney',
+    field: 'expect',
     headerName: 'Mục tiêu',
-    width: 120,
+    width: 150,
   },
-  { field: 'receiverMoney', headerName: 'Thực nhận', width: 120  },
+  { field: 'receiver', headerName: 'Thực nhận', width: 150  },
   { field: 'status', headerName: 'Tình trạng', width: 125  },
 ];
 
 
 
 export default function ActivityTable(props ) {
+  console.log('props.data')
   console.log(props.data)
   return (
     <div style={{ height: 400, width: '97%' }}>
@@ -41,11 +42,10 @@ export default function ActivityTable(props ) {
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+            paginationModel: { page: 0, pageSize: 15 },
           },
         }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
       />
     </div>
   );

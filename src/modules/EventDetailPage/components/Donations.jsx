@@ -32,7 +32,7 @@ function Donations({ donations }) {
           )}
         </IconButton>
       </Stack>
-      <Stack spacing={1} marginTop={2}>
+      {donationSeeMore && <Stack spacing={1} marginTop={2}>
         {donations.slice(0, count).map((donation) => (
           <Stack
             direction={"row"}
@@ -74,6 +74,7 @@ function Donations({ donations }) {
           </Stack>
         ))}
       </Stack>
+}
       {(Math.floor(donations.length / 10) + 1) * 10 - count > 0 && (
         <Stack marginTop={1} alignItems={"center"}>
           <Button
