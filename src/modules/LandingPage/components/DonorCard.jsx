@@ -1,7 +1,7 @@
 import React from "react";
 import "./DonorCard.css";
 import { Link, useNavigate } from "react-router-dom";
-import { Avatar, Button, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Chip, Stack, Typography } from "@mui/material";
 import { format } from "date-fns";
 
 export default function DonorCard({ donor }) {
@@ -39,8 +39,16 @@ export default function DonorCard({ donor }) {
         <div className="card-line" />
       </Stack>
       <Stack marginTop={2}>
-        <Typography>
-          Tài khoản từ thiện số:{" "}
+        <Typography>Tài khoản từ thiện số: {donor?.id}</Typography>
+        <Typography marginTop={1}>
+          Tham gia từ:
+          <span style={{ fontWeight: "bold" }}>
+            {" "}
+            {format(new Date(donor?.joinDate), "dd/MM/yyyy")}
+          </span>{" "}
+        </Typography>
+        <Typography marginTop={1}>
+          Điểm:{" "}
           <span
             style={{
               backgroundColor: "#ddd",
@@ -49,12 +57,8 @@ export default function DonorCard({ donor }) {
               borderRadius: "15px",
             }}
           >
-            {donor?.id}
+            {donor.score}
           </span>
-        </Typography>
-        <Typography marginTop={1}>
-          Tham gia từ:
-          <span style={{ fontWeight: "bold" }}> {format(new Date(donor?.joinDate), 'dd/MM/yyyy') }</span>{" "}
         </Typography>
         <Button style={{ marginTop: "16px" }}>
           <Link to={"/donors/" + donor.id} style={{ textDecoration: "none" }}>

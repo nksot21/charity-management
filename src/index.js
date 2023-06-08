@@ -16,8 +16,6 @@ import EventsPage from "./modules/EventsPage/screens/EventsPage";
 import EventDetailPage from "./modules/EventDetailPage/screens/EventDetailPage";
 import AdminDonorsPage from "./modules/AdminDonorsPage/screens/AdminDonorsPage";
 import AdminEventsPage from "./modules/AdminEventsPage/screens/AdminEventsPage";
-import AdminEventDetailPage from "./modules/AdminEventsPage/screens/EventDetailPage"
-import { Update } from "@mui/icons-material";
 import UpdateReceiver from "./modules/ReceiverPage/screens/UpdateReceiver";
 import DistributionPage from "./modules/DistributionPage/screens/DistributionPage";
 import { Provider } from "react-redux";
@@ -123,19 +121,20 @@ const router = createBrowserRouter([
                       },
                       {
                         path: "events",
-                        element: <AdminEventsPage />,
+                        children: [
+                          {
+                            index: true,
+                            element: <AdminEventsPage />,
+                          },
+                          {
+                            path: ":eventId/them-phan-phat",
+                            element: <CreateDistributionPage />,
+                          },
+                        ],
                       },
-                      {
-                        path: "events/:id",
-                        element: <AdminEventDetailPage />,
-                      },
-                      {
-                        path: "events/:id/them",
-                        element: <CreateDistributionPage />,
-                      },
+                      {},
                     ],
                   },
-                  
                 ],
               },
             ],

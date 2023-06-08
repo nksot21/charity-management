@@ -31,7 +31,7 @@ function AddEventPopup({ onCloseModal, event = null }) {
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(event?.image || "");
   const [errors, setErrors] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState();
 
@@ -75,7 +75,12 @@ function AddEventPopup({ onCloseModal, event = null }) {
         "Ngày bắt đầu phải ở trước ngày kết thúc!",
       ]);
     }
-    if (!event && new Date(dateBegin).getTime() < new Date().getTime()) {
+    if (
+      !event &&
+      new Date(dateBegin).getDate() < new Date().getDate() &&
+      new Date(dateBegin).getMonth() < new Date().getMonth() &&
+      new Date(dateBegin).getFullYear() < new Date().getFullYear()
+    ) {
       haveError = true;
       setErrors((prev) => [...prev, "Ngày bắt đầu phải là từ ngày hôm nay!"]);
     }
@@ -139,26 +144,31 @@ function AddEventPopup({ onCloseModal, event = null }) {
     }
 
     if (!haveError && errors.length === 0) {
-      dispatch(fetchEvents())
+      dispatch(fetchEvents());
       onCloseModal();
     }
   };
 
   const imageChooseHandler = (fileChosen) => {
-    const extension = fileChosen.name.split(".").pop();
+    console.log(fileChosen)
+    if (fileChosen) {
+      const extension = fileChosen.name.split(".").pop();
 
-    if (extension !== "jpg" && extension !== "png") {
-      setErrors((prev) => {
-        if (prev.findIndex((error) => error.includes("Định dạng")) === -1) {
-          return [...prev, "Định dạng ảnh không hợp lệ!"];
-        }
-        return prev;
-      });
+      if (extension !== "jpg" && extension !== "png") {
+        setErrors((prev) => {
+          if (prev.findIndex((error) => error.includes("Định dạng")) === -1) {
+            return [...prev, "Định dạng ảnh không hợp lệ!"];
+          }
+          return prev;
+        });
+      } else {
+        setFile(fileChosen);
+        setErrors((prev) =>
+          [...prev].filter((error) => error.includes("Định dạng") === false)
+        );
+      }
     } else {
-      setFile(fileChosen);
-      setErrors((prev) =>
-        [...prev].filter((error) => error.includes("Định dạng") === false)
-      );
+      setFile(null);
     }
   };
 

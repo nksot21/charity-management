@@ -58,7 +58,7 @@ function Signup() {
         return;
       } else {
         setErrors((prev) =>
-          [...prev].filter((error) => error.includes("Định dạng") === false)
+          [...prev].filter((error) => error.includes("Kích thước") === false)
         );
       }
 
@@ -76,6 +76,8 @@ function Signup() {
         );
       }
       setFile(fileChosen);
+    } else {
+      setFile(null);
     }
   };
 
