@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import DistributionPopup from "./DistributionPopup";
 
-function EventInfo({ event }) {
+function EventInfo({ event,  }) {
   const role = useSelector((state) => state.auth.role);
   const navigate = useNavigate();
   const [showDonatePopup, setShowDonatePopup] = useState(false);
@@ -125,7 +125,7 @@ function EventInfo({ event }) {
           </Button>
         </Link>
       </Stack>
-      <DistributionPopup openState={open} setOpenState={setOpen} />
+      <DistributionPopup openState={open} setOpenState={setOpen} categoryList={{}}/>
     </Stack>
   );
 }

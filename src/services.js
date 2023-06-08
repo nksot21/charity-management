@@ -55,6 +55,10 @@ export class DistributionService {
   static async createDistribution(data) {
     return await axios.post(url + "distribution", data);
   }
+
+  static async getDistributionByEvent(id){
+    return await axios.get(url + "distribution/event/" + id)
+  }
 }
 
 export class DonorService {

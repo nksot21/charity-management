@@ -1,6 +1,6 @@
 import { faChevronRight } from '@fortawesome/fontawesome-free-solid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Modal, TextField } from '@mui/material'
+import { Button, Card, CardActionArea, CardContent, Modal, TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { Col, Container, FormControl, Row, Stack } from 'react-bootstrap'
@@ -8,6 +8,7 @@ import { Link, useParams } from 'react-router-dom'
 import { CategoryService, DistributionService, EventService, ReceiverService } from '../../../services'
 import AddDistributionProduct from '../components/AddDistributionProduct'
 import AddDistribution from '../components/AddDistributionReceiver'
+import QuantityCardContent from '../components/QuantityCardContent'
 import ReceiverTable from '../components/ReceiverTable'
 import SetCategoryCard from '../components/SetCategoryCard'
 
@@ -26,6 +27,11 @@ export default function CreateDistributionPage() {
     const [categoryCardDiv, setCategoryCardDiv] = useState([])
     const [selectOption, setSelectOption] = useState([])
     const [selectedRow, setSelectedRow] = useState([])
+    const [remindQuantityList, setRemindQuantityList] = useState([])
+    const [remindQuantityListDB, setRemindQuantityListDB] = useState([])
+    const [remindQuantityCard, setRemindQuantityCard] = useState([])
+
+
     useEffect(() => {
         EventService.getEvent(params.id)
           .then((fetchedEvent) => {
@@ -47,10 +53,32 @@ export default function CreateDistributionPage() {
     const retrieveCategoryList = () => {
         CategoryService.getAll()
         .then(res => {
+            console.log("categoryList")
             console.log(res.data)
+            const categoryList = res.data
+            let tempList = []
+            categoryList.map(item => {
+                tempList.push({
+                    name: item.name,
+                    amount: item.totalAmount,
+                    unit: item.unit
+                })
+            })
+            setRemindQuantityListDB(tempList)
+            setRemindQuantityList(tempList)
             setProductList(res.data)
         })
     }
+
+    useEffect(() => {
+        let tempCards = []
+        remindQuantityList.map(item => {
+            tempCards.push(<QuantityCardContent name={item.name} unit={item.unit} amount={item.amount}/>)
+        })
+        setRemindQuantityCard(tempCards)
+        console.log("remindQuantityList")
+        console.log(remindQuantityList)
+    }, [remindQuantityList])
 
     const retrieveReceivers = () => {
         ReceiverService.getAllReceivers()
@@ -177,13 +205,13 @@ export default function CreateDistributionPage() {
         
     }, [distributionData])
     const divideSet = (distributeBySet) => {
-        let option = setCategoryList.map(item => {
+        let option = setCategoryList.find(item => {
             if(distributeBySet.option.split(".")[1] == item.name)
                 return item
         })
         console.log('option')
         console.log(option)
-        let tempList = option[0].products?.map(product => {
+        let tempList = option.products?.map(product => {
             console.log("product")
             console.log(product)
             return {
@@ -244,7 +272,7 @@ export default function CreateDistributionPage() {
                     icon={faChevronRight}
                     className="me-3"
                     style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
-            <Link key="Home" to="/admin/events" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Quản lý sự kiện</Link>
+            <Link key="Home" to="/admin/manage/events" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Quản lý sự kiện</Link>
             <FontAwesomeIcon
                     icon={faChevronRight}
                     className="me-3"
@@ -261,7 +289,18 @@ export default function CreateDistributionPage() {
                 <div style={{display: "flex", flexWrap: "wrap"}}>
                     {categoryCardDiv}
                 </div> 
-
+        
+        {/* Remind Quantity Card */}
+        <Card sx={{ maxWidth: 1150, padding:"0", marginBottom: "15px"}}>
+            <CardActionArea>
+                <CardContent>
+                    <div style={{display: 'flex', flexWrap: 'wrap'}} >
+                        {remindQuantityCard}
+                    </div>
+                
+                </CardContent>
+            </CardActionArea>
+        </Card>
 
         {/* <SearchBar / */}
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -273,7 +312,8 @@ export default function CreateDistributionPage() {
             onClick={handleOpen}   > Tạo phần quà</Button>
             </div>
         
-        <ReceiverTable data={receiverShow} selectOption={selectOption} selectedRow={selectedRow} setSelectedRow={setSelectedRow}/>
+        <ReceiverTable data={receiverShow} selectOption={selectOption} selectedRow={selectedRow} setSelectedRow={setSelectedRow} controlQuantity={remindQuantityList}
+        setControlQuantity={setRemindQuantityList} controlQuantityDB={remindQuantityListDB} setCategory={setCategoryList}/>
         <div style={{display: "flex", justifyContent: "end", margin: "20px 50px 20px 0"}}>
             <Button
                 // onClick={handleClose}

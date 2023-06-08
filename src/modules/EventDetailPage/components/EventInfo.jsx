@@ -72,9 +72,9 @@ function EventInfo({ event }) {
         <Typography fontSize={18}>
           Đã quyên góp được{" "}
           <span style={{ fontWeight: "600", color: "#fb8500" }}>
-            {event.category.name === "Tiền"
+            {event.category?.name === "Tiền"
               ? currencyFormatter.format(event.amountGot)
-              : event.amountGot + " " + event.category.unit}
+              : event.amountGot + " " + event.category?.unit}
           </span>
         </Typography>
         <Typography fontWeight={600} fontSize={19}>
@@ -97,9 +97,9 @@ function EventInfo({ event }) {
       <Typography marginTop={1} textAlign={"end"}>
         Còn{" "}
         <span style={{ fontWeight: "600", color: "#fb8500" }}>
-          {event.category.name === "Tiền"
+          {event.category?.name === "Tiền"
             ? currencyFormatter.format(event.amountNeeded - event.amountGot)
-            : event.amountNeeded - event.amountGot + " " + event.category.unit}
+            : event.amountNeeded - event.amountGot + " " + event.category?.unit}
         </span>
       </Typography>
 

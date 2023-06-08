@@ -10,6 +10,7 @@ import AppCircleChart from '../components/CircleChart'
 import ProductContentCard from '../components/ProductContentCard'
 import DistributionItemToTable from '../components/DistributionItemToTable'
 import DonationItemTable from '../components/DonationItemTable'
+import LineChart from '../components/LineChart'
 
 export default function DetailCategory() {
     const [categoryDB, setCategoryDB] = useState({})
@@ -155,7 +156,7 @@ export default function DetailCategory() {
 
     if(!isLoading)
   return (
-    <div style={{padding: "0 0 0 50px", marginBottom: "50px"}}>
+    <div style={{padding: "0 0 0 25px", marginBottom: "50px"}}>
       <Stack direction="horizontal" gap={2} className="mt-3">
             <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Trang chủ</Link>
             <FontAwesomeIcon
@@ -177,10 +178,10 @@ export default function DetailCategory() {
                 </Col>
             </Row>
             <Row>
-                <Col className="col-4">
-                    <AppCircleChart />
+                <Col className="col-7">
+                    <LineChart data={distributionList}/>
                 </Col>
-                <Col className="col-8">
+                <Col className="col-5">
                     <ProductContentCard data={categoryDB}/>
                 </Col>
             </Row>

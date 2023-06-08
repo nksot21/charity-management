@@ -11,7 +11,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 export default function ProductContentCard(props) {
     const category = props.data
     return (
-      <Card sx={{ maxWidth: 700, padding:"0 20px 0 20px" }}>
+      <Card sx={{ maxWidth: 600, padding:"0" }}>
       <CardActionArea>
         <CardContent>
             <Container>

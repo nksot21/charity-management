@@ -178,7 +178,7 @@ function AddDonationPopup({ onCloseModal, event }) {
       <Stack>
         <Typography fontSize={20}>
           Thêm quyên góp ({" "}
-          {event.category.name === "Tiền" ? "chuyển khoản" : "hàng hóa"})
+          {event.category?.name === "Tiền" ? "chuyển khoản" : "hàng hóa"})
         </Typography>
       </Stack>
       <Stack spacing={2} marginTop={2}>
@@ -229,7 +229,7 @@ function AddDonationPopup({ onCloseModal, event }) {
             Không tìm thấy nhà hảo tâm
           </Typography>
         )}
-        {event.category.name === "Tiền" && (
+        {event.category?.name === "Tiền" && (
           <>
             <FormControl fullWidth size="small">
               <InputLabel id="category">Chọn ngân hàng</InputLabel>
@@ -238,7 +238,7 @@ function AddDonationPopup({ onCloseModal, event }) {
                 id="demo-simple-select"
                 value={bank}
                 label="Chọn ngân hàng"
-                onChange={(event) => setBank(event.target.value)}
+                onChange={(event) => setBank(event.target?.value)}
               >
                 {banks.map((b) => (
                   <MenuItem value={b} key={Math.random()}>
@@ -254,7 +254,7 @@ function AddDonationPopup({ onCloseModal, event }) {
               type="text"
               value={account}
               required
-              onChange={(event) => setAccount(event.target.value)}
+              onChange={(event) => setAccount(event.target?.value)}
             />
             <TextField
               size="small"
@@ -265,7 +265,7 @@ function AddDonationPopup({ onCloseModal, event }) {
               multiline
               rows={2}
               required
-              onChange={(event) => setContent(event.target.value)}
+              onChange={(event) => setContent(event.target?.value)}
             />
           </>
         )}
@@ -279,16 +279,16 @@ function AddDonationPopup({ onCloseModal, event }) {
             required
             endAdornment={
               <InputAdornment position="end">
-                {event.category.name === "Tiền"
-                  ? event.category.unit
+                {event.category?.name === "Tiền"
+                  ? event.category?.unit
                   : (
-                      event.category.unit +
+                      event.category?.unit +
                       " " +
-                      event.category.name
+                      event.category?.name
                     ).toLowerCase()}
               </InputAdornment>
             }
-            onChange={(event) => setAmount(event.target.value)}
+            onChange={(event) => setAmount(event.target?.value)}
           />
         </FormControl>
         {errors.length > 0 && (

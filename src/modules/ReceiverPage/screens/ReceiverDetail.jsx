@@ -49,7 +49,6 @@ export default function ReceiverDetail() {
           if(dis.status != "completed"){
             setCurrentDistribution(dis)
           }
-          let status = dis.status == "upcoming" ? "Sắp diễn ra" : (dis.status == "completed" ? "Hoàn thành" : "Đang diễn ra" )
           let expectValue = ""
           let actualValue = ""
           if(dis.transfer){
@@ -61,18 +60,20 @@ export default function ReceiverDetail() {
             actualValue = (dis.item?.actualQuantity || "0" ) +  " " +dis.item?.category.unit + " (" + dis.item?.category.name + ")"
           }
           let temp = {
-            id: "EVE" + dis.event.id,
-            name: dis.event.title,
+            id: dis.id,
+            name: {id: "EVE" +dis.event.id, name: dis.event.title},
             startTime: dis.event.dateBegin,
             endTime: dis.event.dateEnd,
-            expectMoney:expectValue ,
-            receiverMoney: actualValue,
-            status: status
+            expect:expectValue ,
+            receiver: actualValue,
+            status: dis.status
           }
           tempList.push(temp)
         })
         setMoneyReceived(moneyReceived)
         setDistributionList(tempList)
+        console.log('tempList')
+        console.log(tempList)
     })
     .catch(e => {
         console.log('Error: ',e);

@@ -127,7 +127,7 @@ const router = createBrowserRouter([
                             element: <AdminEventsPage />,
                           },
                           {
-                            path: ":eventId/them-phan-phat",
+                            path: ":id/them-phan-phat",
                             element: <CreateDistributionPage />,
                           },
                         ],
