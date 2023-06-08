@@ -24,14 +24,20 @@ function DonorsPage() {
   };
 
   React.useEffect(() => {
-    DonorService.getAllDonors().then((fetchedDonors) => {
-      setError(null)
-      setDonors(fetchedDonors.data);
-      setViewedDonors(fetchedDonors.data);
-    }).catch(e => {
-      setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
-    })
+    DonorService.getAllDonors()
+      .then((fetchedDonors) => {
+        setError(null);
+        setDonors(fetchedDonors.data);
+        setViewedDonors(fetchedDonors.data);
+      })
+      .catch((e) => {
+        setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
+      });
   }, []);
+
+  React.useEffect(() => {
+    if (search.length === 0) setViewedDonors(donors);
+  }, [search]);
 
   const searchHandler = () => {
     setViewedDonors(
@@ -43,6 +49,7 @@ function DonorsPage() {
       )
     );
   };
+  
   return (
     <Container>
       <Typography marginTop={8} textAlign="center" variant="h4">

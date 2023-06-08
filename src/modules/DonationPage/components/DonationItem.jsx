@@ -35,7 +35,7 @@ function DonationItem({ donation }) {
       >
         <Avatar sx={{ width: 60, height: 60 }} src={donation.donor.photo} />
         <Stack>
-          <Typography fontSize={14} fontWeight={"bold"} whiteSpace={"nowrap"}>
+          <Typography fontSize={15} fontWeight={"bold"} whiteSpace={"nowrap"}>
             {donation.donor.name}
           </Typography>
           <Typography  fontSize={14}>{donation.donor.username}</Typography>
@@ -92,8 +92,8 @@ function DonationItem({ donation }) {
         onClick={() => setIsOpenEventPopup(true)}
       >
         <Stack>
-          <Typography textAlign={"end"}>Sự kiện</Typography>
-          <Typography textAlign={"end"} fontWeight={"bold"}>
+          <Typography fontSize={14} textAlign={"end"}>Sự kiện</Typography>
+          <Typography fontSize={15} textAlign={"end"} fontWeight={"bold"}>
             {donation.event.title.length > 40
               ? donation.event.title.slice(0, 40) + "..."
               : donation.event.title}

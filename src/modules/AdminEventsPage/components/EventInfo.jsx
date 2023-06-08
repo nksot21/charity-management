@@ -12,11 +12,12 @@ function EventInfo({ event }) {
   const [showDonatePopup, setShowDonatePopup] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
-    setOpen(true);}
-    const handleClose = () => {
-        // setAddAlert(false);
-        setOpen(false);
-    }
+    setOpen(true);
+  };
+  const handleClose = () => {
+    // setAddAlert(false);
+    setOpen(false);
+  };
   const donateHandler = () => {
     if (role === "GUESS") {
       navigate("/dang-ky");
@@ -94,10 +95,16 @@ function EventInfo({ event }) {
       <Typography marginTop={1} textAlign={"end"}>
         Còn{" "}
         <span style={{ fontWeight: "600", color: "#fb8500" }}>
-          {currencyFormatter.format(event.amountNeeded - event.amountGot)}
+          {event.category.name === "Tiền"
+            ? currencyFormatter.format(event.amountNeeded - event.amountGot)
+            : event.amountNeeded - event.amountGot + " " + event.category.unit}
         </span>
       </Typography>
-      <Stack marginTop={3} alignItems={"center"} style={{display: "flex", justifyContent: "space-between"}}>
+      <Stack
+        marginTop={3}
+        alignItems={"center"}
+        style={{ display: "flex", justifyContent: "space-between" }}
+      >
         <Button
           variant="text"
           style={{
@@ -117,11 +124,9 @@ function EventInfo({ event }) {
             Tạo Phân phối
           </Button>
         </Link>
-        
       </Stack>
       <DistributionPopup openState={open} setOpenState={setOpen} />
     </Stack>
-
   );
 }
 
