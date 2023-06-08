@@ -29,6 +29,8 @@ import AddDonationPopup from "./AddDonationPopup";
 import { EventService } from "../../../services";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEvents } from "../../../store/events";
+import { useState } from "react";
+import DistributionPopup from "./DistributionPopup";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -187,12 +189,14 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { numSelected, selected, onSearchChange } = props;
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-  const [isDeletable, setIsDeleteTable] = React.useState(false);
+  const [isDeletable, setIsDeletable] = React.useState(false);
   const [isUpdating, setIsUpdating] = React.useState(false);
   const [isAddingDonation, setIsAddingDonation] = React.useState(false);
+  const [isAddingDistribution, setIsAddingDistribution] = useState(false);
   const events = useSelector((state) => state.events.events);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const selectedEvent = events.find((e) => e.id === selected[0]) || null;
 
   const [search, setSearch] = React.useState("");
 
@@ -208,9 +212,9 @@ function EnhancedTableToolbar(props) {
         return event.amountGot !== event.amountDistributed;
       }) > -1
     ) {
-      setIsDeleteTable(false);
+      setIsDeletable(false);
     } else {
-      setIsDeleteTable(true);
+      setIsDeletable(true);
     }
   }, [selected]);
 
@@ -281,31 +285,44 @@ function EnhancedTableToolbar(props) {
               >
                 Cập nhật
               </Button>
-              <Button
-                variant="contained"
-                size="small"
-                style={{ whiteSpace: "nowrap", backgroundColor: "#2AC48A" }}
-                onClick={() => setIsAddingDonation(true)}
+              <Tooltip
+                title={
+                  !selectedEvent.donating &&
+                  "Sự kiện này không nhận quyên góp nữa!"
+                }
               >
-                Thêm quyên góp
-              </Button>
-              {isAddingDonation && (
-                <AddDonationPopup
-                  onCloseModal={() => {
-                    setIsAddingDonation(false);
-                  }}
-                  event={events.find((e) => e.id === selected[0])}
-                />
-              )}
+                <span>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    style={{ whiteSpace: "nowrap", backgroundColor: "#2AC48A" }}
+                    onClick={() => setIsAddingDonation(true)}
+                    disabled={!selectedEvent.donating}
+                  >
+                    Thêm quyên góp
+                  </Button>
+                </span>
+              </Tooltip>
 
-              {isUpdating && (
-                <AddEventPopup
-                  onCloseModal={() => {
-                    setIsUpdating(false);
-                  }}
-                  event={events.find((e) => e.id === selected[0])}
-                />
-              )}
+              <Tooltip
+                title={
+                  selectedEvent.donating
+                    ? "Không phân phát được! Sự kiện này còn đang nhận quyên góp!"
+                    : ""
+                }
+              >
+                <span>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    style={{ whiteSpace: "nowrap", backgroundColor: "#E8AA42" }}
+                    onClick={() => setIsAddingDistribution(true)}
+                    disabled={selectedEvent.donating}
+                  >
+                    Thêm phân phát
+                  </Button>
+                </span>
+              </Tooltip>
             </>
           )}
 
@@ -318,16 +335,22 @@ function EnhancedTableToolbar(props) {
             Xóa
           </Button>
           {openDeleteDialog && (
-            <MyDialog
-              title="Cảnh báo"
-              message={
-                isDeletable === false
-                  ? "Bạn không thể xóa event khi đã có người quyên góp hoặc chưa phân phát hết số tiền đã nhận được!"
-                  : "Bạn có chắc chắn muốn xóa event này? Thao tác này không thể hoàn tác."
-              }
-              handleClose={() => setOpenDeleteDialog(false)}
-              handleAccept={acceptDeleteHandler}
-            />
+            <>
+              {isDeletable ? (
+                <MyDialog
+                  title="Cảnh báo"
+                  message="Bạn có chắc chắn muốn xóa event này? Thao tác này không thể hoàn tác."
+                  handleAccept={acceptDeleteHandler}
+                  handleClose={() => setOpenDeleteDialog(false)}
+                />
+              ) : (
+                <MyDialog
+                  title="Cảnh báo"
+                  message="Bạn không thể xóa sự kiện này vì đã có người quyên góp hoặc chưa phân phát hết số tiền đã quyên góp!"
+                  handleAccept={() => setOpenDeleteDialog(false)}
+                />
+              )}
+            </>
           )}
         </Stack>
       ) : (
@@ -336,6 +359,30 @@ function EnhancedTableToolbar(props) {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
+      )}
+      {isAddingDonation && (
+        <AddDonationPopup
+          onCloseModal={() => {
+            setIsAddingDonation(false);
+          }}
+          event={events.find((e) => e.id === selected[0])}
+        />
+      )}
+
+      {isAddingDistribution && (
+        <DistributionPopup
+          openState={true}
+          setOpenState={setIsAddingDistribution}
+        />
+      )}
+
+      {isUpdating && (
+        <AddEventPopup
+          onCloseModal={() => {
+            setIsUpdating(false);
+          }}
+          event={events.find((e) => e.id === selected[0])}
+        />
       )}
     </Toolbar>
   );
@@ -480,12 +527,15 @@ export default function EventsTable() {
                       {row.id}
                     </TableCell>
                     <TableCell align="right">
-                    <Link to={"/admin/manage/events/" + row.id} className=' text-decoration-none cursor  ' style={{alignItems: "center"}}>
-                        {row.title > 80
-                        ? row.title.slice(0, 80) + "..."
-                        : row.title}
-                    </Link>
-                      
+                      <Link
+                        to={"/events/" + row.id}
+                        className=" text-decoration-none cursor  "
+                        style={{ alignItems: "center" }}
+                      >
+                        {row.title.length > 80
+                          ? row.title.slice(0, 80) + "..."
+                          : row.title}
+                      </Link>
                     </TableCell>
                     <TableCell align="right">
                       {format(new Date(row.dateBegin), "dd/MM/yyyy")}

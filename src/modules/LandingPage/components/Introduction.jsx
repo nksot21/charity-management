@@ -1,5 +1,4 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import "./Introduction.css";
 import transparentImg from "../../../assets/images/landingpage/pen.png";
 import connectionImg from "../../../assets/images/landingpage/vector.png";

@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { Stack } from "@mui/material";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { format } from "date-fns";
 
 function Donations({ donations }) {
   const [count, setCount] = useState(10);
+  const [donationSeeMore, setDonationMore] = useState(true);
+
+  const handleDonationSeeMore = (e) => {
+    setDonationMore(!donationSeeMore);
+  };
 
   const seeMoreHandler = () => {
     if (count < donations.length) setCount((prev) => prev + 10);
@@ -15,9 +20,18 @@ function Donations({ donations }) {
 
   return (
     <Stack marginTop={3}>
-      <Typography fontSize={20} fontWeight={600}>
-        Danh sách ủng hộ
-      </Typography>
+      <Stack direction={"row"} justifyContent={"space-between"}>
+        <Typography fontSize={20} fontWeight={600}>
+          Danh sách ủng hộ
+        </Typography>
+        <IconButton onClick={handleDonationSeeMore}>
+          {!donationSeeMore ? (
+            <KeyboardArrowDownOutlinedIcon />
+          ) : (
+            <KeyboardArrowUpOutlinedIcon />
+          )}
+        </IconButton>
+      </Stack>
       <Stack spacing={1} marginTop={2}>
         {donations.slice(0, count).map((donation) => (
           <Stack
@@ -60,15 +74,17 @@ function Donations({ donations }) {
           </Stack>
         ))}
       </Stack>
-      <Stack marginTop={1} alignItems={"center"}>
-        <Button
-          variant="text"
-          style={{ textTransform: "none" }}
-          onClick={seeMoreHandler}
-        >
-          Xem thêm
-        </Button>
-      </Stack>
+      {(Math.floor(donations.length / 10) + 1) * 10 - count > 0 && (
+        <Stack marginTop={1} alignItems={"center"}>
+          <Button
+            variant="text"
+            style={{ textTransform: "none" }}
+            onClick={seeMoreHandler}
+          >
+            Xem thêm
+          </Button>
+        </Stack>
+      )}
     </Stack>
   );
 }
