@@ -31,6 +31,10 @@ function EventsPage() {
       });
   }, []);
 
+  React.useEffect(() => {
+    if (search.length === 0) setViewedEvents(events);
+  }, [search]);
+
   const seeMoreHandler = () => {
     setCount((prev) => prev + 9);
   };
@@ -42,7 +46,7 @@ function EventsPage() {
       )
     );
   };
-  
+
   return (
     <Container>
       <Typography marginTop={8} textAlign="center" variant="h4">

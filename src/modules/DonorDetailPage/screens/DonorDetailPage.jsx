@@ -87,7 +87,9 @@ function DonorDetailPage() {
           </Stack>
           <Stack paddingX={2} paddingY={3} width={"62%"}>
             {donor && <Statistics donor={donor} />}
-            {joinedEvents && <JoinedEvents events={joinedEvents} />}
+            {joinedEvents && (
+              <JoinedEvents events={joinedEvents} donor={donor} />
+            )}
             {donations && <Transfers donations={donations} />}
             {donations && <Items donations={donations} />}
           </Stack>

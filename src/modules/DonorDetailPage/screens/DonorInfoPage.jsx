@@ -19,7 +19,7 @@ import Modal from "../../../globalComponents/Modal/Modal";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { MuiFileInput } from "mui-file-input";
 import { format, setDate } from "date-fns";
-import { DonorService } from "../../../services";
+import { DonorService, StorageService } from "../../../services";
 import MyDialog from "../../../globalComponents/Dialog/MyDialog";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../../store/auth";
@@ -56,6 +56,9 @@ function DonorInfoPage({ onCloseModal, donor }) {
   const imageChooseHandler = (fileChosen) => {
     if (fileChosen) {
       const extension = fileChosen.name.split(".").pop();
+      const sizeInMB = fileChosen.size / (1024 * 1024);
+
+      console.log(sizeInMB);
 
       if (extension !== "jpg" && extension !== "png") {
         setErrors((prev) => {
@@ -64,12 +67,29 @@ function DonorInfoPage({ onCloseModal, donor }) {
           }
           return prev;
         });
-      } else {
-        setFile(fileChosen);
+      } else if (fileChosen.size) {
         setErrors((prev) =>
           [...prev].filter((error) => error.includes("Định dạng") === false)
         );
       }
+
+      if (sizeInMB > 1) {
+        setErrors((prev) => {
+          if (prev.findIndex((error) => error.includes("Kích thước")) === -1) {
+            return [...prev, "Kích thước ảnh vượt quá 1MB!"];
+          }
+          return prev;
+        });
+        return;
+      } else {
+        setErrors((prev) =>
+          [...prev].filter((error) => error.includes("Kích thước") === false)
+        );
+      }
+
+      setFile(fileChosen);
+    } else {
+      setFile(null);
     }
   };
 
@@ -104,7 +124,23 @@ function DonorInfoPage({ onCloseModal, donor }) {
     }
 
     // upload to firebase then get url
-    const photoURL = "url/to/firebase/image";
+    let photoURL;
+    if (file !== null) {
+      const imageData = new FormData();
+      imageData.append("image", file);
+
+      photoURL = await StorageService.getImageURL(imageData)
+        .then((imageURL) => {
+          return imageURL.data;
+        })
+        .catch((e) => {
+          throw e;
+        });
+
+      setphoto(photoURL);
+    } else {
+      photoURL = donor.photo;
+    }
 
     let donorBody = {
       id: donor.id,

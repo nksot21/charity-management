@@ -5,8 +5,14 @@ function DonationFilter({ onSearch }) {
   const [searchDonor, setSearchDonor] = useState("");
   const [searchEvent, setSearchEvent] = useState("");
 
-  const searchHandler = () => {
-    onSearch(searchDonor, searchEvent);
+  const searchDonorHandler = (event) => {
+    setSearchDonor(event.target.value);
+    onSearch(event.target.value, "");
+  };
+
+  const searchEventHandler = (event) => {
+    setSearchEvent(event.target.value);
+    onSearch("", event.target.value);
   };
 
   return (
@@ -15,17 +21,14 @@ function DonationFilter({ onSearch }) {
         size="small"
         placeholder="Tìm kiếm theo nhà hảo tâm"
         value={searchDonor}
-        onChange={(event) => setSearchDonor(event.target.value)}
+        onChange={searchDonorHandler}
       />
       <TextField
         size="small"
         placeholder="Tìm kiếm theo sự kiện"
         value={searchEvent}
-        onChange={(event) => setSearchEvent(event.target.value)}
+        onChange={searchEventHandler}
       />
-      <Button size="small" variant="contained" onClick={searchHandler}>
-        Tìm kiếm
-      </Button>
     </Stack>
   );
 }

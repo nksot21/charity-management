@@ -2,8 +2,39 @@ import { Button, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import heart from "../../../assets/images/heart.png";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
+import { EventService } from "../../../services";
+import { useState } from "react";
+import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleDollarToSlot } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
-function JoinedEvents({ events }) {
+function JoinedEvents({ events, donor }) {
+  const [mappedEvents, setMappedEvents] = useState(events);
+
+  const mapEvents = async () => {
+    const _mappedEvents = await Promise.all(
+      events.map(async (event) => {
+        const amount = await EventService.getAmount(event.id, donor.id)
+          .then((res) => res.data)
+          .catch((e) => {
+            throw e;
+          });
+
+        console.log(amount);
+        return { ...event, amount };
+      })
+    );
+
+    setMappedEvents(_mappedEvents);
+  };
+
+  console.log(mappedEvents);
+
+  useEffect(() => {
+    mapEvents();
+  }, [events]);
+
   return (
     <Stack
       marginTop={4}
@@ -33,8 +64,14 @@ function JoinedEvents({ events }) {
           Xem tất cả
         </Button>
       </Stack>
-      <Grid container columnSpacing={2} rowSpacing={2} marginTop={1} padding={2}>
-        {events.map((event) => (
+      <Grid
+        container
+        columnSpacing={2}
+        rowSpacing={2}
+        marginTop={1}
+        padding={2}
+      >
+        {mappedEvents.map((event) => (
           <Grid item key={event.title} xs={6}>
             <Stack
               borderRadius={3}
@@ -47,29 +84,51 @@ function JoinedEvents({ events }) {
                   position="absolute"
                   top={12}
                   left={12}
-                  style={{ backgroundColor: "#ffffffaa" }}
+                  style={{ backgroundColor: "#ffffffdd" }}
                   borderRadius={1}
                   paddingX={1}
                   direction="row"
                   spacing={1}
                   alignItems="center"
                 >
-                  <img height={18} width={18} src={heart}></img>
-                  <Typography>{currencyFormatter.format(200000)}</Typography>
+                  <FontAwesomeIcon
+                    icon={faCircleDollarToSlot}
+                    fontSize={18}
+                    color="#f6aa1c"
+                  />
+                  <Typography color={"#2a9d8f"} fontWeight={600}>
+                    {event.category.name === "Tiền"
+                      ? currencyFormatter.format(event.amount)
+                      : event.amount + " " + event.category.unit}
+                  </Typography>
                 </Stack>
                 <Stack
                   position="absolute"
                   top={40}
                   left={12}
-                  style={{ backgroundColor: "#ffffffaa" }}
+                  style={{ backgroundColor: "#ffffffdd" }}
                   borderRadius={1}
                   paddingX={1}
                 >
-                  Còn 67 ngày
+                  {"Còn " +
+                    (new Date(event.dateEnd).getTime() -
+                      new Date(event.dateBegin).getTime()) /
+                      (1000 * 24 * 60 * 60) +
+                    " ngày"}
                 </Stack>
               </Stack>
               <Stack padding={2}>
-                <Typography fontSize={17}>{event.name}</Typography>
+                {" "}
+                <Link
+                  to={"/events/" + event.id}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  <Typography fontSize={17}>
+                    {event.title.length > 100
+                      ? event.title.slice(0, 60) + "..."
+                      : event.title}
+                  </Typography>
+                </Link>
                 <Stack
                   height={8}
                   style={{ backgroundColor: "#ddd" }}
@@ -86,9 +145,14 @@ function JoinedEvents({ events }) {
                 <Typography marginTop={1}>
                   Còn{" "}
                   <span style={{ fontWeight: "600", color: "#fb8500" }}>
-                    {currencyFormatter.format(
-                      event.amountNeeded - event.amountGot
-                    )}
+                    {event.category.name === "Tiền"
+                      ? currencyFormatter.format(
+                          event.amountNeeded - event.amountGot
+                        )
+                      : event.amountNeeded -
+                        event.amountGot +
+                        " " +
+                        event.category.unit}
                   </span>
                 </Typography>
               </Stack>
