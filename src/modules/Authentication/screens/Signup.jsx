@@ -48,20 +48,6 @@ function Signup() {
       const extension = fileChosen.name.split(".").pop();
       const sizeInMB = Math.floor(fileChosen.size / (1024 * 1024));
 
-      if (sizeInMB > 3) {
-        setErrors((prev) => {
-          if (prev.findIndex((error) => error.includes("Kích thước")) === -1) {
-            return [...prev, "Kích thước ảnh vượt quá 3MB!"];
-          }
-          return prev;
-        });
-        return;
-      } else {
-        setErrors((prev) =>
-          [...prev].filter((error) => error.includes("Kích thước") === false)
-        );
-      }
-
       if (extension !== "jpg" && extension !== "png") {
         setErrors((prev) => {
           if (prev.findIndex((error) => error.includes("Định dạng")) === -1) {
@@ -73,6 +59,20 @@ function Signup() {
       } else {
         setErrors((prev) =>
           [...prev].filter((error) => error.includes("Định dạng") === false)
+        );
+      }
+
+      if (sizeInMB > 1) {
+        setErrors((prev) => {
+          if (prev.findIndex((error) => error.includes("Kích thước")) === -1) {
+            return [...prev, "Kích thước ảnh vượt quá 1MB!"];
+          }
+          return prev;
+        });
+        return;
+      } else {
+        setErrors((prev) =>
+          [...prev].filter((error) => error.includes("Kích thước") === false)
         );
       }
       setFile(fileChosen);

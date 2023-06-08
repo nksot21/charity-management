@@ -20,9 +20,9 @@ export class ReceiverService {
     return axios.get(url + "receiver/types");
   }
 
-    static getAllDistribution(id){
-        return axios.get(url + 'distribution/receiver/' + id)
-    }
+  static getAllDistribution(id) {
+    return axios.get(url + "distribution/receiver/" + id);
+  }
 }
 
 export class CategoryService {
@@ -31,36 +31,35 @@ export class CategoryService {
   }
 
   static async create(data) {
-    console.log(data)
+    console.log(data);
     return await axios.post(url + "categories", data);
   }
-  
-  static async getCategoryById(id){
+
+  static async getCategoryById(id) {
     return await axios.get(url + "categories/" + id);
   }
 
-  static async getDistributionByCategory(id){
-    return await axios.get(url + "distribution/category/" + id)
+  static async getDistributionByCategory(id) {
+    return await axios.get(url + "distribution/category/" + id);
   }
 
-  static async getDonationByCategory(id){
-    return await axios.get(url + "donations/category/" + id)
+  static async getDonationByCategory(id) {
+    return await axios.get(url + "donations/category/" + id);
   }
   static async getCategories() {
     return await axios.get(url + "categories");
   }
 }
 
-export class DistributionService{
-  static async createDistribution(data){
-    return await axios.post(url + "distribution", data)
+export class DistributionService {
+  static async createDistribution(data) {
+    return await axios.post(url + "distribution", data);
   }
 
   static async getDistributionByEvent(id){
     return await axios.get(url + "distribution/event/" + id)
   }
 }
-
 
 export class DonorService {
   static async getAllDonors() {
@@ -114,6 +113,13 @@ export class EventService {
 
   static async getJoinedDonors(eventId) {
     return await axios.get(url + "events/" + eventId + "/donors");
+  }
+
+  // Get total amount of money/item that a donor donate to an event
+  static async getAmount(eventId, donorId) {
+    return await axios.get(
+      url + "events/" + eventId + "/donor-amount/" + donorId
+    );
   }
 }
 

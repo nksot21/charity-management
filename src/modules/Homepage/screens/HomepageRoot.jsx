@@ -10,7 +10,7 @@ export default function Homepage() {
       <Stack>
         <Sidebar />
       </Stack>
-      <Stack padding={1} flexGrow={1}>
+      <Stack padding={1} flexGrow={1} paddingBottom={10}>
         <Outlet />
       </Stack>
     </Stack>
