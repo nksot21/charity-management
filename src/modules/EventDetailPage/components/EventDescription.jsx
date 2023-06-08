@@ -6,22 +6,23 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { useState } from "react";
 
 function EventDescription({ event }) {
-  const [readMore, setReadMore] = useState(false)
-  const [description, setDescription] = useState(true)
+  const [readMore, setReadMore] = useState(false);
+  const [description, setDescription] = useState(
+    event.description.slice(0, 300)
+  );
   const handleSeeMore = (e) => {
-    if(readMore){
-      setDescription(event.description.slice(0, 300))
-    }else
-      setDescription(event.description)
-    setReadMore(!readMore)
+    if (readMore) {
+      setDescription(event.description.slice(0, 300));
+    } else setDescription(event.description);
+    setReadMore(!readMore);
+  };
 
-  }
   return (
     <>
       <img width={"100%"} src={event.image} />
       <Stack marginTop={3}>
         {/* <div dangerouslySetInnerHTML={{ __html: event.description }} /> */}
-        <ReactMarkdown>{ description }</ReactMarkdown>
+        <ReactMarkdown>{description}</ReactMarkdown>
         <Button
           variant="text"
           style={{ textTransform: "none" }}

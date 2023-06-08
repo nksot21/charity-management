@@ -7,6 +7,7 @@ import EventInfo from "../components/EventInfo";
 import { useParams } from "react-router";
 import { DonationService, EventService } from "../../../services";
 import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
+import DistributionTable from "../components/DistributionTable";
 
 function EventDetailPage(props) {
   const params = useParams();
@@ -49,6 +50,7 @@ function EventDetailPage(props) {
           <Stack width={"60%"}>
             <EventDescription event={event} />
             {donations && <Donations donations={donations} />}
+            <DistributionTable/>
           </Stack>
           <EventInfo event={event} />
         </Stack>
@@ -56,7 +58,6 @@ function EventDetailPage(props) {
       {error && <SomethingWentWrong error={error} />}
     </Stack>
   );
-  
 }
 
 export default EventDetailPage;

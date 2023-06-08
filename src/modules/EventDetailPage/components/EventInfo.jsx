@@ -1,14 +1,22 @@
 import React, { useState } from "react";
-import { Avatar, Button, Chip, Typography } from "@mui/material";
+import { Avatar, Button, Chip, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/material";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import DistributionPopup from "../../AdminEventsPage/components/DistributionPopup";
+import AddDonationPopup from "../../AdminEventsPage/components/AddDonationPopup";
 
 function EventInfo({ event }) {
   const role = useSelector((state) => state.auth.role);
   const navigate = useNavigate();
   const [showDonatePopup, setShowDonatePopup] = useState(false);
+  const [openAddDistribution, setOpenAddDistribution] = useState(false);
+  const [openAddDonation, setOpenAddDonation] = useState(false);
+
+  const handleOpenDistribution = () => {
+    setOpenAddDistribution(true);
+  };
 
   const donateHandler = () => {
     if (role === "GUESS") {
@@ -94,20 +102,101 @@ function EventInfo({ event }) {
             : event.amountNeeded - event.amountGot + " " + event.category.unit}
         </span>
       </Typography>
-      <Stack marginTop={3} alignItems={"center"} style={{}}>
-        <Button
-          variant="contained"
-          style={{
-            borderRadius: "50px",
-            padding: "8px 32px",
-            fontSize: "17px",
-            backgroundImage: "linear-gradient(to right, #298474, #092849)",
-          }}
-          onClick={donateHandler}
+
+      {role !== "ADMIN" && (
+        <Stack marginTop={3} alignItems={"center"}>
+          <Tooltip
+            title={!event.donating && "Sự kiện này không nhận quyên góp nữa!"}
+          >
+            <span>
+              <Button
+                variant="contained"
+                style={{
+                  borderRadius: "50px",
+                  padding: "8px 32px",
+                  fontSize: "17px",
+                  backgroundImage:
+                    "linear-gradient(to right, #298474, #092849)",
+                }}
+                onClick={donateHandler}
+              >
+                Quyên góp
+              </Button>
+            </span>
+          </Tooltip>
+        </Stack>
+      )}
+      {role === "ADMIN" && (
+        <Stack
+          marginTop={3}
+          spacing={1}
+          alignItems={"center"}
+          style={{ display: "flex", justifyContent: "space-between" }}
         >
-          Quyên góp
-        </Button>
-      </Stack>
+          <Tooltip
+            title={!event.donating && "Sự kiện này không nhận quyên góp nữa!"}
+          >
+            <span>
+              <Button
+                variant="outlined"
+                style={{
+                  fontSize: "14px",
+                  minWidth: 230,
+                }}
+                onClick={() => setOpenAddDonation(true)}
+                disabled={!event.donating}
+              >
+                Tạo quyên góp nhanh
+              </Button>
+            </span>
+          </Tooltip>
+          <Tooltip
+            title={
+              event.donating &&
+              "Chưa phân phát được! Sự kiện này còn đang nhận quyên góp!"
+            }
+          >
+            <span>
+              <Button
+                variant="outlined"
+                style={{
+                  fontSize: "14px",
+                  minWidth: 230,
+                }}
+                onClick={handleOpenDistribution}
+                disabled={event.donating}
+              >
+                Tạo phân phối nhanh
+              </Button>
+            </span>
+          </Tooltip>
+
+          <Link to={"/admin/manage/events/" + event.id + "/them-phan-phat"}>
+            <Button
+              variant="outlined"
+              style={{
+                fontSize: "14px",
+                minWidth: 230,
+              }}
+              disabled={event.donating}
+            >
+              Tạo Phân phối
+            </Button>
+          </Link>
+        </Stack>
+      )}
+      {openAddDistribution && (
+        <DistributionPopup
+          openState={openAddDistribution}
+          setOpenState={setOpenAddDistribution}
+        />
+      )}
+      {openAddDonation && (
+        <AddDonationPopup
+          onCloseModal={() => setOpenAddDonation(false)}
+          event={event}
+        />
+      )}
     </Stack>
   );
 }

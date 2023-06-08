@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { ReceiverService } from '../../../services';
 import { Link } from 'react-router-dom';
-import { DataGridPro } from '@mui/x-data-grid-pro';
 import { useGridApiRef } from '@mui/x-data-grid';
 import { connectStorageEmulator } from 'firebase/storage';
 
