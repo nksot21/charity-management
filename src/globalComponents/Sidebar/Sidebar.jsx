@@ -15,6 +15,8 @@ export default function Sidebar() {
       left={0}
       borderRight={"1px solid #ddd"}
       width={isMenuShown ? "240px" : "fit-content"}
+      height={"92vh"}
+      justifyContent={"space-between"}
     >
       <Stack marginTop={2} width={"100%"}>
         {sidebarMenu
@@ -37,14 +39,16 @@ export default function Sidebar() {
           ))}
       </Stack>
       {isMenuShown && (
-        <Typography
-          padding={2}
-          marginTop={20}
-          fontSize={14}
-          textAlign={"center"}
-        >
-          aSheep Charity Management
-        </Typography>
+        <Stack>
+          <Typography
+            padding={2}
+            marginTop={20}
+            fontSize={14}
+            textAlign={"center"}
+          >
+            aSheep Charity Management
+          </Typography>
+        </Stack>
       )}
     </Stack>
   );
