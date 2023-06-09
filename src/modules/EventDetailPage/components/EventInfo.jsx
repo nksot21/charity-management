@@ -6,13 +6,15 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import DistributionPopup from "../../AdminEventsPage/components/DistributionPopup";
 import AddDonationPopup from "../../AdminEventsPage/components/AddDonationPopup";
+import DonationInfoPopup from "./DonationInfoPopup";
 
 function EventInfo({ event }) {
-  const role = useSelector((state) => state.auth.role);
+  const { user, role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [showDonatePopup, setShowDonatePopup] = useState(false);
   const [openAddDistribution, setOpenAddDistribution] = useState(false);
   const [openAddDonation, setOpenAddDonation] = useState(false);
+  const [isAddingDonation, setIsAddingDonation] = useState(false);
 
   const handleOpenDistribution = () => {
     setOpenAddDistribution(true);
@@ -21,9 +23,15 @@ function EventInfo({ event }) {
   const donateHandler = () => {
     if (role === "GUESS") {
       navigate("/dang-ky");
-    } else {
+    }
+    if (role === "USER") {
       setShowDonatePopup(true);
     }
+  };
+
+  const acceptDonateHandler = () => {
+    setShowDonatePopup(false);
+    setIsAddingDonation(true);
   };
 
   return (
@@ -195,6 +203,21 @@ function EventInfo({ event }) {
         <AddDonationPopup
           onCloseModal={() => setOpenAddDonation(false)}
           event={event}
+        />
+      )}
+      {showDonatePopup && (
+        <DonationInfoPopup
+          name={user.name}
+          onCloseModal={() => setShowDonatePopup(false)}
+          onAccept={acceptDonateHandler}
+          eventType={event.category.name === "Tiền" ? "money" : "item"}
+        />
+      )}
+      {isAddingDonation && (
+        <AddDonationPopup
+          onCloseModal={() => setIsAddingDonation(false)}
+          event={event}
+          donor={user}
         />
       )}
     </Stack>

@@ -73,10 +73,10 @@ function DonorInfoPage({ onCloseModal, donor }) {
         );
       }
 
-      if (sizeInMB > 1) {
+      if (sizeInMB > 3) {
         setErrors((prev) => {
           if (prev.findIndex((error) => error.includes("Kích thước")) === -1) {
-            return [...prev, "Kích thước ảnh vượt quá 1MB!"];
+            return [...prev, "Kích thước ảnh vượt quá 3MB!"];
           }
           return prev;
         });

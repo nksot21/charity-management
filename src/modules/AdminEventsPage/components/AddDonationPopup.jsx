@@ -29,17 +29,19 @@ import {
 import { useDispatch } from "react-redux";
 import { fetchEvents } from "../../../store/events";
 
-function AddDonationPopup({ onCloseModal, event }) {
-  const [donorId, setDonorId] = useState("");
+function AddDonationPopup({ onCloseModal, event, donor = null }) {
+  const [donorId, setDonorId] = useState(donor?.name);
   const [bank, setBank] = useState("");
   const [account, setAccount] = useState("");
   const [amount, setAmount] = useState("");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState([]);
   const [donors, setDonors] = useState([]);
-  const [donorsResult, setDonorsResult] = useState([]);
-  const [donorChosen, setDonorChosen] = React.useState(null);
+  const [donorsResult, setDonorsResult] = useState([].push(donor));
+  const [donorChosen, setDonorChosen] = useState(donor || null);
   const dispatch = useDispatch();
+
+  console.log(donorChosen);
 
   const fetchDonors = async () => {
     await DonorService.getAllDonors().then((fetchedDonors) => {
@@ -190,6 +192,7 @@ function AddDonationPopup({ onCloseModal, event }) {
           value={donorId}
           required
           onChange={donorIdChangeHandler}
+          disabled={donor !== null}
         />
         {donorsResult.length > 0 && (
           <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>

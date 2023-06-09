@@ -62,10 +62,10 @@ function Signup() {
         );
       }
 
-      if (sizeInMB > 1) {
+      if (sizeInMB > 3) {
         setErrors((prev) => {
           if (prev.findIndex((error) => error.includes("Kích thước")) === -1) {
-            return [...prev, "Kích thước ảnh vượt quá 1MB!"];
+            return [...prev, "Kích thước ảnh vượt quá 3MB!"];
           }
           return prev;
         });
@@ -129,7 +129,7 @@ function Signup() {
       setErrors((prev) => [...prev, "Vui lòng chọn ảnh đại diện"]);
     }
 
-    if (haveError) return;
+    if (haveError || errors.length > 0) return;
 
     const donorBodyWithoutImage = {
       name,
@@ -217,7 +217,7 @@ function Signup() {
           onChange={imageChooseHandler}
           value={file}
           hideSizeText
-          helperText="Định dạng: JPEG, PNG, tối đa 3MB"
+          helperText="Định dạng: JPEG, PNG, tối đa 1MB"
           fullWidth
         />
         <TextField
