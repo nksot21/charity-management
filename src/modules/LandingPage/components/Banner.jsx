@@ -12,7 +12,7 @@ export default function Banner() {
   const joinHandler = () => {
     if (role === "GUESS") {
       navigate("/dang-ky");
-    } else navigate("/events");
+    } else navigate("/su-kien");
   };
 
   return (

@@ -229,7 +229,7 @@ function EnhancedTableToolbar(props) {
               variant="outlined"
               style={{ whiteSpace: "nowrap" }}
               size="small"
-              onClick={() => navigate("/donors/" + selected[0])}
+              onClick={() => navigate("/nha-hao-tam/" + selected[0])}
             >
               Xem chi tiết
             </Button>
@@ -271,7 +271,7 @@ export default function DonorsTable({ donors }) {
   const [orderBy, setOrderBy] = React.useState("ID");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [viewedDonors, setViewedDonors] = React.useState(donors);
 
   const handleRequestSort = (event, property) => {

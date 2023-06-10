@@ -12,14 +12,14 @@ import {
 import charitySignup from "../../../assets/images/charity-singup.jpg";
 import { Alert, AlertTitle, Typography } from "@mui/material";
 import {
-  StackedLineChartTwoTone,
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { DonorService } from "../../../services";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../../store/auth";
+import { useEffect } from "react";
 
 function Login() {
   const [errors, setErrors] = useState([]);
@@ -28,11 +28,20 @@ function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/trang-ca-nhan");
+      return;
+    }
+  }, []);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
+  
   const loginHandler = () => {
     let haveError = false;
     setErrors([]);

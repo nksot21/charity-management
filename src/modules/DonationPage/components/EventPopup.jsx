@@ -96,7 +96,7 @@ function EventPopup({ onCloseModal, event }) {
             style={{ position: "absolute", right: "10px", bottom: "10px" }}
           >
             <Link
-              to={"/events/" + event.id}
+              to={"/su-kien/" + event.id}
               style={{
                 color: "white",
                 textDecoration: "none",

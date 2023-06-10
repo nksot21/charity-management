@@ -7,7 +7,7 @@ function EventCard({ event }) {
   const navigate = useNavigate();
 
   const navigateHandler = () => {
-    navigate("/events/" + event.id);
+    navigate("/su-kien/" + event.id);
   };
   return (
     <Stack

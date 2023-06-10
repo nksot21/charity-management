@@ -18,6 +18,9 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { DonorService, StorageService } from "../../../services";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import MyDialog from "../../../globalComponents/Dialog/MyDialog";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function Signup() {
   const [name, setName] = useState("");
@@ -34,7 +37,17 @@ function Signup() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
   const [errors, setErrors] = useState([]);
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/trang-ca-nhan");
+      return;
+    }
+  }, []);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowPasswordConfirm = () =>
     setShowPasswordConfirm((show) => !show);
@@ -156,7 +169,7 @@ function Signup() {
         return DonorService.addDonor(donorBody);
       })
       .then((res) => {
-        navigate("/dang-nhap");
+        setSignupSuccess(true);
       })
       .catch((res) => {
         if (res.response.data.message.includes("already exists")) {
@@ -338,6 +351,16 @@ function Signup() {
           Đăng nhập
         </Button>
       </Stack>
+      {signupSuccess && (
+        <MyDialog
+          title="Thông báo"
+          message={"Đăng ký thành công, vui lòng đăng nhập để truy cập"}
+          handleClose={() => {
+            navigate("/trang-chu");
+          }}
+          handleAccept={() => navigate("/dang-nhap")}
+        />
+      )}
     </Stack>
   );
 }

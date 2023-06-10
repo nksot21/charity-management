@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Avatar, Badge, Button, Stack, Typography, capitalize } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Stack,
+  Typography,
+  capitalize,
+} from "@mui/material";
 import quote from "../../../assets/images/quote.png";
 import { Link, useParams } from "react-router-dom";
 import DonorInfoPage from "../screens/DonorInfoPage";
@@ -83,7 +90,7 @@ function DonorInfo({ onDonation = false, donor }) {
             style={{ textTransform: "none" }}
           >
             <Link
-              to={"/donors/" + donor.id}
+              to={"/nha-hao-tam/" + donor.id}
               style={{ color: "white", textDecoration: "none" }}
             >
               Xem trang chi tiết
