@@ -45,35 +45,7 @@ const router = createBrowserRouter([
             element: <LandingPage />,
           },
           {
-            path: "nguoi-nhan",
-            element: <Receiver />,
-          },
-          {
-            path: "quan-ly/tai-tro",
-            element: <DistributionPage />,
-          },
-          {
-            path: "quan-ly/kho",
-            element: <InventoryPage />,
-          },
-          {
-            path: "quan-ly/kho/:id",
-            element: <DetailCategory />,
-          },
-          {
-            path: "nguoi-nhan/them",
-            element: <AddReceiver />,
-          },
-          {
-            path: ":nguoi-nhan/:id",
-            element: <ReceiverDetail />,
-          },
-          {
-            path: ":nguoi-nhan/:id/sua",
-            element: <UpdateReceiver />,
-          },
-          {
-            path: "donors",
+            path: "nha-hao-tam",
             children: [
               {
                 index: true,
@@ -83,18 +55,14 @@ const router = createBrowserRouter([
                 path: ":donorId",
                 element: <DonorDetailPage />,
               },
-              {
-                path: "profile",
-                element: <DonorDetailPage />,
-              },
             ],
           },
           {
-            path: "donations",
+            path: "quyen-gop",
             element: <DonationPage />,
           },
           {
-            path: "events",
+            path: "su-kien",
             children: [
               {
                 index: true,
@@ -110,29 +78,65 @@ const router = createBrowserRouter([
             element: <ProtectedRoute />,
             children: [
               {
-                path: "admin",
+                path: "trang-ca-nhan",
+                element: <DonorDetailPage />,
+              },
+              {
+                path: "quan-ly",
                 children: [
                   {
-                    path: "manage",
+                    path: "nha-hao-tam",
+                    element: <AdminDonorsPage />,
+                  },
+                  {
+                    path: "su-kien",
                     children: [
                       {
-                        path: "donors",
-                        element: <AdminDonorsPage />,
+                        index: true,
+                        element: <AdminEventsPage />,
                       },
                       {
-                        path: "events",
-                        children: [
-                          {
-                            index: true,
-                            element: <AdminEventsPage />,
-                          },
-                          {
-                            path: ":id/them-phan-phat",
-                            element: <CreateDistributionPage />,
-                          },
-                        ],
+                        path: ":id/them-phan-phat",
+                        element: <CreateDistributionPage />,
                       },
-                      {},
+                    ],
+                  },
+                  {
+                    path: "tai-tro",
+                    element: <DistributionPage />,
+                  },
+                  {
+                    path: "kho",
+                    children: [
+                      {
+                        index: true,
+                        element: <InventoryPage />,
+                      },
+                      {
+                        path: ":id",
+                        element: <DetailCategory />,
+                      },
+                    ],
+                  },
+                  {
+                    path: "nguoi-nhan",
+                    children: [
+                      {
+                        index: true,
+                        element: <Receiver />,
+                      },
+                      {
+                        path: "them",
+                        element: <AddReceiver />,
+                      },
+                      {
+                        path: ":id",
+                        element: <ReceiverDetail />,
+                      },
+                      {
+                        path: ":id/sua",
+                        element: <UpdateReceiver />,
+                      },
                     ],
                   },
                 ],

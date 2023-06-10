@@ -56,7 +56,7 @@ function Photo({ photo, id }) {
     <Avatar
       src={photo}
       sx={{ width: "100%", height: "100%", cursor: "pointer" }}
-      onClick={() => navigate("/donors/" + id)}
+      onClick={() => navigate("/nha-hao-tam/" + id)}
     />
   );
 }
@@ -72,7 +72,7 @@ function Row({ index, photo, name, score, id }) {
       style={{ backgroundColor: "#ffffffee", cursor: "pointer" }}
       paddingY={1}
       paddingX={2}
-      onClick={() => navigate("/donors/" + id)}
+      onClick={() => navigate("/nha-hao-tam/" + id)}
       alignItems={"center"}
     >
       <Typography

@@ -49,7 +49,7 @@ function Items({ donations }) {
   ).length;
 
   const seeAllHandler = () => {
-    navigate("/donations", {
+    navigate("/quyen-gop", {
       state: {
         username: donations[0].donor.username,
       },
@@ -112,7 +112,7 @@ function Items({ donations }) {
                           variant="contained"
                           size="small"
                           style={{ backgroundColor: "#2a9d8f" }}
-                          onClick={() => navigate("/events/" + row.event.id)}
+                          onClick={() => navigate("/su-kien/" + row.event.id)}
                         >
                           Xem
                         </Button>

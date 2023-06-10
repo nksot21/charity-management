@@ -62,7 +62,7 @@ export default function HeaderAccount({ user }) {
         }}
       >
         <MenuItem onClick={handleClose}>
-          <Button onClick={() => navigate("/donors/profile")}>
+          <Button onClick={() => navigate("/trang-ca-nhan")}>
             Trang cá nhân
           </Button>
         </MenuItem>

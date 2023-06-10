@@ -273,7 +273,7 @@ function EnhancedTableToolbar(props) {
                 variant="outlined"
                 size="small"
                 style={{ whiteSpace: "nowrap" }}
-                onClick={() => navigate("/events/" + selected[0])}
+                onClick={() => navigate("/su-kien/" + selected[0])}
               >
                 Xem chi tiết
               </Button>
@@ -397,7 +397,7 @@ export default function EventsTable() {
   const [orderBy, setOrderBy] = React.useState("id");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const events = useSelector((state) => state.events.events);
   const [viewedEvents, setViewedEvents] = React.useState([]);
 
@@ -528,7 +528,7 @@ export default function EventsTable() {
                     </TableCell>
                     <TableCell align="right">
                       <Link
-                        to={"/events/" + row.id}
+                        to={"/su-kien/" + row.id}
                         className=" text-decoration-none cursor  "
                         style={{ alignItems: "center" }}
                       >

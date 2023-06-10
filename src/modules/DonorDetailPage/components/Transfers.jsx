@@ -47,7 +47,7 @@ function Transfers({ donations }) {
   const count = donations.filter((donation) => donation.item === null).length;
 
   const seeAllHandler = () => {
-    navigate("/donations", {
+    navigate("/quyen-gop", {
       state: {
         username: donations[0].donor.username,
       },
@@ -111,7 +111,7 @@ function Transfers({ donations }) {
                           variant="contained"
                           size="small"
                           style={{ backgroundColor: "#2a9d8f" }}
-                          onClick={() => navigate("/events/" + row.event.id)}
+                          onClick={() => navigate("/su-kien/" + row.event.id)}
                         >
                           Xem
                         </Button>

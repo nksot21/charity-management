@@ -58,10 +58,10 @@ export default function Header() {
         <Link to="/trang-chu" className="header-link">
           Trang chủ
         </Link>
-        <Link to="/events" className="header-link">
+        <Link to="/su-kien" className="header-link">
           Sự kiện
         </Link>
-        <Link to="/donors" className="header-link">
+        <Link to="/nha-hao-tam" className="header-link">
           Nhà hảo tâm
         </Link>
       </Stack>

@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import DonorCard from "../../LandingPage/components/DonorCard";
+import DonorCard from "../components/DonorCard";
 import NoResult from "../../../globalComponents/NoResult/NoResult";
 import { DonorService } from "../../../services";
 import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
