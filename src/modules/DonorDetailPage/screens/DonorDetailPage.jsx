@@ -19,8 +19,6 @@ function DonorDetailPage() {
   const [joinedEvents, setJoinedEvents] = useState([]);
   const loggedInDonor = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const transfersRef = useRef(null);
 
   const donorId = params.donorId || loggedInDonor?.id;
 
@@ -35,24 +33,19 @@ function DonorDetailPage() {
   }
 
   const fetchDonor = async () => {
-    if (params.donorId) {
-      await DonorService.getDonor(donorId)
-        .then((fetchedDonor) => {
-          setDonor(fetchedDonor.data);
-        })
-        .catch((e) => {
-          setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
-        });
-    } else {
-      setDonor(loggedInDonor);
-    }
+    const donorId = params.donorId ? params.donorId : loggedInDonor?.id;
+    await DonorService.getDonor(donorId)
+      .then((fetchedDonor) => {
+        setDonor(fetchedDonor.data);
+      })
+      .catch((e) => {
+        setError("Có sự cố với đường truyền mạng! Vui lòng thử lại.");
+      });
   };
 
   useEffect(() => {
-    if (!params.donorId) {
-      setDonor(loggedInDonor);
-    }
-  }, [loggedInDonor]);
+    fetchDonor();
+  }, []);
 
   const fetchJoinedEvents = async () => {
     await DonorService.getJoinedEvents(donorId)
@@ -101,9 +94,7 @@ function DonorDetailPage() {
             {joinedEvents && (
               <JoinedEvents events={joinedEvents} donor={donor} />
             )}
-            {donations && (
-              <Transfers donations={donations} />
-            )}
+            {donations && <Transfers donations={donations} />}
             {donations && <Items donations={donations} />}
           </Stack>
         </Stack>

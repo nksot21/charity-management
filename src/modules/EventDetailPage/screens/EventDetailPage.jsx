@@ -40,6 +40,10 @@ function EventDetailPage(props) {
     fetchDonations();
   }, []);
 
+  const afterDonateHandler = () => {
+    fetchEvent();
+  };
+
   return (
     <Stack paddingX={3} paddingY={4}>
       <Typography fontSize={28} fontWeight={600}>
@@ -50,9 +54,9 @@ function EventDetailPage(props) {
           <Stack width={"60%"}>
             <EventDescription event={event} />
             {donations && <Donations donations={donations} />}
-            <DistributionTable eventId={params.eventId}/>
+            <DistributionTable eventId={params.eventId} />
           </Stack>
-          <EventInfo event={event} />
+          <EventInfo event={event} onAfterDonate={afterDonateHandler} />
         </Stack>
       )}
       {error && <SomethingWentWrong error={error} />}

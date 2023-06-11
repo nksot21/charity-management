@@ -8,7 +8,7 @@ import DistributionPopup from "../../AdminEventsPage/components/DistributionPopu
 import AddDonationPopup from "../../AdminEventsPage/components/AddDonationPopup";
 import DonationInfoPopup from "./DonationInfoPopup";
 
-function EventInfo({ event }) {
+function EventInfo({ event, onAfterDonate }) {
   const { user, role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [showDonatePopup, setShowDonatePopup] = useState(false);
@@ -33,7 +33,7 @@ function EventInfo({ event }) {
     setShowDonatePopup(false);
     setIsAddingDonation(true);
   };
-
+  
   return (
     <Stack
       width={"40%"}
@@ -127,6 +127,7 @@ function EventInfo({ event }) {
                     "linear-gradient(to right, #298474, #092849)",
                 }}
                 onClick={donateHandler}
+                disabled={!event.donating}
               >
                 Quyên góp
               </Button>
@@ -216,6 +217,7 @@ function EventInfo({ event }) {
       {isAddingDonation && (
         <AddDonationPopup
           onCloseModal={() => setIsAddingDonation(false)}
+          onAfterDonate={onAfterDonate}
           event={event}
           donor={user}
         />
