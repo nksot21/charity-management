@@ -174,12 +174,12 @@ export default function DetailCategory() {
         <Container>
             <Row>
                 <Col>
-                    <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Quản lý kho - Thịt</b></h4>
+                    <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Quản lý kho - {categoryDB.name}</b></h4>
                 </Col>
             </Row>
             <Row>
                 <Col className="col-7">
-                    <LineChart data={distributionList}/>
+                    <LineChart id={params.id.slice(3)}/>
                 </Col>
                 <Col className="col-5">
                     <ProductContentCard data={categoryDB}/>

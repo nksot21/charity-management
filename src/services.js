@@ -49,6 +49,13 @@ export class CategoryService {
   static async getCategories() {
     return await axios.get(url + "categories");
   }
+  static async getCategoryDistributionChart(id){
+    return await axios.get(url + "distribution/category/chart/" + id)
+  }
+
+  static async getCategoryItemfrChart(id){
+    return await axios.get(url + "itemfr/category/chart/" + id)
+  }
 }
 
 export class DistributionService {

@@ -55,7 +55,7 @@ export default function Receiver() {
         <Container >
           <Row>
             <Col className="col-10 mb-3">
-                <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Quản lý danh sách người nhận</b></h4>
+                <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Quản lý danh sách người nhận  <span style={{fontSize: '18px', fontWeight: 'normal'}}>tổng số: {receiverList.length}</span></b></h4>
             </Col>
             <Col className="col-2">
               <Link to='them' className='bg-primary text-light py-2 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>

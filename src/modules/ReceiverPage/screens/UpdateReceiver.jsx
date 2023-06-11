@@ -208,7 +208,7 @@ export default function UpdateReceiver() {
                     style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
             <Link key="Home" to="/nguoi-nhan/them" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Thêm</Link>
         </Stack>
-        <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Thêm người nhận mới</b></h4>
+        <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Sửa người nhận</b></h4>
 
         <div className={`${styled['form']}`}>
                 <Form className={`${styled['inside']}`}>
@@ -352,13 +352,13 @@ export default function UpdateReceiver() {
                             onClick={saveHandler}
                             style={{fontSize: "14px", fontWeight: "bold", paddingInline: "16px", width: "100px"}}
                             variant="success" >
-                            Thêm
+                            Sửa
                             
                         </Button>
                 </div>
                 <Snackbar style={{position: "fixed", top: '920px', left: "1000px"}} open={successMessOpen} autoHideDuration={3000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                        Thêm thành công
+                        Sửa thành công
                     </Alert>
                 </Snackbar>
                 <Snackbar style={{position: "fixed", top: '920px', left: "900px"}} open={failedMessOpen} autoHideDuration={3000} onClose={handleFailedClose}>

@@ -12,6 +12,7 @@ import {storage} from '../../../firebaseSetup'
 import axios from "axios";
 import { Alert, Snackbar } from '@mui/material';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { gridColumnsTotalWidthSelector } from '@mui/x-data-grid';
 // import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
 export default function AddReceiver() {
     const navigate = useNavigate();
@@ -97,13 +98,20 @@ export default function AddReceiver() {
             setUrl("https://i.imgur.com/1baFFao.png")
         }
         
-        console.log("url image")
-        console.log(url)
         try {
+            let receiverTypeObj
+            let typeid = receiverType.current.value
+            typeDb.map(item => {
+                if (parseInt(item.id) === parseInt(typeid)){
+                    receiverTypeObj = item
+                }
+                
+            })
+            console.log(receiverTypeObj)
             const recInfo = {
                 name: fullname.current.value,
                 gender: gender,
-                receiverType_id: parseInt(receiverType.current.value),
+                receiverType: receiverTypeObj,
                 phone: phoneNumber.current.value,
                 address: address.current.value,
                 district: district.current.value,

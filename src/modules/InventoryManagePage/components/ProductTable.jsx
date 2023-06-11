@@ -21,6 +21,7 @@ const columns = [
     width: 200  ,
   },
   { field: 'amount', headerName: 'Số lượng', width: 150 },
+  { field: 'score', headerName: 'Điểm quy đổi', width: 150 },
 
 ];
 
@@ -29,13 +30,13 @@ const columns = [
 export default function ProductTable(props ) {
   console.log(props.data)
   return (
-    <div style={{ height: 660, width: '97%' }}>
+    <div style={{ height: 450, width: '97%' }}>
       <DataGrid
         rows={props.data}
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
+            paginationModel: { page: 0, pageSize: 8 },
           },
         }}
         pageSizeOptions={[5, 10]}

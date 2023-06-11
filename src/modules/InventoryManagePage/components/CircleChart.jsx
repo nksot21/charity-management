@@ -8,27 +8,27 @@ import {
   Tooltip,
 } from "recharts";
 
-const data = [
-  { name: "Good", value: 400 },
-  { name: "Medium", value: 300 },
-  { name: "Not-Good", value: 300 },
-];
+const COLORS = ["#238723", "#E8AA42", "#D2222D", "#025464", "#E57C23", "#F8F1F1"];
 
-const COLORS = ["#238723", "#FFBE00", "#D2222D"];
-
-const AppCircleChart = ({ pieChartData }) => {
+const AppCircleChart = ( props) => {
+  let dataArray = []
+  props.categoryList.map(cat => {
+    if(cat.name != "Tiền" || cat.id != "3")
+    dataArray.push({"name": cat.name + " (" + cat.unit +")", "value": parseInt((cat.totalAmount / props.totalAmount) * 100)})
+  })
+  console.log(dataArray)
   return (
     <ResponsiveContainer width="100%" height={300}>
       <PieChart>
         <Pie
-          data={data01}
+          data={dataArray}
           cx="50%"
           cy="50%"
           outerRadius={80}
           fill="#8884d8"
           dataKey="value"
         >
-          {data.map((entry, index) => (
+          {dataArray.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
@@ -63,32 +63,6 @@ const data01 = [
     {
       "name": "Group F",
       "value": 189
-    }
-  ];
-  const data02 = [
-    {
-      "name": "Group A",
-      "value": 2400
-    },
-    {
-      "name": "Group B",
-      "value": 4567
-    },
-    {
-      "name": "Group C",
-      "value": 1398
-    },
-    {
-      "name": "Group D",
-      "value": 9800
-    },
-    {
-      "name": "Group E",
-      "value": 3908
-    },
-    {
-      "name": "Group F",
-      "value": 4800
     }
   ];
 

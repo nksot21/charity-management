@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100 },
-  { field: 'name', headerName: 'Họ và tên', width: 250,
+  { field: 'name', headerName: 'Họ và tên', width: 300,
     type: 'link',
     renderCell: (params) =>{
       return  <Link to={params.row.id} className=' text-decoration-none cursor  ' style={{alignItems: "center"}}>
@@ -15,18 +15,18 @@ const columns = [
     }
      
   },
-  { field: 'phone', headerName: 'Số liên hệ', width: 150 },
+  { field: 'phone', headerName: 'Số liên hệ', width: 175},
   {
     field: 'docId',
     headerName: 'CCCD',
-    width: 150  ,
+    width: 175  ,
   },
   {
     field: 'type',
     headerName: 'Nhóm người nhận',
-    width: 175,
+    width: 200,
   },
-  { field: 'description', headerName: 'Mô tả', width: 250  },
+  { field: 'description', headerName: 'Mô tả', width: 300  },
 ];
 
 

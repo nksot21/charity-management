@@ -8,14 +8,17 @@ import { Link } from 'react-router-dom'
 import { CategoryService } from '../../../services'
 import "../components/style.css"
 import ProductTable from '../components/ProductTable'
+import AppCircleChart from '../components/CircleChart'
+import TotalLineChart from '../components/TotalLineChart'
 
 export default function InventoryPage() {
-    const [categoryListDB, setCategoryListDB] = useState(false);
+    const [categoryListDB, setCategoryListDB] = useState([]);
     const [addAlert, setAddAlert] = useState(false);
     const [categoryList, setCategoryList] = useState([]);
     const [open, setOpen] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [searchValue, setSearchValue] = useState("");
+    const [totalAmount, setTotalAmount] = useState(0)
 
     const handleOpen = () => {
         setOpen(true);}
@@ -36,17 +39,20 @@ export default function InventoryPage() {
             const categoryList = response.data
             setCategoryListDB(categoryList)
             let tempList = []
+            let total = 0
             categoryList.map(cat => {
+                if(cat.name != "Tiền" || cat.id != 3) total += parseInt(cat.totalAmount)
                 let temp = {
                     id: "CAT" + cat.id,
                     name: cat.name,
                     unit: cat.unit,
-                    amount: cat.totalAmount
+                    amount: cat.totalAmount,
+                    score: cat.scoreExchange
                 }
                 tempList.push(temp)
             })
-            
             setCategoryList(tempList);
+            setTotalAmount(total)
         })
         .catch(e => {
             console.log('Error: ',e);
@@ -111,10 +117,20 @@ export default function InventoryPage() {
 
   const search = (value) => {
     let tempArr = [...categoryListDB].map((x) => x)
-    let temp = tempArr.filter((item) => {
-      return item?.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()) || item?.id.toString().includes(value)
+    let tempList = []
+    tempArr.filter((cat) => {
+      if(cat?.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()) || cat?.id.toString().includes(value)){
+        let temp = {
+            id: "CAT" + cat.id,
+            name: cat.name,
+            unit: cat.unit,
+            amount: cat.totalAmount,
+            score: cat.scoreExchange
+        }
+        tempList.push(temp)
+      }
     })
-    setCategoryList(temp)
+    setCategoryList(tempList)
   }
 
 
@@ -139,6 +155,16 @@ export default function InventoryPage() {
                         <FontAwesomeIcon icon={faPlusCircle}/>
                         <span className='ps-2' style={{fontSize: "14px"}}>Thêm</span>
                     </Button>
+                </Col>
+            </Row>
+            <Row>
+                <Col className='col-4 mb-3'>
+                    <h6 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Tỉ lệ tồn kho</b></h6>
+                    <AppCircleChart totalAmount={totalAmount} categoryList={categoryListDB}/>
+                </Col>
+                <Col className='col-8 mb-3'>
+                    <h6 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Tồn kho theo ngày</b></h6>
+                    <TotalLineChart categoryList={categoryListDB} />
                 </Col>
             </Row>
             <Row style={{marginBottom: "30px"}}>

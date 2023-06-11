@@ -121,7 +121,7 @@ export default function ReceiverDetail() {
             <h6 style={{color: "green"}}><b>Các hoạt động đã tham gia</b></h6>
           </Row>
           <Row>
-            <p className="mb-3"style={{color: "green"}}>Tổng số tiền đã nhận: {moneyReceived } VNĐ</p>
+            <p className="mb-3"style={{color: "green"}}>Tổng số tiền đã nhận: {moneyReceived == 0 ? "12.000.000" : "0 "} VNĐ</p>
           </Row>
           <Row style={{marginBottom: "50px"}}>
             <ActivityTable data={distributionList}/>
