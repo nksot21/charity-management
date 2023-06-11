@@ -75,12 +75,12 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "trang-ca-nhan",
+            element: <DonorDetailPage />,
+          },
+          {
             element: <ProtectedRoute />,
             children: [
-              {
-                path: "trang-ca-nhan",
-                element: <DonorDetailPage />,
-              },
               {
                 path: "quan-ly",
                 children: [

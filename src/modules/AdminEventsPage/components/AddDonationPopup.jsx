@@ -29,7 +29,12 @@ import {
 import { useDispatch } from "react-redux";
 import { fetchEvents } from "../../../store/events";
 
-function AddDonationPopup({ onCloseModal, event, donor = null }) {
+function AddDonationPopup({
+  onCloseModal,
+  event,
+  donor = null,
+  onAfterDonate = null,
+}) {
   const [donorId, setDonorId] = useState(donor?.name);
   const [bank, setBank] = useState("");
   const [account, setAccount] = useState("");
@@ -173,6 +178,10 @@ function AddDonationPopup({ onCloseModal, event, donor = null }) {
       .catch((e) => {
         throw e;
       });
+
+    if (onAfterDonate) {
+      onAfterDonate();
+    }
   };
 
   return (
