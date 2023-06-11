@@ -21,7 +21,7 @@ export const sidebarMenu = [
     title: "Donor",
     name: "Nhà hảo tâm",
     icon: faHandHoldingDollar,
-    route: "/donors",
+    route: "/nha-hao-tam",
     roles: ["USER", "ADMIN", "GUESS"],
   },
   {
@@ -29,7 +29,7 @@ export const sidebarMenu = [
     title: "Donation",
     name: "Quyên góp",
     icon: faCircleDollarToSlot,
-    route: "/donations",
+    route: "/quyen-gop",
     roles: ["USER", "ADMIN", "GUESS"],
   },
   {
@@ -37,7 +37,7 @@ export const sidebarMenu = [
     title: "Activity",
     name: "Sự kiện từ thiện",
     icon: faBullhorn,
-    route: "/events",
+    route: "/su-kien",
     roles: ["USER", "ADMIN", "GUESS"],
   },
   {
@@ -45,7 +45,7 @@ export const sidebarMenu = [
     title: "CharityManagement",
     name: "Quản lý nhà hảo tâm",
     icon: faHandHoldingDollar,
-    route: "/admin/manage/donors",
+    route: "/quan-ly/nha-hao-tam",
     roles: ["ADMIN"],
   },
   {
@@ -53,7 +53,7 @@ export const sidebarMenu = [
     title: "CharityManagement",
     name: "Quản lý sự kiện",
     icon: faBullhorn,
-    route: "/admin/manage/events",
+    route: "/quan-ly/su-kien",
     roles: ["ADMIN"],
   },
   {
@@ -61,7 +61,7 @@ export const sidebarMenu = [
     title: "ReceiverManagement",
     name: "Quản lý người nhận",
     icon: faHandsHoldingCircle,
-    route: "/nguoi-nhan",
+    route: "/quan-ly/nguoi-nhan",
     roles: ["ADMIN"],
   },
   {
@@ -75,9 +75,9 @@ export const sidebarMenu = [
   {
     id: 9,
     title: "TaskManagement",
-    name: "Quản lý hoạt động",
+    name: "Quản lý tài trợ",
     icon: faCircleDollarToSlot,
-    route: "/quan-ly/hoat-dong",
+    route: "/quan-ly/tai-tro",
     roles: ["ADMIN"],
   },
 ];

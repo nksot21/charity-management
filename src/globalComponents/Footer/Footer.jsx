@@ -18,10 +18,12 @@ export default function Footer() {
               Về chúng tôi
             </Typography>
             <Typography color={"white"} fontSize={16} marginTop={1}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
-              debitis velit sed ullam, itaque nam placeat ab odit, laudantium
-              laboriosam veritatis consectetur natus nobis nisi autem eos quidem
-              totam minus.
+              Chào mừng bạn đến với aSheep Charity! Chúng tôi là một tổ chức phi
+              lợi nhuận với mục tiêu tạo ra sự thay đổi tích cực trong cộng
+              đồng. Với sự đồng hành của những tình nguyện viên và nhà hảo tâm,
+              chúng tôi đã thực hiện nhiều dự án quan trọng như giáo dục, sức
+              khỏe và môi trường. Hãy cùng aSheep Charity xây dựng một tương lai
+              tốt đẹp hơn cho tất cả mọi người.
             </Typography>
             <Typography color={"white"} marginTop={2} textAlign={"end"}>
               aSheep Charity

@@ -152,6 +152,12 @@ export class DonationService {
   static async getDonationsByDonor(donorId) {
     return await axios.get(url + "donors/" + donorId + "/donations");
   }
+
+  static async getAmountByCategoryAllEventEachDonor(donorId) {
+    return await axios.get(
+      url + "donors/" + donorId + "/total-amount-by-category"
+    );
+  }
 }
 
 export class TransferService {

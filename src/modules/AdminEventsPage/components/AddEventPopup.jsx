@@ -153,6 +153,7 @@ function AddEventPopup({ onCloseModal, event = null }) {
     console.log(fileChosen)
     if (fileChosen) {
       const extension = fileChosen.name.split(".").pop();
+      const sizeInMB = Math.floor(fileChosen.size / (1024 * 1024));
 
       if (extension !== "jpg" && extension !== "png") {
         setErrors((prev) => {
@@ -162,11 +163,25 @@ function AddEventPopup({ onCloseModal, event = null }) {
           return prev;
         });
       } else {
-        setFile(fileChosen);
         setErrors((prev) =>
           [...prev].filter((error) => error.includes("Định dạng") === false)
         );
       }
+
+      if (sizeInMB > 3) {
+        setErrors((prev) => {
+          if (prev.findIndex((error) => error.includes("Kích thước")) === -1) {
+            return [...prev, "Kích thước ảnh vượt quá 3MB!"];
+          }
+          return prev;
+        });
+        return;
+      } else {
+        setErrors((prev) =>
+          [...prev].filter((error) => error.includes("Kích thước") === false)
+        );
+      }
+      setFile(fileChosen);
     } else {
       setFile(null);
     }

@@ -1,11 +1,11 @@
 import { Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
 import DonorInfo from "../components/DonorInfo";
 import Statistics from "../components/Statistics";
 import JoinedEvents from "../components/JoinedEvents";
 import Transfers from "../components/Transfers";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DonationService, DonorService } from "../../../services";
 import SomethingWentWrong from "../../../globalComponents/NoResult/Error";
 import { useSelector } from "react-redux";
@@ -19,12 +19,14 @@ function DonorDetailPage() {
   const [joinedEvents, setJoinedEvents] = useState([]);
   const loggedInDonor = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+  // const location = useLocation();
+  // const transfersRef = useRef(null);
 
   const donorId = params.donorId || loggedInDonor?.id;
 
   if (params.donorId && loggedInDonor) {
     if (loggedInDonor.id === parseInt(params.donorId)) {
-      navigate("/donors/profile");
+      navigate("/trang-ca-nhan");
     }
   }
 
@@ -78,6 +80,15 @@ function DonorDetailPage() {
     fetchJoinedEvents();
   }, [params]);
 
+  // useEffect(() => {
+  //   if (location.state && location.state.seeTransfers) {
+  //     // const element = document.getElementById("transfers");
+  //     // if (element) element.scrollIntoView({ behavior: "smooth" });
+  //     if (transfersRef.current)
+  //       transfersRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, []);
+
   return (
     <>
       {donor && (
@@ -90,7 +101,9 @@ function DonorDetailPage() {
             {joinedEvents && (
               <JoinedEvents events={joinedEvents} donor={donor} />
             )}
-            {donations && <Transfers donations={donations} />}
+            {donations && (
+              <Transfers donations={donations} />
+            )}
             {donations && <Items donations={donations} />}
           </Stack>
         </Stack>

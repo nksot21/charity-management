@@ -150,7 +150,8 @@ export default function InventoryPage() {
                 <Col>
                     <h4 className="mb-3 mt-3" style={{color: "#4B5264"}}><b>Quản lý kho</b></h4>
                 </Col>
-                <Col className="col-2">
+                  <Col className="col-2">
+                      
                     <Button onClick={handleOpen} className='bg-primary text-light py-2 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
                         <FontAwesomeIcon icon={faPlusCircle}/>
                         <span className='ps-2' style={{fontSize: "14px"}}>Thêm</span>

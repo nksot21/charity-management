@@ -1,8 +1,24 @@
 import { Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { currencyFormatter } from "../../../utils/currencyFormatter";
+import { DonationService } from "../../../services";
 
 function Statistics({ donor }) {
+  const [amountByCategory, setAmountByCategory] = useState({});
+
+  const fetchAmountByCategory = async () => {
+    await DonationService.getAmountByCategoryAllEventEachDonor(donor.id)
+      .then((res) => setAmountByCategory(res.data))
+      .catch((e) => {
+        throw e;
+      });
+  };
+
+  useEffect(() => {
+    fetchAmountByCategory();
+  }, []);
+
+  console.log(amountByCategory);
   return (
     <Stack
       boxShadow="0 0 10px #00000022"
@@ -34,9 +50,11 @@ function Statistics({ donor }) {
           width={"50%"}
         >
           <Typography>Tổng vật phẩm quyên góp</Typography>
-          <Typography variant="h5" fontWeight="600" color="#38a3a5">
-            {donor.totalItemAmount}
-          </Typography>
+          {Object.entries(amountByCategory).map((item) => (
+            <Typography variant="h5" fontWeight="600" color="#38a3a5">
+              {item[1] + " " + item[0]}
+            </Typography>
+          ))}
         </Stack>
       </Stack>
     </Stack>
