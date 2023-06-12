@@ -110,7 +110,7 @@ function JoinedEvents({ events, donor }) {
               <Stack padding={2}>
                 {" "}
                 <Link
-                  to={"/events/" + event.id}
+                  to={"/su-kien/" + event.id}
                   style={{ textDecoration: "none", color: "black" }}
                 >
                   <Typography fontSize={17}>

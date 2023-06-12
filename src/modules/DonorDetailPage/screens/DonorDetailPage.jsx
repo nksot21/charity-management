@@ -73,6 +73,10 @@ function DonorDetailPage() {
     fetchJoinedEvents();
   }, [params]);
 
+  useEffect(() => {
+    fetchDonor()
+  }, [loggedInDonor])
+
   // useEffect(() => {
   //   if (location.state && location.state.seeTransfers) {
   //     // const element = document.getElementById("transfers");
