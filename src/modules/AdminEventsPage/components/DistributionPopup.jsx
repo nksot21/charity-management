@@ -6,6 +6,21 @@ import { Container, Col, Row, Stack, Button, FormControl } from 'react-bootstrap
 import AddDistribution from './AddDistributionReceiver';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
+const categoryList=[{
+    name: "4.Gạo (Kg)"
+}, {
+    name: "8.Thịt gà (Kg)"
+}, {
+    name: "10.Thịt heo (Kg)"
+}, {
+    name: "9.Thịt bò (Kg)"
+}, {
+    name: "17.Cá (kg)"
+}, {
+    name: "3.Tiền (kg)"
+}]
+    
+
 export default function DistributionPopup(props) {
     // const [open, setOpen] = useState(false);
     const [addReceiverDiv, setReceiverDiv] = useState([]);
@@ -46,7 +61,7 @@ export default function DistributionPopup(props) {
                     </Row>
                     <Row>
                         <Col id="dataField">
-                            <AddDistribution id="dis1" categoryList={props.categoryList}/>
+                            <AddDistribution id="dis1" categoryList={categoryList}/>
                             {addReceiverDiv}
                         </Col>
                     </Row>

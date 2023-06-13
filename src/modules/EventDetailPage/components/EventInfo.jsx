@@ -172,14 +172,14 @@ function EventInfo({ event }) {
                   minWidth: 230,
                 }}
                 onClick={handleOpenDistribution}
-                disabled={event.donating}
+                // disabled={event.donating}
               >
                 Tạo phân phối nhanh
               </Button>
             </span>
           </Tooltip>
 
-          <Link to={"/admin/manage/events/" + event.id + "/them-phan-phat"}>
+          <Link to={"/quan-ly/su-kien/" + event.id + "/them-phan-phat"}>
             <Button
               variant="outlined"
               style={{

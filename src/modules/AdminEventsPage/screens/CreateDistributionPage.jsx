@@ -206,8 +206,12 @@ export default function CreateDistributionPage() {
     }, [distributionData])
     const divideSet = (distributeBySet) => {
         let option = setCategoryList.find(item => {
-            if(distributeBySet.option.split(".")[1] == item.name)
+            if(distributeBySet.option.split(".")[1] == item.name){
+                console.log('item')
+                console.log(item)
                 return item
+            }
+                
         })
         console.log('option')
         console.log(option)
@@ -251,11 +255,10 @@ export default function CreateDistributionPage() {
                 request.itemList.push(temp)
             }
         })
-        console.log("request")
-        console.log(request)
         DistributionService.createDistribution(request)
         .then(res => {
             console.log(res)
+            navigator("/su-kien/" + params.id)
         })
         .catch(e =>{
             console.log(e)

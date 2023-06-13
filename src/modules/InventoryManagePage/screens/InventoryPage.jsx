@@ -205,9 +205,7 @@ export default function InventoryPage() {
                 </Row>
                 <Row style={{marginTop: '30px'}}>
                     <Col>
-                        <FormControl style={{width: '495px'}} >
                             <TextField id="outlined-basic" label="Mô tả" variant="outlined" size="small" multiline rows={3} inputRef={description}/>
-                        </FormControl>
                     </Col>
                 </Row>
                 <Row style={{borderTop: '2px solid #f1f1f3', marginTop: '30px', marginBottom: "15px"}} >
